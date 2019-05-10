@@ -1,0 +1,301 @@
+{% extends "base.html" %}
+{% block title %}域名管理{% end %}
+{% block content %}
+<div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+        <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+</div>
+<div id="wrapper">
+    {% include 'admin_nav.html' %}
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            {% include 'header_nav.html' %}
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>域名管理</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="/admin/home">主页</a>
+                    </li>
+                    <li>
+                        <a>域名管理</a>
+                    </li>
+                    <li>
+                        <strong>域名管理</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <div class="ibox-tools">
+                                <!--<input type="button" class="btn new-btn-w-m btn-primary audit1" value="搜索域名"
+                                       data-toggle="modal" onclick="query()"/>-->
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <style>
+                                th:first-child,
+                                .gradeX td:first-child {
+                                    width: 20px;
+                                    cursor: pointer;
+                                }
+
+                                th:first-child input,
+                                .gradeX td:first-child input {
+                                    cursor: pointer;
+                                }
+
+                                .mydelbtn {
+                                    background-color: white;
+                                    margin-left: 1%;
+                                    margin-top: 5px;
+                                }
+                            </style>
+
+                            <form action="javascript:;" method="post" name="login_form" id="login_form">
+                                {% module xsrf_form_html() %}
+                                <table class="table table-striped table-bordered table-hover dataTable dataTables-example">
+                                    <thead>
+                                    <tr>
+                                        <th class="sorting_disabled"><input type="checkbox" class="i-checks" id="userListCheck"/></th>
+                                        <th>ID</th>
+                                        <th>域名</th>
+                                        <th>网站名称</th>
+                                        <th>IP信息</th>
+                                        <th>类型</th>
+                                        <th>状态</th>
+                                        <th>详情</th>
+                                        <th>入库时间</th>
+                                        <th>更新时间</th>
+                                        <th>备注</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for dm in domainlist %}
+                                    <tr class="gradeX">
+                                        <td><input type="checkbox" class="i-checks"></td>
+                                        <td class="userListId" data-id="{{ dm.get('dmid') }}" style="">{{ dm.get('dmid') }}</td>
+                                        <td><a  href="http://{{ dm.get('domain','') }}" target="_blank">{{ dm.get('domain','') }}</a></td>
+                                        <td>{{ dm.get('webname','') }}</td>
+                                        <td>{{ dm.get('ip_info','') }}</td>
+                                        <td>{{ dm.get('type','') }}</td>
+                                        <td>{{ dm.get('status','') }}</td>
+                                        <td>{{ dm.get('contect','') }}</td>
+                                        <td>{{ dm.get('createdat','') }}</td>
+                                        <td>{{ dm.get('updatedat','') }}</td>
+                                        {% set remark = dm.get('remark') %}
+                                        {% if remark==None %}
+                                           <td><a onclick="test('{{ dm.get('dmid') }}', this)">暂无</a></td>
+                                        {%elif remark=="" %}
+                                           <td><a onclick="test('{{ dm.get('dmid') }}', this)">暂无</a></td>
+                                        {% else %}
+                                           <td><a onclick="test('{{ dm.get('dmid') }}', this)">{{remark}}</a></td>
+                                        {% end %}
+                                    </tr>
+                                    {% end %}
+                                    </tbody>
+                                </table>
+                              
+                                <div class="ibox float-e-margins">
+                                    <div class="ibox-title">
+                                        <div style="display: flex;align-content: space-between;align-items: center;margin-top: 10px">
+                                            <label>每页显示： </label>
+                                            <select class="form-control" type="text" id="num" name="num" style="width: 5%;margin-left: 0.3%; margin-right: 0.5%">
+                                               <option value='10'>10</option>
+                                               <option value='20'>20</option>
+                                               <option value='30'>30</option>
+                                               <option value='50'>50</option>
+                                               <option value='100'>100</option>
+                                            </select>
+
+                                            <h5>关键词列表
+                                                <small>共计：{{ count }}</small>
+                                                <div style="display:inline;" class="fenye" data-dt="{{page}}" id="fenye" data-size="{{pagesize}}" data-ipid="{{ipid}}">
+                                                <a href="/admin/details?page={{ page-1 if page>1 else 1 }}&pagesize={{pagesize}}&ipid={{ipid}}"><span>上一页</span></a>
+                                                {% if pages>10 %}
+                                                    {% if page<9 %}
+                                                    	{% for i in range(1,10) %} <a href="/admin/details?page={{i}}&pagesize={{pagesize}}&ipid={{ipid}}"><span>{{i}}</span></a>{% end %}
+                                                   		 ...<a href="/admin/details?page={{pages}}&pagesize={{pagesize}}&ipid={{ipid}}"><span>{{pages}}</span></a>
+                                                    {% else %}
+                                                        {% if page+3<pages %}
+                                                            {% for i in range(page-6,page+3) %} <a href="/admin/details?page={{i}}&pagesize={{pagesize}}&ipid={{ipid}}"><span>{{i}}</span></a>{% end %}
+                                                            ...<a href="/admin/details?page={{pages}}&pagesize={{pagesize}}&ipid={{ipid}}"><span>{{pages}}</span></a>
+                                                        {% else %}
+                                                            <a href="/admin/details?page=1&pagesize={{pagesize}}&ipid={{ipid}}"><span>1</span></a>...
+                                                            {% for i in range(pages-8,pages+1) %} <a href="/admin/details?page={{i}}&pagesize={{pagesize}}&ipid={{ipid}}"><span>{{i}}</span></a>{% end %}
+                                                        {% end %}
+                                                    {% end %}
+                                                    跳转<input id="pager" style="display:inline;width:26px;height:20px;" class="form-control" onblur="JumpPage()">页
+                                                {% else %}
+                                                    {% for i in range(1,pages+1) %}<a href="/admin/details?page={{i}}&pagesize={{pagesize}}&ipid={{ipid}}"><span>{{i}}</span></a>{% end %}
+                                                {% end %}
+                                                <a href="/admin/details?page={{ page+1 if page<pages else pages }}&pagesize={{pagesize}}&ipid={{ipid}}"><span>下一页</span></a>
+                                                </div>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--<input type="submit" class="btn btn-w-m btn-primary delete" value="删除选中" data-toggle="modal" data-target="#myModal5"/>
+                                <input type="button" class="" value="所有非法网站" onclick="illegal()"/>
+
+                                <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">删除域名</h4>
+                                                <small class="font-bold"></small>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="ideaId"></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white deleteKw"
+                                                        data-dismiss="modal">确定
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+
+                                <div class="modal inmodal fade" id="myModa11" tabindex="-1" role="dialog"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">域名搜索</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="ideaId">
+                                                        <label>域名： </label>
+                                                        <input class="form-control" placeholder="" name="domain" id="domain" style="width:90%; margin-left:50px">
+                                                        <p class="showInfo"></p>
+
+                                                        <label>内容： </label>
+                                                        <input class="form-control" placeholder="" name="webname" id="webname" style="width:90%; margin-left:50px">
+                                                        <p class="showInfo"></p>
+
+                                                        <label>IP： </label>
+                                                        <input class="form-control" placeholder="" name="ip_info" id="ip_info" style="width:90%; margin-left:50px">
+                                                        <p class="showInfo"></p>
+                                            </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white select" data-dismiss="modal">确定
+                                            </button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">取消
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+
+    function JumpPage(){
+        var page = $("#pager").val();
+        var pagesize = $("#fenye").data("size");
+        var ipid = $("#fenye").data("ipid");
+        var n = /^[1-9]\d*$/;
+        if(!n.test(page)){
+            alert('跳转页数请输入正整数');
+            return false;
+        }
+        window.location.href = window.location.pathname+"?page="+page+"&pagesize="+pagesize+"&ipid="+ipid;
+    }
+
+    function query(){
+        $('#myModa11').modal('show');
+    }
+
+    $(function () {
+        var pagesize = $("#fenye").data("size");
+        $("#num").val(pagesize);
+
+        var json1 = _alert('.btn.btn-w-m.delete', '.modal-body .ideaId', '您要删除的系统用户ID为');
+        // json1['_xsrf'] = getCookie("_xsrf");
+        json1['_xsrf'] = $("input[name='_xsrf']").val();
+        $('.btn.btn-white.deleteKw').click(function () {
+            $.ajax({
+                url: '/admin/domain/delete',
+                type: 'post',
+                data: json1,
+                success: function (data) {
+                    console.log(data);
+                    location.reload();
+                },
+                error: function () {
+                     alert('error');
+                }
+            });
+        });
+
+
+
+        $('.btn.btn-white.select').click(function () {
+            var domain = $('#domain').val();
+            var webname = $('#webname').val();
+            var ip_info = $('#ip_info').val();
+            var kind = ""
+            var content = ""
+            if(domain!=""){
+                kind = "域名"
+                content = domain
+            }else if(webname!=""){
+                kind = "网站名称"
+                content = webname
+             }else if(ip_info){
+                kind = "IP"
+                content = ip_info
+            }else{
+                alert("请输入查找内容！")
+                return false;
+            }
+            window.location.href="/admin/domain/select?kind="+kind+"&content="+content;
+        })
+
+        var page = $("#fenye").data("dt");
+        page = page.toString();
+        $("a span").each(function(i,item){
+            console.log(typeof $(this).text())
+            if($(this).text()==page){
+                $(this).parent().css("color","#D200D2")
+            }
+        });
+    });
+
+    $('#num').change(function () {
+        var ipid = $("#fenye").data("ipid");
+        var num = $("#num").find("option:selected").text();
+        window.location.href="/admin/details?pagesize="+num+"&ipid="+ipid;
+    });
+</script>
+{% end %}
