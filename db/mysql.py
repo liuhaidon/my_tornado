@@ -1,8 +1,6 @@
 # encoding:utf-8
 import pymysql
 import time
-import socket
-import requests
 import json
 from passlib.hash import pbkdf2_sha512
 
@@ -37,7 +35,6 @@ class DBUtil:
         if result:
             password_hash = result[2]
             rs = pbkdf2_sha512.verify(password, password_hash)
-            print "re===>", rs, result
             if rs:
                 user["userid"] = result[0]
                 user["username"] = result[1]
@@ -74,9 +71,15 @@ class DBUtil:
             info['userid'] = b[0]
             info['username'] = b[1]
             info['role'] = b[3]
-            info['createdat'] = b[4]
+            info['createdat'] = b[5]
             user_list.append(info)
         return user_list
+
+    def getAllUsers(self):
+        sql = "select count(*) from tb_user"
+        self.cursor.execute(sql)
+        count = self.cursor.fetchone()
+        return count[0]
 
     def findUser(self, username):
         flag = True
@@ -87,20 +90,12 @@ class DBUtil:
             flag = False
         return flag
 
-    def addUser(self, username, password, role, createdat, ip_info):
-        try:
-            name = "增加用户：" + username
-            sql_str2 = "INSERT INTO tb_operate VALUES (null, '%s', '%s', '%s')" % (name, ip_info, createdat)
-            self.cursor.execute(sql_str2)
-            self.connection.commit()
-        except:
-            self.connection.rollback()
-
+    def addUser(self, username, password, role, brief, createdat):
         flag = True
         password = pbkdf2_sha512.encrypt(password)
         try:
-            sql_str = "INSERT INTO tb_user(userid,username,password,role,createdat) VALUES (null, '%s', '%s', '%s',  '%s')" % (
-            username, password, role, createdat)
+            sql_str = "INSERT INTO tb_user(userid,username,password,role,brief,createdat) VALUES (null, '%s', '%s', '%s', '%s',  '%s')" % (
+            username, password, role, brief, createdat)
             self.cursor.execute(sql_str)
             self.connection.commit()
         except:

@@ -5,6 +5,7 @@ import os
 
 from tornado.options import define, options
 from view.admin import *
+from view.ajax import *
 from db.mysql import DBUtil
 from utils.session import *
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -28,11 +29,13 @@ class Application(tornado.web.Application):
             (r"/admin/sysuser/delete", AdminDeleteSysUser),
             (r"/admin/sysuser/([0-9a-z]{24})", AdminModifySysUser),
             (r"/admin/system/repass", AdminRepassSystem),
+
+            (r"/ajax/sysuser/find", AjaxFindSysUser)
         ]
         self.dbutil = DBUtil()
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
-            xsrf_cookies=True,
+            # xsrf_cookies=True,
             login_url='/login',
             admin_login_url="/admin/login",
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
@@ -63,3 +66,17 @@ if __name__ == "__main__":
     app.listen(options.port)
     print("visit at", "http://127.0.0.1:%s" % options.port)
     tornado.ioloop.IOLoop.instance().start()
+
+
+
+
+
+
+
+
+
+
+
+
+
+

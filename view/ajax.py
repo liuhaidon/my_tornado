@@ -8,6 +8,18 @@ from BaseHandler import BaseHandler
 from view import *
 
 
+class AjaxFindSysUser(BaseHandler):
+    """查找用户名是否已经注册过"""
+    @BaseHandler.admin_authed
+    def post(self):
+        username = self.get_argument("username", None)
+        flag = self.application.dbutil.findUser(username)
+        if not flag:
+            self.write(json.dumps({"status": 'error', "msg": u'已经注册过'}))
+        else:
+            self.write(json.dumps({"status": 'ok', "msg": u'没有注册过'}))
+
+
 class AjaxFindWebsite(BaseHandler):
     @BaseHandler.admin_authed
     def post(self):

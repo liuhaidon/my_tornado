@@ -36,28 +36,25 @@
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
+                            <h5>系统用户列表
+                                <small>共计：{{ count }}</small>
+                            </h5>
                             <div class="ibox-tools">
-                                <input type="button" class="btn new-btn-w-m btn-primary audit1" value="搜索用户" data-toggle="modal" onclick="query()"/>
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown"
+                                   href="#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a onclick="query()" >查询</a>
+                                    </li>
+                                </ul>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
                             </div>
-                            <!--<h5>系统用户列表-->
-                                <!--<small>共计：{{ count }}</small>-->
-                            <!--</h5>-->
-                            <!--<div class="ibox-tools">-->
-                                <!--<a class="collapse-link">-->
-                                    <!--<i class="fa fa-chevron-up"></i>-->
-                                <!--</a>-->
-                                <!--<a class="dropdown-toggle" data-toggle="dropdown"-->
-                                   <!--href="#">-->
-                                    <!--<i class="fa fa-wrench"></i>-->
-                                <!--</a>-->
-                                <!--<ul class="dropdown-menu dropdown-user">-->
-                                    <!--<li><a onclick="query()" >搜索用户</a>-->
-                                    <!--</li>-->
-                                <!--</ul>-->
-                                <!--<a class="close-link">-->
-                                    <!--<i class="fa fa-times"></i>-->
-                                <!--</a>-->
-                            <!--</div>-->
                         </div>
                         <div class="ibox-content">
                             <style>
@@ -101,51 +98,9 @@
                                     {% end %}
                                     </tbody>
                                 </table>
-
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <div style="display: flex;align-content: space-between;align-items: center;margin-top: 10px">
-                                            <label>每页显示： </label>
-                                            <select class="form-control" type="text" id="num" name="num" style="width: 5%;margin-left: 0.3%; margin-right: 0.5%">
-                                               <option value='1'>1</option>
-                                               <option value='2'>2</option>
-                                               <option value='3'>3</option>
-                                               <option value='5'>5</option>
-                                               <option value='10'>10</option>
-                                            </select>
-
-                                            <h5>登陆记录列表
-                                                <small>共计：{{ count }}</small>
-                                                <div style="display:inline;" class="fenye" data-dt="{{page}}" id="fenye" data-size="{{pagesize}}">
-                                                <a href="/admin/sysusers?page={{ page-1 if page>1 else 1 }}&pagesize={{pagesize}}"><span>上一页</span></a>
-                                                {% if pages>10 %}
-                                                    {% if page<9 %}
-                                                    	{% for i in range(1,10) %} <a href="/admin/sysusers?page={{i}}&pagesize={{pagesize}}"><span>{{i}}</span></a>{% end %}
-                                                   		 ...<a href="/admin/sysusers?page={{pages}}&pagesize={{pagesize}}"><span>{{pages}}</span></a>
-                                                    {% else %}
-                                                        {% if page+3<pages %}
-                                                            {% for i in range(page-6,page+3) %} <a href="/admin/sysusers?page={{i}}&pagesize={{pagesize}}"><span>{{i}}</span></a>{% end %}
-                                                            ...<a href="/admin/sysusers?page={{pages}}&pagesize={{pagesize}}"><span>{{pages}}</span></a>
-                                                        {% else %}
-                                                            <a href="/admin/sysusers?page=1&pagesize={{pagesize}}"><span>1</span></a>...
-                                                            {% for i in range(pages-8,pages+1) %} <a href="/admin/sysusers?page={{i}}&pagesize={{pagesize}}"><span>{{i}}</span></a>{% end %}
-                                                        {% end %}
-                                                    {% end %}
-                                                    跳转<input id="pager" style="display:inline;width:26px;height:20px;" class="form-control" onblur="JumpPage()">页
-                                                {% else %}
-                                                    {% for i in range(1,pages+1) %}<a href="/admin/sysusers?page={{i}}&pagesize={{pagesize}}"><span>{{i}}</span></a>{% end %}
-                                                {% end %}
-                                                {% if pages==0 %}
-                                                    <a href="/admin/sysusers?page=1&pagesize={{pagesize}}"><span>下一页</span></a>
-                                                {% else %}
-                                                    <a href="/admin/sysusers?page={{ page+1 if page<pages else pages }}&pagesize={{pagesize}}"><span>下一页</span></a>
-                                                {% end %}
-                                                </div>
-                                            </h5>
-                                        </div>
-                                    </div>
+                                <div class = "pager">
+                                    {% raw page_count %}
                                 </div>
-
                                 <input type="submit" class="btn btn-w-m btn-primary delete1" value="删除选中"
                                        data-toggle="modal" data-target="#myModal5"/>
                               
@@ -166,6 +121,7 @@
                                             <div class="modal-body">
                                                 <p class="ideaId"></p>
                                             </div>
+
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-white deleteUser"
                                                         data-dismiss="modal">确定
@@ -211,8 +167,8 @@
                                                         <option value="user">普通用户</option>
                                                     </select>
 
-                                                    <label>简介:</label>
-                                                    <textarea class="form-control" type="text" id="brief" name="brief" cols=10 rows=6 placeholder="不多于256个字">用户简介</textarea>
+                                                    <!--<label>简介:</label>
+                                                    <input class="form-control"  type="text" id="brief" name="brief" placeholder="简介"/>-->
 
                                                     <!--<label>注册时间:</label>
                                                     <input class="form-control"  type="text" id="atime" name="atime" placeholder="当前时间"/>-->
@@ -362,6 +318,9 @@
         </div>
     </div>
 </div>
+<script>
+
+</script>
 
 <script> 
     function getCookie(name) {
@@ -369,22 +328,8 @@
         return r ? r[1] : undefined;
     }
 
-    function JumpPage(){
-        var page = $("#pager").val();
-        var pagesize = $("#fenye").data("size");
-        var n = /^[1-9]\d*$/;
-        if(!n.test(page)){
-            alert('跳转页数请输入正整数');
-            return false;
-        }
-        window.location.href = window.location.pathname+"?page="+page+"&pagesize="+pagesize;
-    }
-
     $(function () {
-        var pagesize = $("#fenye").data("size");
-        $("#num").val(pagesize);
-
-        var json1 = _alert('.btn.btn-w-m.delete', '.modal-body .ideaId', '您要删除的系统用户ID为');
+        var json1 = _alert('.btn.btn-w-m.delete1', '.modal-body .ideaId', '您要删除的系统用户ID为');
         // json1['_xsrf'] = getCookie("_xsrf");
         json1['_xsrf'] = $("input[name='_xsrf']").val();
         $('.btn.btn-white.deleteUser').click(function () {
@@ -400,32 +345,18 @@
                 }
             });
         });
-
-        var page = $("#fenye").data("dt");
-        page = page.toString();
-        $("a span").each(function(i,item){
-            console.log(typeof $(this).text())
-            if($(this).text()==page){
-                $(this).parent().css("color","#D200D2")
-            }
-        });
-    });
-
-    $('#num').change(function () {
-        var num = $("#num").find("option:selected").text();
-        window.location.href="/admin/sysusers?pagesize="+num;
     });
 
     $("#username").blur(function(){
         var json2 = {};
-        var username = $("#username").val();
+        var username = $("#username").val()
         if(!username){
             alert("用户名称不能为空")
         }
-        json2["username"] = username;
+        json2["username"] = username
         json2['_xsrf'] = $("input[name='_xsrf']").val();
         $.ajax({
-            url: '/ajax/sysuser/find',
+            url: '/admin/sysuser/find',
             type: 'post',
             data: json2,
             success: function (data) {
@@ -534,8 +465,8 @@
     }
 
     $("#passwd3").blur(function(){
-        var pass3 = $("#passwd3").val();
-        var pass2 = $("#passwd2").val();
+        var pass3 = $("#passwd3").val()
+        var pass2 = $("#passwd2").val()
         if (pass3!=pass2){
             alert("两次密码不一致")
         }

@@ -14,8 +14,6 @@ from db import database
 from utils.session import *
 from urllib import urlencode
 from view.logger import *
-
-
 def datediff(beginDate, endDate):
     """计算时间相差天数，输入格式为：str"""
     format = "%Y-%m-%d %H:%M:%S"
@@ -131,7 +129,6 @@ class BaseHandler(tornado.web.RequestHandler):
             print "login failed"
             return False
         self.logging.info(('login checked', sysid, password))
-        print "666"
 
         # now = time.strftime('%Y-%m-%d %H:%M:%S')
         # ip = self.request.remote_ip
@@ -190,16 +187,19 @@ class BaseHandler(tornado.web.RequestHandler):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
             if not self.session.get('sysid'):
-                print self.request
+                print "没有sysid了"
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_admin_login_url()
+                    print "url1===>", url
                     if "?" not in url:
                         if urlparse.urlsplit(url).scheme:
                             # if login url is absolute, make next absolute too
                             next_url = self.request.full_url()
                         else:
                             next_url = self.request.uri
+                        print "next_url===>", next_url
                         url += "?" + urlencode(dict(next=next_url))
+                    print "url2===>", url
                     self.redirect(url)
                     return
                 raise HTTPError(403)

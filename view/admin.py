@@ -28,7 +28,6 @@ class AdminLoginHandler(BaseHandler):
             next = nexts[0]
         else:
             url = ""
-        print "url===>", url
         self.render("backend/login.html", url=next, error=error)
 
     def post(self, *args, **kwargs):
@@ -74,54 +73,39 @@ class AdminHomeHandler(BaseHandler):
 
 
 class AdminSysUsers(BaseHandler):
-    """查询用户"""
+    """用户列表"""
     @BaseHandler.admin_authed
     def get(self):
-        current_page = int(self.get_argument("page", 1))
-        RECORD_OF_ONE_PAGE = self.application.settings["record_of_one_page"]
-        skiprecord = RECORD_OF_ONE_PAGE * (current_page - 1)
+        print self.request.arguments
 
-        user_list = self.application.dbutil.getUsers(skiprecord, RECORD_OF_ONE_PAGE)
-        count = len(user_list)
+        # print self.request.headers
+        # print self.request.headers["Cookie"]
+        # print self.get_secure_cookie("session_id")
+        # print self.get_secure_cookie("_xsrf")
+        print "============================="
+        print self.get_cookie("session_id")
+        print self.get_cookie("verification")
+        print self.get_cookie("_xsrf")
+        print self.get_cookie("username")
+        print "==========------------=========="
 
-        pages = int(round(count / RECORD_OF_ONE_PAGE))
-        if count % RECORD_OF_ONE_PAGE:
+        # 当前第几页,默认第一页
+        page = int(self.get_argument("page", 1))
+        # 每页显示多少条记录
+        pagesize = int(self.get_argument("pagesize", "1"))
+
+        skiprecord = pagesize * (page - 1)
+        user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
+        # 一共有多少条记录
+        count = self.application.dbutil.getAllUsers()
+
+        # 一共有多少页
+        pages = count / pagesize
+        if count % pagesize > 0:
             pages += 1
 
-        list_page = []
-        if current_page > 1:
-            last_page = '<a href="/admin/sysusers?page=%s">上一页</a>' % (current_page - 1)
-        else:
-            last_page = '<a href="/admin/sysusers?page=%s">上一页</a>' % (current_page)
-        list_page.append(last_page)
-
-        for p in range(pages):
-            tmp = '<a href="/admin/sysusers?page=%s">%s</a>' % (p + 1, p + 1)
-            list_page.append(tmp)
-
-        if current_page < pages:
-            next_page = '<a href="/admin/sysusers?page=%s">下一页</a>' % (current_page + 1)
-        else:
-            next_page = '<a href="/admin/sysusers?page=%s">下一页</a>' % (current_page)
-        list_page.append(next_page)
-        str_page = "".join(list_page)
-
-        # myuser = self.get_cookie("username")
         myuser = self.admin
-        self.render("backend/system_user_query.html", myuser=myuser, admin_nav=11, users=user_list,
-                    current_page=current_page, page_count=str_page, count=count)
-
-
-class AdminFindSysUser(BaseHandler):
-    """查找用户是否已经注册过"""
-    @BaseHandler.admin_authed
-    def post(self):
-        username = self.get_argument("username", None)
-        flag = self.application.dbutil.findUser(username)
-        if not flag:
-            self.write(json.dumps({"status": 'error', "msg": u'已经注册过'}))
-        else:
-            self.write(json.dumps({"status": 'ok', "msg": u'没有注册过'}))
+        self.render("backend/system_user_query.html", myuser=myuser, admin_nav=11, users=user_list, page=page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminAddSysUser(BaseHandler):
@@ -132,9 +116,8 @@ class AdminAddSysUser(BaseHandler):
         username = self.get_argument("username", None)
         password = self.get_argument("password", None)
         role = self.get_argument("role", None)
+        brief = self.get_argument("brief", None)
         createdat = time.strftime("%Y-%m-%d %H:%M:%S")
-
-        ip_infp = self.request.remote_ip
 
         info["username"] = username
         info["password"] = password
@@ -144,7 +127,9 @@ class AdminAddSysUser(BaseHandler):
             if not v:
                 return self.write(json.dumps({"status": 'error', "msg": k + "为必选项，请输入信息！"}))
 
-        res = self.application.dbutil.addUser(username, password, role, createdat, ip_infp)
+        print username, password, role, createdat
+        res = self.application.dbutil.addUser(username, password, role, brief, createdat)
+        print "res===>",res
         if not res:
             logger().info("增加用户失败：===>")
             return self.write(json.dumps({"msg": u'增加用户失败', "status": 'error'}))

@@ -28,10 +28,9 @@ class SessionData(dict):
 
 class Session(SessionData):
     def __init__(self, session_manager, request_handler):
-
         self.session_manager = session_manager
         self.request_handler = request_handler
-        print "session_manager===>",session_manager
+        # print "session_manager===>", session_manager.get()
         try:
             current_session = session_manager.get(request_handler)
         except InvalidSessionException:
@@ -40,9 +39,12 @@ class Session(SessionData):
             self[key] = data
         self.session_id = current_session.session_id
         self.hmac_key = current_session.hmac_key
+        # print "++++++++++++++++++"
+        # print self.session_id, self.hmac_key
+        # print "------------------"
 
     def save(self):
-        print "save=",self
+        print "save=", self
         self.session_manager.set(self.request_handler, self)
 
 
@@ -79,7 +81,7 @@ class SessionManager(object):
             session_id = self._generate_id()
             print "session_id2=", session_id
             hmac_key = self._generate_hmac(session_id)
-            print "hmac_key==>",hmac_key
+            print "hmac_key==>", hmac_key
             return SessionData(session_id, hmac_key)
 
         session_id = request_handler.get_secure_cookie("session_id")
@@ -102,8 +104,8 @@ class SessionManager(object):
         return session
 
     def set(self, request_handler, session):
-        print "==================================="
-        print session.session_id,session.hmac_key
+        print "===================================",session
+        print session.session_id, session.hmac_key
         request_handler.set_secure_cookie("session_id", session.session_id)
         request_handler.set_secure_cookie("verification", session.hmac_key)
 
