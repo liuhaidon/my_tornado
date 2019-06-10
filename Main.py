@@ -12,7 +12,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 define("domain", default="", help="run on the given domain", type=str)
 define("ip", default="162.247.101.143", help="run on the given port", type=str)
-define("port", default=8080, help="run on the given port", type=int)
+define("port", default=8082, help="run on the given port", type=int)
 define("develop", default=True, help="develop environment", type=bool)
 
 
@@ -35,7 +35,7 @@ class Application(tornado.web.Application):
         self.dbutil = DBUtil()
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
-            # xsrf_cookies=True,
+            xsrf_cookies=True,
             login_url='/login',
             admin_login_url="/admin/login",
             template_path=os.path.join(os.path.dirname(__file__), "templates"),

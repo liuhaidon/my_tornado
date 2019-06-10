@@ -39,9 +39,7 @@ class Session(SessionData):
             self[key] = data
         self.session_id = current_session.session_id
         self.hmac_key = current_session.hmac_key
-        # print "++++++++++++++++++"
         # print self.session_id, self.hmac_key
-        # print "------------------"
 
     def save(self):
         print "save=", self
@@ -79,8 +77,8 @@ class SessionManager(object):
     def get(self, request_handler=None):
         if (request_handler == None):
             session_id = self._generate_id()
-            print "session_id2=", session_id
             hmac_key = self._generate_hmac(session_id)
+            print "session_id2=", session_id
             print "hmac_key==>", hmac_key
             return SessionData(session_id, hmac_key)
 
@@ -104,16 +102,15 @@ class SessionManager(object):
         return session
 
     def set(self, request_handler, session):
-        print "===================================",session
         print session.session_id, session.hmac_key
         request_handler.set_secure_cookie("session_id", session.session_id)
         request_handler.set_secure_cookie("verification", session.hmac_key)
 
-        # print session.items()
+        print session.items()
         session_data = ujson.dumps(dict(session.items()))
 
         self.redis.setex(session.session_id, self.session_timeout, session_data)
-        # print "sessionmgr set=",session.session_id,session_data
+        print "sessionmgr set=",session.session_id,session_data
 
     def _generate_id(self):
         return hashlib.sha256(self.secret + str(uuid.uuid4())).hexdigest()
