@@ -96,7 +96,7 @@
                                                <option value='100'>100</option>
                                             </select>
                                           
-                                            <h5>登陆记录列表
+                                            <h5>权限管理列表
                                                 <small>共计：{{ count }}</small>
                                                 <div style="display:inline;" class="fenye" data-dt="{{page}}" id="fenye" data-size="{{pagesize}}">
                                                 <a href="/admin/permissions?page={{ page-1 if page>1 else 1 }}&pagesize={{pagesize}}"><span>上一页</span></a>
@@ -253,8 +253,8 @@
                 type: 'post',
                 data: json1,
                 success: function (data) {
-                    console.log(data);
-                    location.reload();
+                    // location.reload();
+                    window.location.href="/admin/permissions";
                 },
                 error: function () {
                      alert('error');
@@ -301,7 +301,8 @@
                 if (json.status != "ok") {
                     return false;
                 }
-                location.reload();
+                // location.reload();
+                window.location.href="/admin/permissions";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.status);

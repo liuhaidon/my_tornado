@@ -211,8 +211,8 @@
                                                         <option value="user">普通用户</option>
                                                     </select>
 
-                                                    <label>简介:</label>
-                                                    <textarea class="form-control" type="text" id="brief" name="brief" cols=10 rows=6 placeholder="不多于256个字">用户简介</textarea>
+                                                    <!--<label>简介:</label>-->
+                                                    <!--<textarea class="form-control" type="text" id="brief" name="brief" cols=10 rows=6 placeholder="不多于256个字">用户简介</textarea>-->
 
                                                     <!--<label>注册时间:</label>
                                                     <input class="form-control"  type="text" id="atime" name="atime" placeholder="当前时间"/>-->
@@ -393,8 +393,8 @@
                 type: 'post',
                 data: json1,
                 success: function (data) {
-                    console.log(data);
-                    location.reload();
+                    // location.reload();
+                    window.location.href="/admin/sysusers";
                 },
                 error: function () {
                 }
@@ -447,7 +447,7 @@
             'username': $('#username').val(),
             'password': $('#pwd').val(),
             'role': $('#role').val(),
-            'brief': $('#brief').val(),
+            // 'brief': $('#brief').val(),
             // 'createdat': $('#atime').val(),
         };
         if (xjson['username'] == '') {
@@ -468,7 +468,8 @@
                 if (json.status != "ok") {
                     return false;
                 }
-                location.reload();
+                // location.reload();
+                window.location.href="/admin/sysusers";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.status);

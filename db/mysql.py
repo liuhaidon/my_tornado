@@ -90,12 +90,12 @@ class DBUtil:
             flag = False
         return flag
 
-    def addUser(self, username, password, role, brief, createdat):
+    def addUser(self, username, password, role, createdat):
         flag = True
         password = pbkdf2_sha512.encrypt(password)
         try:
-            sql_str = "INSERT INTO tb_user(userid,username,password,role,brief,createdat) VALUES (null, '%s', '%s', '%s', '%s',  '%s')" % (
-            username, password, role, brief, createdat)
+            sql_str = "INSERT INTO tb_user(userid,username,password,role,createdat) VALUES (null, '%s', '%s', '%s', '%s')" % (
+            username, password, role, createdat)
             self.cursor.execute(sql_str)
             self.connection.commit()
         except:

@@ -52,6 +52,11 @@ class AdminLoginHandler(BaseHandler):
             self.set_cookie("username", name)
             self.redirect(url)
 
+    def check_xsrf_cookie(self):
+        # print "先验证_xsrf,再执行post方法"
+        _xsrf = self.get_argument("_xsrf", None)
+        print "_xsrf===>", _xsrf
+
 
 class AdminLogoutHandler(BaseHandler):
     """注销"""
@@ -103,7 +108,6 @@ class AdminAddSysUser(BaseHandler):
         username = self.get_argument("username", None)
         password = self.get_argument("password", None)
         role = self.get_argument("role", None)
-        brief = self.get_argument("brief", None)
         createdat = time.strftime("%Y-%m-%d %H:%M:%S")
 
         info["username"] = username
@@ -114,9 +118,7 @@ class AdminAddSysUser(BaseHandler):
             if not v:
                 return self.write(json.dumps({"status": 'error', "msg": k + "为必选项，请输入信息！"}))
 
-        print username, password, role, createdat
-        res = self.application.dbutil.addUser(username, password, role, brief, createdat)
-        print "res===>",res
+        res = self.application.dbutil.addUser(username, password, role, createdat)
         if not res:
             logger().info("增加用户失败：===>")
             return self.write(json.dumps({"msg": u'增加用户失败', "status": 'error'}))
