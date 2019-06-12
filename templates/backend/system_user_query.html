@@ -114,7 +114,7 @@
                                                <option value='10'>10</option>
                                             </select>
 
-                                            <h5>登陆记录列表
+                                            <h5>系统用户列表
                                                 <small>共计：{{ count }}</small>
                                                 <div style="display:inline;" class="fenye" data-dt="{{page}}" id="fenye" data-size="{{pagesize}}">
                                                 <a href="/admin/sysusers?page={{ page-1 if page>1 else 1 }}&pagesize={{pagesize}}"><span>上一页</span></a>
@@ -608,8 +608,8 @@
         });
     });
 
-    function test(obj,userid, username){
-        alert("准备绑定");
+    function test(obj, userid, username){
+        // alert("准备绑定");
         var tds = $(obj).parent().parent().find('td');
         $("small.font-bold").each(function () {
           $(this).html(tds.eq(2).text());

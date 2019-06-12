@@ -71,7 +71,7 @@ class DBUtil:
             info['userid'] = b[0]
             info['username'] = b[1]
             info['role'] = b[3]
-            info['createdat'] = b[5]
+            info['createdat'] = b[4]
             user_list.append(info)
         return user_list
 

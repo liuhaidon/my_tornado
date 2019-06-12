@@ -30,7 +30,13 @@ class Application(tornado.web.Application):
             (r"/admin/sysuser/([0-9a-z]{24})", AdminModifySysUser),
             (r"/admin/system/repass", AdminRepassSystem),
 
-            (r"/ajax/sysuser/find", AjaxFindSysUser)
+            (r"/admin/permissions", AdminPermissions),
+            (r"/admin/permission/add", AdminAddPermission),
+            (r"/admin/permission/delete", AdminDeletePermission),
+
+            (r"/ajax/sysuser/find", AjaxFindSysUser),
+            (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
+            (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
         ]
         self.dbutil = DBUtil()
         settings = dict(

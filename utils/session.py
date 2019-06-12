@@ -107,7 +107,7 @@ class SessionManager(object):
         request_handler.set_secure_cookie("session_id", session.session_id)
         request_handler.set_secure_cookie("verification", session.hmac_key)
 
-        print session.items()
+        # print session.items()
         session_data = ujson.dumps(dict(session.items()))
 
         self.redis.setex(session.session_id, self.session_timeout, session_data)

@@ -76,19 +76,6 @@ class AdminSysUsers(BaseHandler):
     """用户列表"""
     @BaseHandler.admin_authed
     def get(self):
-        print self.request.arguments
-
-        # print self.request.headers
-        # print self.request.headers["Cookie"]
-        # print self.get_secure_cookie("session_id")
-        # print self.get_secure_cookie("_xsrf")
-        print "============================="
-        print self.get_cookie("session_id")
-        print self.get_cookie("verification")
-        print self.get_cookie("_xsrf")
-        print self.get_cookie("username")
-        print "==========------------=========="
-
         # 当前第几页,默认第一页
         page = int(self.get_argument("page", 1))
         # 每页显示多少条记录
@@ -96,9 +83,9 @@ class AdminSysUsers(BaseHandler):
 
         skiprecord = pagesize * (page - 1)
         user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
+
         # 一共有多少条记录
         count = self.application.dbutil.getAllUsers()
-
         # 一共有多少页
         pages = count / pagesize
         if count % pagesize > 0:
@@ -199,6 +186,56 @@ class AdminRepassSystem(BaseHandler):
         self.write(json.dumps({"status": 'ok', "msg": u'修改密码成功'}))
 
 
+class AdminPermissions(BaseHandler):
+    """权限列表"""
+    @BaseHandler.admin_authed
+    def get(self):
+        page = int(self.get_argument("page", 1))
+        pagesize = int(self.get_argument("pagesize", "10"))
+
+        skiprecord = pagesize * (page - 1)
+        rightlist = self.application.dbutil.getPermissions(skiprecord, pagesize)
+
+        count = self.application.dbutil.getAllPermissions()
+        pages = count / pagesize
+        if count % pagesize > 0:
+            pages += 1
+
+        myuser = self.admin
+        self.render("backend/right_query.html", myuser=myuser, admin_nav=12, right_list=rightlist, page=page,
+                    pagesize=pagesize, pages=pages, count=count)
+
+
+class AdminAddPermission(BaseHandler):
+    """权限增加"""
+    @BaseHandler.admin_authed
+    def post(self):
+        ip_info = self.request.remote_ip
+        createdat = time.strftime("%Y-%m-%d %H:%M:%S")
+
+        name = self.get_argument("name", None)
+        title = self.get_argument("title", None)
+
+        res = self.application.dbutil.addPermission(name, title, ip_info, createdat)
+        print "res===>", res
+        if not res:
+            return self.write(json.dumps({"msg": u'增加权限失败', "status": 'error'}))
+        return self.write(json.dumps({"status": 'ok', "msg": u"增加权限成功！"}))
+
+
+class AdminDeletePermission(BaseHandler):
+    """删除权限"""
+    @BaseHandler.admin_authed
+    def post(self):
+        datas = self.request.arguments
+        del datas['_xsrf']
+        ip_info = self.request.remote_ip
+        for key, value in datas.items():
+            rid = int(value[0])
+            flag = self.application.dbutil.delPermission(rid, ip_info)
+        if flag:
+            self.write(json.dumps({"status": 'ok', "msg": u'删除权限成功'}))
+        self.write(json.dumps({"status": 'ok', "msg": u'删除权限失败'}))
 
 
 
