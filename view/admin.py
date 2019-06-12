@@ -12,8 +12,8 @@ import time
 class AdminLoginHandler(BaseHandler):
     """登录"""
     def get(self):
-        print self.request.arguments
-        print self.request.headers
+        # print self.request.arguments
+        # print self.request.headers
         nexts = self.request.arguments.get("next")
         referer_url = '/admin/home'
         if 'Referer' in self.request.headers:
@@ -31,7 +31,7 @@ class AdminLoginHandler(BaseHandler):
         self.render("backend/login.html", url=next, error=error)
 
     def post(self, *args, **kwargs):
-        print self.request.arguments
+        # print self.request.arguments
         self.logging.info(('LoginHandler argument %s') % (self.request.arguments))
         url, pwd, name = (value[0] for key, value in self.request.arguments.items() if key != '_xsrf'
                           and key != 'checkbox')

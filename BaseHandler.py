@@ -160,7 +160,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def authenticated(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
-            print self.session
+            print "session值1===>",self.session
             if not self.session.get('loginid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_login_url()
@@ -186,6 +186,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def admin_authed(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
+            print "session值===>", self.session
             if not self.session.get('sysid'):
                 print "没有sysid了"
                 if self.request.method in ("GET", "HEAD"):
