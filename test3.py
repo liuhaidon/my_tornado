@@ -47,4 +47,4 @@ key = "ZGFiMjlk=ODY6NTliMz"
 token = generate_token(key, 3600)
 print token
 
-print(certify_token(key, token))
+# print(certify_token(key, token))

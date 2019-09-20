@@ -72,17 +72,3 @@ if __name__ == "__main__":
     app.listen(options.port)
     print("visit at", "http://127.0.0.1:%s" % options.port)
     tornado.ioloop.IOLoop.instance().start()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
