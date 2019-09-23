@@ -74,6 +74,7 @@ class AdminHomeHandler(BaseHandler):
     def get(self):
         # myuser = self.get_cookie("username")
         myuser = self.admin
+        print "myuser===>",myuser
         self.render("backend/home.html", myuser=myuser, admin_nav=0)
 
 

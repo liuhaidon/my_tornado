@@ -126,8 +126,8 @@ class BaseHandler(tornado.web.RequestHandler):
     def begin_backend_session(self, sysid, password):
         self.logging.info(('start login', sysid, password))
         logger().info(('start login', sysid, password))
-        # result = self.application.dbutil.isloginsuccess(sysid, password)
         if not self.application.backend_auth.login(sysid, password):
+        # result = self.application.dbutil.isloginsuccess(sysid, password)
         # if not result:
             print "login failed"
             return False
@@ -149,15 +149,15 @@ class BaseHandler(tornado.web.RequestHandler):
         user['login'] = logininfos[-10:]
 
         # 查找该用户的所有权限
-        permission = self.application.dbutil.getFindPermission(sysid)
-        arr = []
-        for p in permission:
-            arr.append(p["title"])
+        # permission = self.application.dbutil.getFindPermission(sysid)
+        # arr = []
+        # for p in permission:
+        #     arr.append(p["title"])
 
         # self.session['data'] = result
         self.session['data'] = user
         self.session["sysid"] = sysid
-        self.session['permission'] = arr
+        # self.session['permission'] = arr
         self.session.save()
         return True
 
