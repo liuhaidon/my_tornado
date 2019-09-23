@@ -1,11 +1,11 @@
 # -*- coding:utf-8 -*-
 import tornado.ioloop
 import tornado.web
-import os
-
 from tornado.options import define, options
+
 from view.admin import *
 from view.ajax import *
+from view.front import *
 from db.mysql import DBUtil
 from utils.session import *
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -15,11 +15,22 @@ define("ip", default="162.247.101.143", help="run on the given port", type=str)
 define("port", default=8082, help="run on the given port", type=int)
 define("develop", default=True, help="develop environment", type=bool)
 
+'''
+    author: pond.chi
+    时间: 2019/09/23
+    服务端的架构体系:
+        db  : adspush (mongodb)
+        session : 基于mongodb
+'''
 
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/", AdminLoginHandler),
+            (r"/", index),
+            (r"/index", index),
+            (r"/login", user_login),
+            (r"/logout", user_logout),
+
             (r"/admin/login", AdminLoginHandler),
             (r"/admin/logout", AdminLogoutHandler),
             (r"/admin/home", AdminHomeHandler),

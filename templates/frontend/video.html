@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block page_title %}视频详情|广告推送平台{% end %}
+{% block content %}
+
+{% set playlists = myuser.get("playlist",[]) %}
+{% set videos = playlists[0] if len(playlists)>0 else [] %}
+
+<link href="{{ static_url('css/video.css') }}" rel="stylesheet">
+<script type="text/javascript" src="{{ static_url('js/websocket.js') }}"></script>
+
+<div class="block-3">
+    <div class="block-3-left">
+        <video poster="" controls='controls' class="movie" x5-playsinline="" playsinline="" webkit-playsinline="">
+            <source src="" type='video/mp4' id="video">
+        </video>
+        <div class="bottom">
+            <div class="wine-text">
+                <div class="title2"></div>
+                <div class="line"></div>
+                <div class="time"></div>
+                <div class="line"></div>
+                <div class="details flex flex-v flex-align-center ">
+                    <img src="/static/images/spxq.png"/>
+                    <text>视频详情</text>
+                </div>
+                <div class="line"></div>
+                <div class="list flex flex-v flex-align-center ">
+                    <img src="/static/images/lsjmd.png"/>
+                    <text>历史播放单</text>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="details_wb">
+
+            </div>
+            <div class="historical_list" style="display:none;">
+            <ul class="historical_ul">
+            <li>7.20</li>
+            <li>A.播放单</li>
+            <li>B.播放单</li>
+            <li>C.播放单</li>
+            </ul>
+            <ul class="historical_ul">
+            <li>7.20</li>
+            <li>A.播放单</li>
+            <li>B.播放单</li>
+            <li>C.播放单</li>
+            </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="block-3-right">
+        <div class="menu">
+            <a href="/logout"><img class="menu_img" src="/static/images/bq.png"></a>
+            <div class="new flex flex-pack-center flex-align-center">
+                 <img src="/static/images/new.png"><span class="new_wb"></span>
+            </div>
+            <div class="jmd_list">
+                <div class="jmd_list_on playlist_on">当前播放单</div>
+                <div class="jmd_list_default">新发播放单</div>
+            </div>
+        </div>
+
+        <div id="menu_playing">
+            {% for k,x in enumerate(videos) %}
+            <div class="menu_list" onclick="playvideo(this,{{k}});" data-dt="{{ json_encode(x) }}">
+                <img class="menu_list_img" src="/static/media/video_img/{{x.get('poster')}}" />
+                <div class="right">
+                    <div class="title">{{x.get("title")}}</div>
+                    <div class="author">{{x.get("userid")}}</div>
+                    <div class="reading_time">
+                        <div class="reading">
+                            <img src="/static/images/视频_03.png" />
+                            <div class="reading_wb">{{x.get("visit")}}</div>
+                        </div>
+                        <div class="bofang_wb">00:00播放</div>
+                    </div>
+                </div>
+            </div>
+            {% end %}
+        </div>
+
+        <div id="menu_coming">
+
+        </div>
+	</div>
+</div>
+<script>
+    var vid = document.getElementById("v所要播放视频id");
+    vid.onplay = function() {
+        $.ajax({
+                type:"post",
+                url:"/admin/video/visit",
+                data:{videoid:'所要播放视频id',ipaddress:'用户ip地址'},
+                success:function(data){
+                },
+                error:function(){
+                    alert('erroe');
+                }
+            });
+
+    };
+</script>
+{% end %}
