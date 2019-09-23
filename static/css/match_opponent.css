@@ -1,0 +1,81 @@
+.rival1 {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    margin-left: 4%;
+}
+
+.rival1_txbg {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 152px;
+    height: 175px;
+    margin-left: 4%;
+    background: url(../imgs/sy_dbg.png);
+    background-size: 100% 100%;
+    /*width: 154px;
+    height:154px;*/
+}
+
+.tx_icon {
+    /*position: absolute;*/
+    width: 63px;
+    height: 63px;
+    border-radius: 50%;
+    border: 2px solid #5df5ff;
+}
+
+.nick-name {
+    font-size: 15px;
+    margin-top: 5px;
+    color: #5df5ff;
+}
+
+.vs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -160px;
+    width: 100%;
+    height: 90%;
+}
+
+.rival2 {
+    display: flex;
+    align-items: center;
+    float: right;
+    margin-right: 20px;
+    /*margin-left: 54%;*/
+    margin-top: -170px;
+}
+
+.rival2_txbg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 152px;
+    height: 175px;
+    background: url(../imgs/sy_dbg.png);
+    background-size: 100% 100%;
+}
+
+.bounceInLeft {
+    /*animation-delay: 0s;*/
+    -webkit-animation-delay: 0s;
+    -moz-animation-delay: 0s;
+    -o-animation-delay: 0s;
+    animation-delay: 0s;
+    animation-duration: 1s;
+}
+
+.bounceInRight {
+     -webkit-animation-delay: 0.5s;
+    -moz-animation-delay: 0.5s;
+    -o-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+   animation-duration: 1s;
+}

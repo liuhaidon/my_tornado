@@ -1,0 +1,72 @@
+.item {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  font-size: 15px;
+  width: 84%;
+  margin:15px auto;
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0px 0px 16px #01ffff inset;
+}
+.title{
+  display: flex;
+  align-items: center;
+}
+.zbz{
+  width:46px;
+  height: 18px;
+  background: #00c36a;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #fff;
+  text-align: center;
+  line-height: 18px;
+}
+.yjs{
+  width:46px;
+  height: 18px;
+  background: #b1b1b1;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #fff;
+  text-align: center;
+  line-height: 18px;
+}
+.wks{
+  width:46px;
+  height: 18px;
+  background: #009aea;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #fff;
+  text-align: center;
+  line-height: 18px;
+}
+.title text{
+  font-size: 15px;
+  color: #58dee7;
+  margin-left: 10px;
+}
+.cnenter{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+ 
+}
+.time{
+  font-size: 12px;
+  color: #50cdd5;
+   margin-top: 11px;
+}
+.arrow{
+  width: 11px;
+  height: 20px;
+  float: right;
+  margin-top: -18px;
+}
+.bonus{
+  font-size: 15px;
+  color: #58dee7;
+  margin-top: 8px;
+}

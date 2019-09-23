@@ -1,0 +1,46 @@
+.title {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 36rpx;
+	color: #43a8af;
+	font-weight: bold;
+	width: 80%;
+	margin: 15px auto;
+	margin-top: 20px;
+}
+
+.item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 15px;
+	width: 84%;
+	margin: 15px auto;
+	border-radius: 6px;
+	padding: 15px;
+	box-shadow: 0px 0px 16px #01ffff inset;
+}
+
+.grade_name {
+	font-size: 18px;
+	color: #5df5ff;
+}
+
+.integral {
+	font-size: 18px;
+	color: #5df5ff;
+	align-items: center;
+	margin-left: -25px;
+}
+
+.item img {
+	width: 42px;
+	height: 42px;
+	border-radius: 50%;
+}
+
+.rollBox {
+    overflow-y: auto;
+    height: 33em;
+}

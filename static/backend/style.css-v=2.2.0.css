@@ -1,5 +1,3 @@
-/*@import url("../../../../fonts.useso.com/css-family=Open+Sans-300,400,600,700&lang=en.css") !*tpa=http://fonts.useso.com/css?family=Open+Sans:300,400,600,700&lang=en*!;*/
-
 /*
  *
  *   H+ - Admin Theme
@@ -198,7 +196,7 @@ body.body-small .navbar-top-links li:last-child {
 
 .nav-header {
     padding: 33px 25px;
-    /*background: url("patterns/header-profile.png") !*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile.png*! no-repeat;*/
+    background: url("patterns/header-profile.png") /*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile.png*/ no-repeat;
 }
 
 .pace-done .nav-header {
@@ -1819,7 +1817,6 @@ table.dataTable thead .sorting_desc_disabled {
 }
 
 table.dataTable thead .sorting_asc:after {
-    content: "\f0de";
     float: right;
     font-family: fontawesome;
 }
@@ -1831,8 +1828,6 @@ table.dataTable thead .sorting_desc:after {
 }
 
 table.dataTable thead .sorting:after {
-    /*height: 600px;*/
-    /*overflow-x: hidden;*/
     content: "\f0dc";
     float: right;
     font-family: fontawesome;
@@ -1841,8 +1836,6 @@ table.dataTable thead .sorting:after {
 
 .dataTables_wrapper {
     padding-bottom: 30px;
-    height: 600px;
-    overflow-x: hidden;
 }
 
 /* CIRCLE */
@@ -2104,7 +2097,7 @@ table.dataTable thead .sorting:after {
     display: block;
     padding: 6px 12px;
     transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-    width: 95%;
+    width: 100%;
     font-size: 14px;
 }
 
@@ -3460,7 +3453,7 @@ body.full-height-layout #page-wrapper {
 }
 
 body.boxed-layout {
-    /*background: url("patterns/shattered.png") !*tpa=http://www.zi-han.net/theme/hplus/css/patterns/shattered.png*!;*/
+    background: url("patterns/shattered.png") /*tpa=http://www.zi-han.net/theme/hplus/css/patterns/shattered.png*/;
 }
 
 body.boxed-layout #wrapper {
@@ -3562,7 +3555,6 @@ video {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
     outline: 0 none;
     position: relative;
-    z-index: 99;
 }
 
 .modal-dialog {
@@ -3605,7 +3597,7 @@ video {
 /* WRAPPERS */
 #wrapper {
     width: 100%;
-    /*overflow-x: hidden;*/
+    overflow-x: hidden;
 }
 
 .wrapper {
@@ -3614,14 +3606,20 @@ video {
 
 .wrapper-content {
     padding: 20px 10px 40px;
-    /*height: 1000px;*/
-    /*overflow-y: hidden;*/
 }
 
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;
     position: relative !important;
+}
+
+@media (min-width: 768px) {
+    #page-wrapper {
+        position: inherit;
+        margin: 0 0 0 240px;
+        min-height: 1000px;
+    }
 }
 
 .title-action {
@@ -7095,28 +7093,28 @@ body.rtls.top-navigation .footer.fixed {
     background: #199d82;
 }
 
-/*.blue-skin {*/
-    /*font-weight: 600;*/
-    /*background: url("patterns/header-profile-skin-1.png") !*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-1.png*! repeat scroll 0 0;*/
-/*}*/
+.blue-skin {
+    font-weight: 600;
+    background: url("patterns/header-profile-skin-1.png") /*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-1.png*/ repeat scroll 0 0;
+}
 
 .blue-skin:hover {
     background: #0d8ddb;
 }
 
-/*.yellow-skin {*/
-    /*font-weight: 600;*/
-    /*background: url("patterns/header-profile-skin-3.png") !*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-3.png*! repeat scroll 0 100%;*/
-/*}*/
+.yellow-skin {
+    font-weight: 600;
+    background: url("patterns/header-profile-skin-3.png") /*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-3.png*/ repeat scroll 0 100%;
+}
 
 .yellow-skin:hover {
     background: #ce8735;
 }
 
-/*.ultra-skin {*/
-    /*font-weight: 600;*/
-    /*background: url("patterns/header-profile-skin-2.png") !*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-2.png*! repeat scroll 0 0;*/
-/*}*/
+.ultra-skin {
+    font-weight: 600;
+    background: url("patterns/header-profile-skin-2.png") /*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-2.png*/ repeat scroll 0 0;
+}
 
 .ultra-skin:hover {
     background: #1a2d40;
@@ -7146,7 +7144,7 @@ body.rtls.top-navigation .footer.fixed {
 
 .skin-1 .nav-header {
     background: #0e9aef;
-    /*background: url("patterns/header-profile-skin-1.png") !*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-1.png*!;*/
+    background: url("patterns/header-profile-skin-1.png") /*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-1.png*/;
 }
 
 .skin-1.mini-navbar .nav-second-level {
@@ -7278,7 +7276,7 @@ body.skin-2 {
 
 .skin-2 .nav-header {
     background: #23c6c8;
-    /*background: url("patterns/header-profile-skin-2.png") !*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-2.png*!;*/
+    background: url("patterns/header-profile-skin-2.png") /*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-2.png*/;
 }
 
 .skin-2.mini-navbar .nav-second-level {
@@ -7387,9 +7385,9 @@ body.skin-2 #wrapper {
 
 .skin-2 #page-wrapper {
     background: #f6f6f6;
-    /*background: -webkit-radial-gradient(center, ellipse cover, #f6f6f6 20%, #d5d5d5 100%);*/
-    /*background: -o-radial-gradient(center, ellipse cover, #f6f6f6 20%, #d5d5d5 100%);*/
-    /*background: -ms-radial-gradient(center, ellipse cover, #f6f6f6 20%, #d5d5d5 100%);*/
+    background: -webkit-radial-gradient(center, ellipse cover, #f6f6f6 20%, #d5d5d5 100%);
+    background: -o-radial-gradient(center, ellipse cover, #f6f6f6 20%, #d5d5d5 100%);
+    background: -ms-radial-gradient(center, ellipse cover, #f6f6f6 20%, #d5d5d5 100%);
     background: radial-gradient(ellipse at center, #f6f6f6 20%, #d5d5d5 100%);
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#f6f6f6, endColorstr=#d5d5d5)";
 }
@@ -7468,7 +7466,7 @@ body.boxed-layout.skin-3 #wrapper {
 
 .skin-3 .nav-header {
     background: #ecba52;
-    /*background: url("patterns/header-profile-skin-3.png") !*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-3.png*!;*/
+    background: url("patterns/header-profile-skin-3.png") /*tpa=http://www.zi-han.net/theme/hplus/css/patterns/header-profile-skin-3.png*/;
 }
 
 .skin-3.mini-navbar .nav-second-level {
@@ -7580,7 +7578,7 @@ body.skin-3 {
     #page-wrapper {
         position: inherit;
         margin: 0 0 0 220px;
-        min-height: 880px;
+        min-height: 1200px;
     }
 
     .navbar-static-side {
@@ -7596,12 +7594,12 @@ body.skin-3 {
     }
 }
 
-/*@media (max-width: 768px) {*/
-    /*#page-wrapper {*/
-        /*position: inherit;*/
-        /*margin: 0 0 0 0px;*/
-        /*min-height: 1000px;*/
-    /*}*/
+@media (max-width: 768px) {
+    #page-wrapper {
+        position: inherit;
+        margin: 0 0 0 0px;
+        min-height: 1000px;
+    }
 
     .body-small .navbar-static-side {
         display: none;

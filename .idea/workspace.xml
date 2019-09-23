@@ -2,41 +2,212 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="52a05d4a-d245-47b5-994b-fdc03602f2b4" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/frontend/403.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/404.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/500.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/account/forget_pwd.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/account/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/account/register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/base.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/base2.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/footer.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/header.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/soc.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/account_nav.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/activity_center.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/course_center.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/follow_center.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/information_center.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/my_account.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/my_consume.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/my_fund.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/my_logininfo.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/my_message.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/my_notice.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/my_resume.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/my_settings.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/project_center.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/user_center.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/user_profile.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/user/video_center.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/frontend/video.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/view/front.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/mongoSettings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/develop.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/config/production.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy/ads_nginx.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy/ads_supervisor.conf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/session/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/session/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/session/session.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BaseHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/BaseHandler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Main.py" beforeDir="false" afterPath="$PROJECT_DIR$/Main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/log/log.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/css/myadmin.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/css/myadmin.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/css/style_admin.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/css/style_admin.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/css/style_log.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/css/style_log.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/css/userpanel.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/css/userpanel.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/css/validation.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/css/validation.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/js/jquery-1.8.3.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/js/jquery-1.8.3.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/js/jquery.validate.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/js/jquery.validate.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/js/menu.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/js/menu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/admin/js/my.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/admin/js/my.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/admin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/animate.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/animate.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/bootstrap.min.css-v=3.4.0.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/bootstrap.min.css-v=3.4.0.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/bootstrap.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/bootstrap.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/curvedLines.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/curvedLines.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/dataTables.bootstrap.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/dataTables.bootstrap.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/datatables.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/font-awesome/css/font-awesome.css-v=4.3.0.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/font-awesome/css/font-awesome.css-v=4.3.0.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/font-awesome/fonts/fontawesome-webfont.svg-v=4.3.0" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/font-awesome/fonts/fontawesome-webfont.svg-v=4.3.0" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/hplus.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/hplus.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery-2.1.1.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery-2.1.1.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery-jvectormap-1.2.2.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery-jvectormap-1.2.2.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery-ui.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery-ui.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.dataTables.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.easypiechart.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.easypiechart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.flot.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.flot.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.flot.pie.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.flot.pie.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.flot.resize.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.flot.resize.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.flot.spline.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.flot.spline.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.flot.symbol.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.flot.symbol.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.flot.tooltip.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.flot.tooltip.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.metisMenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.metisMenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.peity.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.peity.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.slimscroll.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.slimscroll.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/jquery.sparkline.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/jquery.sparkline.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/pace.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/pace.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/peity-demo.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/peity-demo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/sparkline-demo.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/sparkline-demo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/backend/style.css-v=2.2.0.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/backend/style.css-v=2.2.0.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/video.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/bq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/dblogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/login_xbg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/lsjmd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/lsjmd_dj.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/mima.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/new.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/next.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/pause.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/quanping.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/repeat.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/sort_desc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/spxq.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/spxq_mr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/volume.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/xlogo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/yx.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/zhanghao.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/登录背景.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/视频_01.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/视频_02.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/images/视频_03.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/ShortSelling.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/activity_title.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/baoming.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/beijing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/beijingb.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/bisai_beijing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/chuji.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/classic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/competitive.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/competitiveimg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/dajiangsai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/danrensai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/day_five.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/day_four.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/day_one.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/day_seven.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/day_six.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/day_three.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/day_two.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/duikangsai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/elite.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/failure.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/gaoji.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/gold_not.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/guanbi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/huafeisai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/hunchuji.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/hungaoji.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/hunzhaosai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/hunzhongji.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/jianglia.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/jianglib.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/jianglic.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/jinbiban.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/jinbiban_b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/k.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/lianxu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/loading_beijing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/master.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/melee_background.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/nohuodong.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/norenwu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/novice.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/noxiaoxi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/professional.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/renwu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shore_jinibi_a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shore_jinibi_b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shore_jinibi_c.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shore_jinibi_d.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shore_jinibi_e.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/shore_jinibi_f.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/standard.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/supertiaozhan.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/tiaozhanjinbi.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/tiaozhansai.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/img/zhongji.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/imgs/timg.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/d3.v3.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/d3.v3.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/jquery.nicescroll.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/pingpp_one.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/pingpp_one.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/spark-md5.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/spark-md5.min.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/websocket.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/xlsx.core.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/xlsx.core.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/xlsx.full.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/xlsx.full.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/xlsx.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/xlsx.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/.bower.json" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/.bower.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/examples/custom.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/examples/custom.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/examples/dump.php" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/examples/dump.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/examples/jquery/all_runtimes.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/examples/jquery/all_runtimes.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/examples/jquery/jquery_ui_widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/examples/jquery/jquery_ui_widget.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/examples/jquery/queue_widget.html" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/examples/jquery/queue_widget.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/examples/jquery/s3.php" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/examples/jquery/s3.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/examples/upload.php" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/examples/upload.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/ar.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/ar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/bs.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/bs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/ca.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/ca.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/cs.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/cs.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/cy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/da.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/da.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/de.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/de.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/el.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/el.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/en.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/en.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/es.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/es.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/et.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/et.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/fa.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/fa.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/fi.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/fi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/fr.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/fr.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/he.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/he.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/hr.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/hr.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/hu.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/hu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/hy.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/hy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/id.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/id.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/it.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/it.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/ja.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/ja.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/ka.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/ka.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/kk.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/kk.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/ko.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/ko.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/lt.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/lt.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/lv.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/lv.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/nl.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/nl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/pl.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/pl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/pt_BR.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/pt_BR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/ro.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/ro.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/ru.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/ru.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/sk.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/sk.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/sr.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/sr.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/sv.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/sv.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/th_TH.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/th_TH.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/tr.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/tr.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/uk_UA.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/uk_UA.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/zh_CN.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/zh_CN.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/i18n/zh_TW.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/i18n/zh_TW.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/jquery.plupload.queue/css/jquery.plupload.queue.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/jquery.plupload.queue/jquery.plupload.queue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/moxie.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/moxie.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/moxie.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/moxie.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/plupload.dev.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/plupload.dev.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/plupload.full.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/plupload.full.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/js/plupload.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/js/plupload.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/license.txt" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/license.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/plupload/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/static/plupload/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backend/admin_nav.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backend/admin_nav.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/backend/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/backend/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/view/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/view/admin.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -47,7 +218,7 @@
   </component>
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/study_tornado$mmm.coverage" NAME="mmm Coverage Results" MODIFIED="1564449664847" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/study_tornado$Main.coverage" NAME="Main Coverage Results" MODIFIED="1569206459873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/study_tornado$Main.coverage" NAME="Main Coverage Results" MODIFIED="1569226667654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/study_tornado$test9.coverage" NAME="test9 Coverage Results" MODIFIED="1563612076982" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/study_tornado$test5.coverage" NAME="test5 Coverage Results" MODIFIED="1562226216306" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/study_tornado$test7.coverage" NAME="test7 Coverage Results" MODIFIED="1563168650988" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -61,11 +232,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="409">
-              <caret line="84" column="44" lean-forward="true" selection-start-line="84" selection-start-column="44" selection-end-line="84" selection-end-column="44" />
+            <state relative-caret-position="288">
+              <caret line="38" column="37" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
               <folding>
                 <element signature="e#23#44#0" expanded="true" />
               </folding>
@@ -73,35 +244,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="front.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/view/front.py">
+      <file leaf-file-name="admin_nav.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/backend/admin_nav.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
-              <folding>
-                <element signature="e#45#80#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BaseHandler.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/BaseHandler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="523">
-              <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
-              <folding>
-                <element signature="e#46#55#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="login.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/frontend/login.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1584">
-              <caret line="44" column="7" selection-start-line="44" selection-start-column="7" selection-end-line="44" selection-end-column="7" />
+            <state relative-caret-position="144">
+              <caret line="4" column="54" selection-start-line="4" selection-start-column="54" selection-end-line="4" selection-end-column="54" />
             </state>
           </provider>
         </entry>
@@ -109,9 +256,31 @@
       <file leaf-file-name="admin.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/view/admin.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+            <state relative-caret-position="-38">
+              <caret line="70" column="6" selection-start-line="70" selection-start-column="6" selection-end-line="70" selection-end-column="6" />
+              <folding>
+                <element signature="e#17#28#0" expanded="true" />
+              </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseHandler.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/BaseHandler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="427">
+              <caret line="253" lean-forward="true" selection-start-line="253" selection-end-line="253" />
+              <folding>
+                <element signature="e#46#55#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="auth.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/session/auth.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2847" />
           </provider>
         </entry>
       </file>
@@ -168,7 +337,6 @@
         <option value="$PROJECT_DIR$/testMain.py" />
         <option value="$PROJECT_DIR$/aa.html" />
         <option value="$PROJECT_DIR$/utils/session.py" />
-        <option value="$PROJECT_DIR$/templates/backend/admin_nav.html" />
         <option value="$PROJECT_DIR$/templates/backend/login.html" />
         <option value="$PROJECT_DIR$/templates/backend/right_query.html" />
         <option value="$PROJECT_DIR$/templates/backend/system_user_query.html" />
@@ -178,7 +346,6 @@
         <option value="$PROJECT_DIR$/test5.py" />
         <option value="$PROJECT_DIR$/test2.py" />
         <option value="$PROJECT_DIR$/test4.py" />
-        <option value="$PROJECT_DIR$/view/admin.py" />
         <option value="$PROJECT_DIR$/test7.py" />
         <option value="$PROJECT_DIR$/aaa.txt" />
         <option value="$PROJECT_DIR$/test8.py" />
@@ -188,8 +355,11 @@
         <option value="$PROJECT_DIR$/mmm.py" />
         <option value="$PROJECT_DIR$/view/front.py" />
         <option value="$PROJECT_DIR$/templates/frontend/login.html" />
-        <option value="$PROJECT_DIR$/BaseHandler.py" />
+        <option value="$PROJECT_DIR$/view/admin.py" />
         <option value="$PROJECT_DIR$/Main.py" />
+        <option value="$PROJECT_DIR$/BaseHandler.py" />
+        <option value="$PROJECT_DIR$/templates/backend/admin_nav.html" />
+        <option value="$PROJECT_DIR$/templates/backend/home.html" />
       </list>
     </option>
   </component>
@@ -206,10 +376,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="43" />
-    <option name="y" value="57" />
+    <option name="x" value="645" />
+    <option name="y" value="157" />
     <option name="width" value="1897" />
-    <option name="height" value="1010" />
+    <option name="height" value="906" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -234,15 +404,16 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../adspush" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\project\study_tornado\templates" />
+      <recent name="E:\project\study_tornado\templates\backend" />
       <recent name="E:\project\study_tornado" />
+      <recent name="E:\project\study_tornado\templates" />
       <recent name="E:\project\study_tornado\static\imgs" />
     </key>
   </component>
@@ -385,23 +556,24 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="43" y="57" width="1897" height="1010" extended-state="0" />
+    <frame x="645" y="157" width="1897" height="906" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3293348" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.23728813" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3293348" />
       <window_info anchor="bottom" id="Python Console" order="7" weight="0.3270925" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.22502871" />
+      <window_info anchor="right" id="Mongo Explorer" weight="0.3298857" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32819384" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.10778443" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10778443" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" weight="0.32995737" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39911798" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -423,30 +595,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/BaseHandler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="756">
-          <caret line="33" column="8" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/session.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3672">
-          <caret line="105" column="8" selection-start-line="105" selection-start-column="8" selection-end-line="105" selection-end-column="8" />
-          <folding>
-            <element signature="e#34#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/mysql.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1188">
-          <caret line="36" column="62" selection-start-line="36" selection-start-column="62" selection-end-line="36" selection-end-column="62" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/view/admin.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3780">
@@ -465,11 +613,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test2.py" />
-    <entry file="file://$PROJECT_DIR$/templates/backend/home.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1080" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/log/log.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="432">
@@ -576,13 +719,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/backend/admin_nav.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="864">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/mysql.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="281">
@@ -615,16 +751,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
           <caret line="35" selection-start-line="35" selection-end-line="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/session.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3060">
-          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
-          <folding>
-            <element signature="e#34#45#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -721,25 +847,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/view/admin.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/frontend/404.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2916" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/frontend/user/my_fund.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/frontend/login.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1584">
-          <caret line="44" column="7" selection-start-line="44" selection-start-column="7" selection-end-line="44" selection-end-column="7" />
+        <state relative-caret-position="349">
+          <caret line="45" column="9" lean-forward="true" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -753,22 +869,85 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/BaseHandler.py">
+    <entry file="file://$PROJECT_DIR$/utils/session.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="523">
-          <caret line="36" column="44" selection-start-line="36" selection-start-column="44" selection-end-line="36" selection-end-column="44" />
+        <state relative-caret-position="-2923">
+          <caret line="34" column="12" lean-forward="true" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="12" />
           <folding>
-            <element signature="e#46#55#0" expanded="true" />
+            <element signature="e#34#45#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/deploy/ads_nginx.conf">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="1" column="30" lean-forward="true" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config/develop.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="72">
+          <caret line="2" column="9" lean-forward="true" selection-start-line="2" selection-start-column="9" selection-end-line="2" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/session/session.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="307">
+          <caret line="79" column="41" lean-forward="true" selection-start-line="79" selection-start-column="41" selection-end-line="79" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/session/auth.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2847" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backend/admin_nav.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="4" column="54" selection-start-line="4" selection-start-column="54" selection-end-line="4" selection-end-column="54" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="409">
-          <caret line="84" column="44" lean-forward="true" selection-start-line="84" selection-start-column="44" selection-end-line="84" selection-end-column="44" />
+        <state relative-caret-position="288">
+          <caret line="38" column="37" selection-start-line="38" selection-start-column="37" selection-end-line="38" selection-end-column="37" />
           <folding>
             <element signature="e#23#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/backend/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="793" column="7" lean-forward="true" selection-start-line="793" selection-start-column="7" selection-end-line="793" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/view/admin.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-38">
+          <caret line="70" column="6" selection-start-line="70" selection-start-column="6" selection-end-line="70" selection-end-column="6" />
+          <folding>
+            <element signature="e#17#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="253" lean-forward="true" selection-start-line="253" selection-end-line="253" />
+          <folding>
+            <element signature="e#46#55#0" expanded="true" />
           </folding>
         </state>
       </provider>

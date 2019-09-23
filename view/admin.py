@@ -36,12 +36,12 @@ class AdminLoginHandler(BaseHandler):
         url, pwd, name = (value[0] for key, value in self.request.arguments.items() if key != '_xsrf'
                           and key != 'checkbox')
         if not pwd:
-            self.render("backend/login.html", url=url, error="密码不能为空")
+            return self.render("backend/login.html", url=url, error="密码不能为空")
         self.logging.info(('admin user  %s login in' % (name)))
 
         res = self.begin_backend_session(name, pwd)
         if not res:
-            self.render("backend/login.html", url=url, error="用户名或密码不正确")
+            return self.render("backend/login.html", url=url, error="用户名或密码不正确")
         ip_info = self.request.remote_ip
         # logger().info("登陆用户：%s===>" % (name))
         name = "登陆用户：" + name

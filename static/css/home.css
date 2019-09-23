@@ -1,0 +1,77 @@
+.ann {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.ann1 {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
+.containCircle {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 41.06%;
+    height: 10.84rem;
+    background: url(../imgs/sy_dbg.png);
+    background-size: 100% 100%;
+    margin: 10px auto;
+}
+
+.title {
+    font-size: 20px;
+    color: #5df5ff;
+    font-weight: 400;
+}
+
+.cg_icon {
+    width: 61px;
+    height: 65px;
+    margin-top: 10px;
+}
+
+.zj_icon {
+    width: 64px;
+    height: 62px;
+    margin-top: 10px;
+}
+
+.jb_icon {
+    width: 57px;
+    height: 61px;
+    margin-top: 13px;
+}
+
+.sz_icon {
+    width: 62px;
+    height: 64px;
+    margin-top: 13px;
+}
+
+.container {
+    width: 360px;
+    height: 320px;
+    margin: -20px auto;
+}
+
+.avatarUrl {
+    position: absolute;
+    margin-left: 39%;
+    margin-top: -164px;
+    width: 80px;
+    height: 80px;
+    box-shadow: 1px 1px 2px #000;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    z-index: 9999;
+    /* display: none; *//* margin: -40px auto auto auto; */
+}

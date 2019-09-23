@@ -1,0 +1,404 @@
+* {
+    font-family: Microsoft YaHei, sans-serif, Arial;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+form,
+fieldset,
+input,
+button,
+textarea,
+p,
+th,
+td {
+    padding: 0;
+    margin: 0;
+    font-family: Microsoft YaHei, sans-serif, Arial
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: 100%;
+    font-weight: normal;
+}
+
+html,
+body {
+    background: #042338;
+}
+
+.flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.flex-w {
+    -webkit-box-orient: vertical;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+}
+
+.flex-v {
+    -webkit-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.flex-1 {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.flex-align-center {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.flex-pack-center {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+.flex-pack-justify {
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+}
+
+.wrapper {
+    padding-top: 3.8rem;
+    overflow: hidden;
+}
+
+.header {
+    height: 3.8rem;
+    width: 100%;
+    background: #fff;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    /*box-shadow: 0 1px 3px rgba(0,0,0,0.3);*/
+}
+
+.Logo {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    z-index: 98;
+    height: 100%;
+    line-height: 3.8rem;
+    margin-top: 0.5rem;
+    font-size: 1.07rem;
+    color: #333;
+}
+
+.floatL {
+    float: left;
+}
+
+.header a {
+    display: block;
+    color: #fff;
+    line-height: 3.8rem;
+    font-size: 1rem;
+    position: relative;
+    padding: 0 1rem;
+    z-index: 99;
+}
+
+.return:before {
+    content: '';
+    height: 12px;
+    width: 12px;
+    display: block;
+    float: left;
+    border: 2px solid #009b63;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    position: absolute;
+    top: 30px;
+    left: 1.1rem;
+}
+
+/*内容*/
+
+. {
+    overflow: hidden;
+}
+
+/*-------尾部导航-------*/
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.footerNav {
+    position: fixed;
+    z-index: 92;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: .115em 0;
+    background: #f8f8f8;
+    border-top: 1px solid #e5e5e5;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -o-box;
+    display: -ms-box;
+    display: box;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -ms-box-orient: horizontal;
+    -o-box-orient: horizontal;
+}
+
+.footerNav a {
+    display: block;
+    height: 100%;
+    position: static;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -moz-box-flex: 1;
+    -ms-box-flex: 1;
+    -o-box-flex: 1;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.footerNav a span {
+    display: inline-block;
+}
+
+.footerNav a span:before {
+    font-size: 1.6rem;
+    color: #999;
+}
+
+.footerNav a:last-child span {
+    margin: 0.2rem 0;
+}
+
+.footerNav a:last-child span:before {
+    font-size: 1.4rem;
+}
+
+.footerNav a i {
+    display: block;
+    font-style: normal;
+    font-size: 0.9rem;
+    color: #999;
+    margin-top: -0.2rem
+}
+
+.footerNav a:hover span:before,
+.footerNav a:hover i,
+.footerNav a.fN_curr span:before,
+.footerNav a.fN_curr i {
+    color: #009b63;
+}
+
+/*按钮*/
+
+.BtnCont {
+    margin: 0.3rem 1rem;
+    overflow: hidden;
+}
+
+.BigBtn {
+    padding: 0.7rem 0;
+    background: #009aea;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 0.92rem;
+    text-align: center;
+    margin: 0.8rem 0 0;
+    display: block;
+    width: 100%;
+}
+
+.BigBtnTwo {
+    background: #f19625;
+}
+
+/*弹框*/
+
+.modal {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    top: 0;
+    left: 0;
+    z-index: 990;
+    opacity: 0;
+    background: rgba(109, 127, 144, 0.4);
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.MetalInfo {
+    padding: 1.2rem 0.5rem 1.2rem;
+}
+
+.medalCont {
+    width: 280px;
+    min-height: 160px;
+    background: #fff;
+    margin: -110px 0 0 -140px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 991;
+    -webkit-transform: translateY(-40px);
+    -moz-transform: translateY(-40px);
+    -ms-transform: translateY(-40px);
+    -o-transform: translateY(-40px);
+    transform: translateY(-40px);
+    -webkit-backface-visibility: hidden;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.medalContCurr {
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+    -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+    transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+
+.medalContCurr .medalCont {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+}
+
+.md_close {
+    height: 1rem;
+    width: 1rem;
+    display: block;
+    position: relative;
+}
+
+.md_close:before,
+.md_close:after {
+    content: '';
+    height: 2px;
+    width: 12px;
+    display: block;
+    background: #88898e;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    position: absolute;
+    top: 12px;
+    right: 6px;
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+}
+
+.md_close:after {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+}
+
+.md_ {
+    padding: 2.5rem 1rem 2rem;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.fadeInDown {
+    animation-name: fadeInDown;
+}
+
+.animated.flip {
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+    animation-name: flip;
+}
+
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.animated.infinite {
+    animation-iteration-count: infinite;
+}
+
+.animated.hinge {
+    animation-duration: 2s;
+}
+
+.animated.flipOutX,
+.animated.flipOutY,
+.animated.bounceIn,
+.animated.bounceOut {
+    animation-duration: .75s;
+}

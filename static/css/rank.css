@@ -1,0 +1,128 @@
+.tab {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    flex-basis: 8%;
+    width: 100%;
+    flex-shrink: 0;
+    height: 60px;
+    margin-top: 20px;
+}
+
+.tab div {
+    line-height: 40px;
+    height: 40px;
+    background: #014b81;
+    color: #fff;
+    width: 30%;
+}
+
+.tab .left {
+    border-radius: 8px 0 0 8px;
+}
+
+.tab .right {
+    border-radius: 0 8px 8px 0;
+}
+
+.tab .on {
+    background: #5df5ff;
+    color: #060030;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 15px;
+    width: 84%;
+    margin-bottom: 15px;
+    margin-left: 4%;
+    border-radius: 6px;
+    padding: 15px;
+    box-shadow: 0px 0px 10px #01ffff inset
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translate3d(0, -100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+.fadeInDown {
+    animation-name: fadeInDown;
+}
+
+.animated.flip {
+    -webkit-backface-visibility: visible;
+    backface-visibility: visible;
+    animation-name: flip;
+}
+
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.animated.infinite {
+    animation-iteration-count: infinite;
+}
+
+.animated.hinge {
+    animation-duration: 2s;
+}
+
+.animated.flipOutX,
+.animated.flipOutY,
+.animated.bounceIn,
+.animated.bounceOut {
+    animation-duration: .75s;
+}
+
+.rank {
+    font-size: 20px;
+    color: #03fff0;
+    font-weight: bold;
+}
+
+.item img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 2px solid #5df5ff;
+}
+
+.itemDetail {
+    display: flex;
+    justify-content: space-between;
+    color: #58dee7;
+}
+
+.itemDetail text {
+    display: inline-block;
+    margin: 5px;
+    color: #58dee7;
+}
+
+.rollBox {
+    overflow-y: auto;
+    height: 32em;
+}
+
+.refreshText {
+    /*position: absolute;*/
+    width: 100%;
+    line-height: 30px;
+    color: #00a0e9;
+    text-align: center;
+    left: 0;
+    top: 50px;
+}

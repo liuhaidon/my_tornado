@@ -3,8 +3,8 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <span class="block m-t-xs"> <strong class="font-bold">后台管理系统</strong></span>
                     <span>
+                        <span class="block m-t-xs"> <strong class="font-bold">{{myuser.get("system","")}}</strong></span>
                         <img alt="image" class="img-circle" src="{{ static_url('img/default_avatar.png') }}">
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">

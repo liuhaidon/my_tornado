@@ -1,0 +1,282 @@
+.item {
+	display: flex;
+	justify-content: space-between;
+}
+
+.left {
+	display: flex;
+	float: left;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 18.66%;
+	text-align: center;
+	margin-top: 40px;
+}
+
+.rival1 {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.rival1 img {
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	border: 3px solid #5459ff;
+}
+
+.rival1 text {
+	font-size: 12px;
+	color: #fff;
+	margin-top: 5px;
+}
+
+.rival1_score {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 200px;
+}
+
+.rival1_score text {
+	font-size: 15px;
+	color: #01fff1;
+}
+
+.progress {
+	width: 15px;
+	height: 200px;
+	border-radius: 8px;
+	border: 1px solid #03c6e2;
+	background: #004c55;
+	transform: rotate(-180deg);
+	margin-top: 5px;
+}
+.process_son {
+  width: 15px;
+  border-radius: 8px;
+  background: #00f0e3;
+}
+.center {
+	display: flex;
+	/*justify-content: center;*/
+	align-items: center;
+	flex-wrap: wrap;
+	width: 62.68%;
+	margin-top: 20px;
+	/*text-align: center;*/
+}
+
+.question {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: -25px;
+}
+
+.question img {
+	width: 100%;
+	height: 192px;
+}
+
+.question text {
+	font-size: 15px;
+	color: #58dee7;
+	width: 52vw;
+	white-space: wrap;
+	line-height: 24px;
+	height: 192px;
+	margin-top: -165px;
+}
+
+.countdown {
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	background-color: #042338;
+	border: 5px solid #02a8c0;
+	font-size: 28px;
+	color: #01fff1;
+	text-align: center;
+	line-height: 45px;
+	font-weight: bold;
+	/*margin-top: 20px;*/
+	z-index: 102;
+}
+
+.answer {
+	display: flex;
+	justify-content: center;
+	/*flex-direction: column;*/
+	flex-wrap: wrap;
+	align-items: center;
+	/*width: 120%;*/
+	margin-top: -30px;
+}
+
+.options {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 32px;
+	/*margin: 20px;*/
+}
+
+.options img {
+	width: 100%;
+	height: 52px;
+}
+
+.options text {
+	font-size: 15px;
+	color: #fff;
+	margin-top: -35px;
+	width: 90%;
+	text-align: center;
+}
+
+.submit_button {
+	display: flex;
+	justify-content: center;
+	width: 235px;
+	height: 44px;
+	color: #0b0044;
+	background: #03fff0;
+}
+
+.right {
+	display: flex;
+	float: right;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+	width: 18.66%;
+	text-align: center;
+	margin-top: 40px;
+}
+
+.rival2 {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.rival2 img {
+	width: 45px;
+	height: 45px;
+	border-radius: 50%;
+	border: 3px solid #0199e9;
+}
+
+.rival2 text {
+	font-size: 12px;
+	color: #fff;
+	margin-top: 5px;
+}
+
+.rival2_score {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 200px;
+}
+
+.rival2_score text {
+	font-size: 15px;
+	color: #01fff1;
+}
+
+.bg {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0px;
+	background: rgba(0, 0, 0, 0.7);
+	z-index: 103;
+}
+
+.assess_pass {
+	display: flex;
+	justify-content:center;
+	flex-direction: column;
+	margin:50% auto;
+	align-items: center;
+}
+.top{
+	display: flex;
+	justify-content:space-around;
+	align-items: center;
+}
+.assess_pass_wb {
+	font-weight: bold;
+	font-size: 24px;
+/*	margin-left:36%;*/
+	text-align: center;
+	margin-left: 82px;
+	color: #02fcee;
+}
+
+.close_icon {
+	width: 13px;
+	height: 11px;
+    padding-left:72px;
+	margin-top: 10px;
+}
+
+.assess_pass_bg {
+	width: 280px;;
+	height: 200px;
+	margin-top: 3px;
+}
+.push {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -150px;
+}
+
+.push text {
+  font-size: 16px;
+  color: #02fcee;
+}
+.button{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 56px;
+}
+
+.cancel{
+  width: 100px;
+  height: 44px;
+  border: 1px solid #02fcee;
+  border-radius: 4px;
+  background: #093751;
+  color: #02fcee;
+  font-size: 15px;
+}
+.define{
+  width: 100px;
+  height: 44px;
+  border-radius: 4px;
+  background: #009aea;
+  color: #fff;
+  font-size: 15px;
+  margin-left: 24px;
+  border: 0;
+}

@@ -1,0 +1,429 @@
+﻿/* CSS Document */
+
+
+/****共用样式****/
+
+@charset"utf-8";
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+tr,
+button {
+	padding: 0;
+	margin: 0;
+}
+
+ul {
+	list-style: none;
+}
+
+img {
+	border: none;
+}
+
+a {
+	text-decoration: none;
+	color: #ffd401;
+	outline: none;
+}
+
+a:hover {
+	text-decoration: none;
+	color: #666;
+}
+
+.a_sel {
+	color: #666;
+}
+
+.ls {
+	text-decoration: underline;
+	color: #0000FF;
+}
+
+.ls:hover {
+	color: #666666;
+	text-decoration: underline;
+}
+
+body {
+	font-size: 14px;
+	font-family: "微软雅黑", Arial, Helvetica, sans-serif;
+	padding: 0px;
+	margin: 0 auto;
+	color: #666666;
+	background: url(http://m.douyou100.com/Resources/douyou100_1/images/bj_new.jpg) repeat;
+}
+
+.f12 {
+	font-size: 12px;
+}
+
+.f14 {
+	font-size: 14px;
+}
+
+.f15 {
+	font-size: 15px;
+}
+
+.f10 {
+	font-size: 11px;
+	-webkit-text-size-adjust: none;
+}
+
+.f25 {
+	font-size: 25px;
+}
+
+.f20 {
+	font-size: 20px;
+}
+
+.th {
+	text-decoration: line-through;
+}
+
+.tr {
+	text-align: right;
+}
+
+.fl {
+	float: left;
+}
+
+.flie6 {
+	float: left;
+	_float: none;
+}
+
+.fr {
+	float: right;
+}
+
+.frie6 {
+	float: right;
+	_float: none;
+}
+
+.red {
+	color: red;
+}
+
+.bsz {
+	color: #e7e7e7;
+}
+
+.hhsz {
+	color: #c0c0c0;
+}
+
+.c1 {
+	color: #818181;
+}
+
+.cur {
+	cursor: pointer;
+}
+
+.Hide {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	-o-text-overflow: ellipsis;
+	-moz-binding: url('ellipsis.xml#ellipsis');
+}
+
+.hsz {
+	color: #ffd401;
+}
+
+.lsz {
+	color: #4dbac0;
+}
+
+.clear {
+	clear: both;
+}
+
+.btn {
+	color: #7a440a;
+	display: block;
+	width: 122px;
+	height: 31px;
+	background: url(http://m.douyou100.com/Resources/douyou100_1/images/botton_bj.png) no-repeat;
+	background-size: 122px 31px;
+	line-height: 28px;
+	margin: 0 auto;
+}
+
+.btn:hover {
+	color: #7a440a;
+}
+
+.btn_hs {
+	background-color: rgba(83, 83, 83, 0.4);
+	border-bottom: 1px solid #000;
+	box-shadow: 0px 1px 0px #6a6a6a Inset;
+	border: 0px;
+	height: 38px;
+	font-family: "微软雅黑";
+	font-size: 14px;
+	color: #c0c0c0;
+	text-shadow: 1px 1px 0px #000;
+	outline: none;
+	display: block;
+	width: 100%;
+	line-height: 38px;
+}
+
+.btn_jz {
+	background-color: rgba(83, 83, 83, 0.4);
+	border-bottom: 1px solid #000;
+	box-shadow: 0px 1px 0px #6a6a6a Inset;
+	border: 0px;
+	height: 38px;
+	font-family: "微软雅黑";
+	color: #c0c0c0;
+	text-shadow: 1px 1px 0px #000;
+	outline: none;
+	display: block;
+	width: 100%;
+	line-height: 38px;
+	width: 94%;
+	margin: 0 3%;
+	outline: none;
+	display: block;
+}
+
+.btn_hhs {
+	background: url(http://m.douyou100.com/Resources/douyou100_1/images/nav_bj_new.png) repeat-x -2px;
+	font-size: 15px;
+	border-bottom: 1px solid #000;
+	border: 0px;
+	height: 38px;
+	font-family: "微软雅黑";
+	color: #7a440a;
+	text-shadow: 0px 0px 0px #000;
+	outline: none;
+	display: block;
+	width: 100%;
+	line-height: 38px;
+}
+
+.btn_hhs1 {
+	padding: 8px 0 8px 5%;
+	text-align: left;
+	background: url(http://m.douyou100.com/Resources/douyou100_1/images/nav_bj_new.png) repeat-x -2px;
+	background-size: 100% 82px;
+	font-size: 15px;
+	border-bottom: 1px solid #000;
+	border: 0px;
+	font-family: "微软雅黑";
+	color: #7a440a;
+	text-shadow: 0px 0px 0px #000;
+	outline: none;
+	display: block;
+	width: 100%;
+	line-height: 20px;
+}
+
+
+/****首页LOGO头部样式****/
+
+.all {
+	width: 320px;
+	height: 100%;
+	margin: 0 auto;
+	position: relative;
+}
+
+.head {
+	height: 45px;
+	padding: 0px 2%;
+	margin-top: 11px;
+	text-align: left;
+	line-height: 36px;
+	color: #eeeeee;
+}
+
+.logo {
+	width: 180px;
+	height: 36px;
+}
+
+.paint {
+	width: 55px;
+	padding-right: 5px;
+	text-align: right;
+}
+
+.city {
+	width: 75px;
+	padding-top: 8px;
+}
+
+.city label {
+	cursor: pointer;
+}
+
+.icon_login {
+	line-height: 18px;
+	text-align: center;
+	width: 77px;
+}
+
+.icon_login label {
+	cursor: pointer;
+}
+
+
+/****导航样式****/
+
+.nav {
+	padding: 0 2%;
+	background: #4dbac0;
+	background: url(http://m.douyou100.com/Resources/douyou100_1/images/nav_bj_new.png) repeat-x;
+	background-size: auto 42px;
+}
+
+.tab_nav {
+	height: 42px;
+	color: #000000;
+	line-height: 28px;
+	text-align: center;
+	padding-top: 10px;
+}
+
+.tab_nav img {
+	margin: 5px 110px 0px 0px;
+}
+
+.tab_nav li a {
+	width: 75px;
+	text-align: center;
+	display: block;
+	width: 75px;
+	height: 31px;
+	color: #000;
+}
+
+.tab_nav li .oaClick {
+	background: url(http://m.douyou100.com/Resources/douyou100_1/images/nav_bj.png);
+	background-size: 75px 31px;
+	color: #fff;
+	text-shadow: 0px 0px 0px #fff;
+}
+
+.tab_nav_one {
+	padding: 0px;
+	line-height: 42px;
+}
+
+.tab_nav_one img {
+	margin: 13px 0px 0px 0px;
+}
+
+.tab_nav_one li a {
+	width: 75px;
+	text-align: center;
+	display: block;
+	width: 75px;
+	height: 30px;
+	color: #fff;
+	float: left;
+}
+
+.tab_nav_one .Hide {
+	display: block;
+	width: 91%;
+	margin-left: 5px;
+	text-align: center;
+	line-height: 43px;
+}
+
+.tab_nav_one li .oaClick {
+	background: url(http://m.douyou100.com/Resources/douyou100_1/images/nav_bj.png);
+	background-size: 76px 30px;
+	color: #4dbac0;
+}
+
+
+/****页尾样式****/
+
+.foot {
+	border-top: 3px solid #818181;
+	height: 80px;
+	margin-top: 15px;
+	line-height: 22px;
+	padding-top: 5px;
+	text-align: center;
+	background-color: rgba(83, 83, 83, 0.4);
+}
+
+.foot p {
+	color: #818181;
+	filter: alpha(opacity=100);
+	-moz-opacity: 1;
+	opacity: 1;
+}
+
+.foot .c1 {
+	margin-left: 20px;
+}
+
+
+/*公共样式*/
+
+.g_f_l {
+	float: left;
+}
+
+.g_f_r {
+	float: right;
+}
+
+.g_w_40 {
+	width: 40%;
+}
+
+.g_c_bbb {
+	color: #bbb;
+}
+
+
+/*表单*/
+
+.txt {
+	border: 1px solid #e1e1e1;
+	height: 30px;
+	background-color: rgba(83, 83, 83, 0.4);
+	border: 1px solid #202020;
+	box-shadow: 1px 1px 1px #6b6b6b Inset;
+	color: #e7e7e7;
+	font-family: "微软雅黑";
+	font-size: 14px;
+	padding: 0px 3%;
+	height: 40px;
+	outline: none;
+}
