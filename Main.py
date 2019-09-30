@@ -48,6 +48,8 @@ class Application(tornado.web.Application):
             (r"/admin/permission/add", AdminAddPermission),
             (r"/admin/permission/delete", AdminDeletePermission),
 
+            (r"/admin/contents", AdminContents),
+
             (r"/ajax/sysuser/find", AjaxFindSysUser),
             (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
             (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
