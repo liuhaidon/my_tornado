@@ -7,11 +7,11 @@ from passlib.hash import pbkdf2_sha512
 
 class DBUtil:
     def __init__(self, **kwargs):
-        user = kwargs.get('user', 'web')
+        user = kwargs.get('user', 'tornado')
         password = kwargs.get('password', 'liujiadon')
         host = kwargs.get('host', '106.15.88.182')
         port = kwargs.get('port', 3306)
-        database = kwargs.get('database', 'web')
+        database = kwargs.get('database', 'tornado')
         charset = kwargs.get('charset', 'utf8')
         connection = pymysql.connect(user=user, password=password, host=host, port=port, database=database, charset=charset)
         self.connection = connection

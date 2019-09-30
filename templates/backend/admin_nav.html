@@ -30,11 +30,11 @@
             <li>
                 <a href="/admin/sysusers"><i class="fa fa-user"></i> <span class="nav-label">用户管理</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <li><a href="/admin/users">用户列表</a></li>
                     {% if myuser.get('role') == "admin" %}
                     <li><a href="/admin/sysusers">系统用户</a></li>
                     <li><a href="/admin/permissions">权限管理</a></li>
                     {% end %}
+                    <li><a href="/admin/users">用户列表</a></li>
                 </ul>
             </li>
 

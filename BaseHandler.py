@@ -126,27 +126,27 @@ class BaseHandler(tornado.web.RequestHandler):
     def begin_backend_session(self, sysid, password):
         self.logging.info(('start login', sysid, password))
         logger().info(('start login', sysid, password))
-        if not self.application.backend_auth.login(sysid, password):
-        # result = self.application.dbutil.isloginsuccess(sysid, password)
-        # if not result:
+        # if not self.application.backend_auth.login(sysid, password):
+        user = self.application.dbutil.isloginsuccess(sysid, password)
+        if not user:
             print "login failed"
             return False
         self.logging.info(('login checked', sysid, password))
         now = time.strftime('%Y-%m-%d %H:%M', time.localtime(time.time()))
         # now = time.strftime('%Y-%m-%d %H:%M:%S')
         ip = self.request.remote_ip
-        user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
-        if not user:
+        # user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
+        # if not user:
             # print "no user exists!",sysid
-            return False
+            # return False
         # user["db"] = self.application.settings["database"]
         # user["system"] = self.application.settings["system"]
-        logininfos = user.get('login', [])
-        print logininfos
-        logininfos.append({"ip": ip, "time": now})
-        self.db.tb_system_user.update({'userid': sysid}, {'$set': {'status': 'online', "login": logininfos[-10:]}})
-        user['status'] = "online"
-        user['login'] = logininfos[-10:]
+        # logininfos = user.get('login', [])
+        # print logininfos
+        # logininfos.append({"ip": ip, "time": now})
+        # self.db.tb_system_user.update({'userid': sysid}, {'$set': {'status': 'online', "login": logininfos[-10:]}})
+        # user['status'] = "online"
+        # user['login'] = logininfos[-10:]
 
         # 查找该用户的所有权限
         # permission = self.application.dbutil.getFindPermission(sysid)
@@ -154,7 +154,6 @@ class BaseHandler(tornado.web.RequestHandler):
         # for p in permission:
         #     arr.append(p["title"])
 
-        # self.session['data'] = result
         self.session['data'] = user
         self.session["sysid"] = sysid
         # self.session['permission'] = arr
@@ -201,9 +200,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def admin_authed(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
-            # print "session值===>", self.session
             if not self.session.get('sysid'):
-                print "没有sysid了"
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_admin_login_url()
                     print "url1===>", url
@@ -219,12 +216,12 @@ class BaseHandler(tornado.web.RequestHandler):
                     self.redirect(url)
                     return
                 raise HTTPError(403)
-            else:
+            # else:
                 # if self.session['data'].get("role", "") != "superadmin":
-                if self.session['data'].get("role", "admin") != "superadmin":
+                # if self.session['data'].get("role", "admin") != "superadmin":
                         # raise HTTPError(403)
                         # self.redirect('/admin/login')
-                        return
+                        # return
             return method(self, *args, **kwargs)
         return wrapper
 
