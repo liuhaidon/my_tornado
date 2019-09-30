@@ -53,7 +53,6 @@ class AdminLoginHandler(BaseHandler):
             self.redirect(url)
 
     def check_xsrf_cookie(self):
-        # print "先验证_xsrf,再执行post方法"
         _xsrf = self.get_argument("_xsrf", None)
         print "_xsrf===>", _xsrf
 
@@ -82,11 +81,11 @@ class AdminSysUsers(BaseHandler):
     @BaseHandler.admin_authed
     def get(self):
         # 当前第几页,默认第一页
-        page = int(self.get_argument("page", 1))
+        current_page = int(self.get_argument("page", 1))
         # 每页显示多少条记录
         pagesize = int(self.get_argument("pagesize", "1"))
 
-        skiprecord = pagesize * (page - 1)
+        skiprecord = pagesize * (current_page - 1)
         user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
 
         # 一共有多少条记录
@@ -96,8 +95,7 @@ class AdminSysUsers(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        myuser = self.admin
-        self.render("backend/system_user_query.html", myuser=myuser, admin_nav=11, users=user_list, page=page, pagesize=pagesize, pages=pages, count=count)
+        self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=11, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminAddSysUser(BaseHandler):
