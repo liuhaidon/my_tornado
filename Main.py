@@ -1,25 +1,39 @@
 # -*- coding:utf-8 -*-
 import tornado.ioloop
 import tornado.web
-import os
-
 from tornado.options import define, options
+
 from view.admin import *
 from view.ajax import *
+from view.front import *
 from db.mysql import DBUtil
 from utils.session import *
+
+from session.session import MongoSessions
+from session.auth import MongoAuthentication
 from apscheduler.schedulers.background import BackgroundScheduler
 
 define("domain", default="", help="run on the given domain", type=str)
 define("ip", default="162.247.101.143", help="run on the given port", type=str)
-define("port", default=8082, help="run on the given port", type=int)
+define("port", default=8066, help="run on the given port", type=int)
 define("develop", default=True, help="develop environment", type=bool)
 
+'''
+    author: liu
+    时间: 2019/09/23
+    服务端的架构体系:
+        db  : adspush (mongodb)
+        session : 基于mongodb
+'''
 
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/", AdminLoginHandler),
+            (r"/", index),
+            (r"/index", index),
+            (r"/login", user_login),
+            (r"/logout", user_logout),
+
             (r"/admin/login", AdminLoginHandler),
             (r"/admin/logout", AdminLogoutHandler),
             (r"/admin/home", AdminHomeHandler),
@@ -34,11 +48,15 @@ class Application(tornado.web.Application):
             (r"/admin/permission/add", AdminAddPermission),
             (r"/admin/permission/delete", AdminDeletePermission),
 
+            (r"/admin/contents", AdminContents),
+
             (r"/ajax/sysuser/find", AjaxFindSysUser),
             (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
             (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
         ]
         self.dbutil = DBUtil()
+        self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "loginid")
+        self.backend_auth = MongoAuthentication("ads", "tb_system_user", "userid")
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
             xsrf_cookies=True,

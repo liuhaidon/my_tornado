@@ -18,13 +18,12 @@ class SessionData(dict):
         self.session_id = session_id
         self.hmac_key = hmac_key
 
-
-# @property
-#	def sid(self):
-#		return self.session_id
-#	@x.setter
-#	def sid(self, value):
-#		self.session_id = value
+    # @property
+    # def sid(self):
+		# return self.session_id
+	# @x.setter
+	# def sid(self, value):
+	# 	self.session_id = value
 
 class Session(SessionData):
     def __init__(self, session_manager, request_handler):
@@ -67,10 +66,8 @@ class SessionManager(object):
                 self.redis.setex(session_id, self.session_timeout, raw_data)
                 session_data = ujson.loads(raw_data)
                 # session_data = json.loads(raw_data)
-
             if isinstance(session_data, dict):
                 return session_data
-
             return {}
         except IOError:
             return {}

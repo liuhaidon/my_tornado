@@ -33,27 +33,26 @@ class AdminLoginHandler(BaseHandler):
     def post(self, *args, **kwargs):
         # print self.request.arguments
         self.logging.info(('LoginHandler argument %s') % (self.request.arguments))
-        url, pwd, name = (value[0] for key, value in self.request.arguments.items() if key != '_xsrf'
+        url, pwd, username = (value[0] for key, value in self.request.arguments.items() if key != '_xsrf'
                           and key != 'checkbox')
         if not pwd:
-            self.render("backend/login.html", url=url, error="密码不能为空")
-        self.logging.info(('admin user  %s login in' % (name)))
+            return self.render("backend/login.html", url=url, error="密码不能为空")
+        self.logging.info(('admin user  %s login in' % (username)))
 
-        res = self.begin_backend_session(name, pwd)
+        res = self.begin_backend_session(username, pwd)
         if not res:
-            self.render("backend/login.html", url=url, error="用户名或密码不正确")
+            return self.render("backend/login.html", url=url, error="用户名或密码不正确")
         ip_info = self.request.remote_ip
         # logger().info("登陆用户：%s===>" % (name))
-        name = "登陆用户：" + name
-        self.application.dbutil.login(name, ip_info)
+        username = "登陆用户：" + username
+        self.application.dbutil.login(username, ip_info)
         if url == '/admin/login':
             self.redirect('/admin/home')
         else:
-            self.set_cookie("username", name)
+            self.set_cookie("username", username)
             self.redirect(url)
 
     def check_xsrf_cookie(self):
-        # print "先验证_xsrf,再执行post方法"
         _xsrf = self.get_argument("_xsrf", None)
         print "_xsrf===>", _xsrf
 
@@ -73,8 +72,8 @@ class AdminHomeHandler(BaseHandler):
     @BaseHandler.admin_authed
     def get(self):
         # myuser = self.get_cookie("username")
-        myuser = self.admin
-        self.render("backend/home.html", myuser=myuser, admin_nav=0)
+        print "self.admin===>", self.admin
+        self.render("backend/home.html", myuser=self.admin, admin_nav=0)
 
 
 class AdminSysUsers(BaseHandler):
@@ -82,11 +81,11 @@ class AdminSysUsers(BaseHandler):
     @BaseHandler.admin_authed
     def get(self):
         # 当前第几页,默认第一页
-        page = int(self.get_argument("page", 1))
+        current_page = int(self.get_argument("page", 1))
         # 每页显示多少条记录
         pagesize = int(self.get_argument("pagesize", "1"))
 
-        skiprecord = pagesize * (page - 1)
+        skiprecord = pagesize * (current_page - 1)
         user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
 
         # 一共有多少条记录
@@ -96,8 +95,7 @@ class AdminSysUsers(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        myuser = self.admin
-        self.render("backend/system_user_query.html", myuser=myuser, admin_nav=11, users=user_list, page=page, pagesize=pagesize, pages=pages, count=count)
+        self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=11, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminAddSysUser(BaseHandler):
@@ -203,8 +201,7 @@ class AdminPermissions(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        myuser = self.admin
-        self.render("backend/right_query.html", myuser=myuser, admin_nav=12, right_list=rightlist, page=page,
+        self.render("backend/right_query.html", myuser=self.admin, admin_nav=12, right_list=rightlist, page=page,
                     pagesize=pagesize, pages=pages, count=count)
 
 
@@ -240,7 +237,23 @@ class AdminDeletePermission(BaseHandler):
         self.write(json.dumps({"status": 'ok', "msg": u'删除权限失败'}))
 
 
+class AdminContents(BaseHandler):
+    """图片视频富文本列表"""
+    @BaseHandler.admin_authed
+    def get(self):
+        page = int(self.get_argument("page", 1))
+        pagesize = int(self.get_argument("pagesize", "10"))
 
+        skiprecord = pagesize * (page - 1)
+        rightlist = self.application.dbutil.getPermissions(skiprecord, pagesize)
+
+        count = self.application.dbutil.getAllPermissions()
+        pages = count / pagesize
+        if count % pagesize > 0:
+            pages += 1
+
+        self.render("backend/right_query.html", myuser=self.admin, admin_nav=12, right_list=rightlist, page=page,
+                    pagesize=pagesize, pages=pages, count=count)
 
 
 

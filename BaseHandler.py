@@ -14,6 +14,7 @@ from db import database
 from utils.session import *
 from urllib import urlencode
 from view.logger import *
+from db.database import database as mongodb
 def datediff(beginDate, endDate):
     """计算时间相差天数，输入格式为：str"""
     format = "%Y-%m-%d %H:%M:%S"
@@ -86,7 +87,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
         now = time.strftime('%Y-%m-%d %H:%M:%S')
         ip = self.request.remote_ip
-        # user = self.db.tb_user_profile.find_one({'userid': userid}, {'passwd': 0, '_id': 0})
+        user = self.db.tb_user_profile.find_one({'userid': userid}, {'passwd': 0, '_id': 0})
         # # print user
         # logininfos = user.get('login', [])
         # print "login==>",logininfos
@@ -123,26 +124,39 @@ class BaseHandler(tornado.web.RequestHandler):
         self.session.save()
 
     def begin_backend_session(self, sysid, password):
+        self.logging.info(('start login', sysid, password))
         logger().info(('start login', sysid, password))
-        result = self.application.dbutil.isloginsuccess(sysid, password)
-        if not result:
+        # if not self.application.backend_auth.login(sysid, password):
+        user = self.application.dbutil.isloginsuccess(sysid, password)
+        if not user:
             print "login failed"
             return False
         self.logging.info(('login checked', sysid, password))
-
+        now = time.strftime('%Y-%m-%d %H:%M', time.localtime(time.time()))
         # now = time.strftime('%Y-%m-%d %H:%M:%S')
-        # ip = self.request.remote_ip
+        ip = self.request.remote_ip
+        # user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
+        # if not user:
+            # print "no user exists!",sysid
+            # return False
+        # user["db"] = self.application.settings["database"]
+        # user["system"] = self.application.settings["system"]
+        # logininfos = user.get('login', [])
+        # print logininfos
         # logininfos.append({"ip": ip, "time": now})
+        # self.db.tb_system_user.update({'userid': sysid}, {'$set': {'status': 'online', "login": logininfos[-10:]}})
+        # user['status'] = "online"
+        # user['login'] = logininfos[-10:]
 
         # 查找该用户的所有权限
-        permission = self.application.dbutil.getFindPermission(sysid)
-        arr = []
-        for p in permission:
-            arr.append(p["title"])
+        # permission = self.application.dbutil.getFindPermission(sysid)
+        # arr = []
+        # for p in permission:
+        #     arr.append(p["title"])
 
-        self.session['data'] = result
+        self.session['data'] = user
         self.session["sysid"] = sysid
-        self.session['permission'] = arr
+        # self.session['permission'] = arr
         self.session.save()
         return True
 
@@ -151,6 +165,8 @@ class BaseHandler(tornado.web.RequestHandler):
         # self.application.sessions.clear_session(id)
         if self.session is not None:
             username = self.session['sysid']
+            # self.db.tb_system_user.update({'userid': username}, {'$set': {'status': 'offline'}})
+            # self.application.backend_auth.logout(username)
             self.clear_cookie("username")
             # self.application.backend_auth.logout(username)
         self.session['sysid'] = None
@@ -173,9 +189,7 @@ class BaseHandler(tornado.web.RequestHandler):
                     self.redirect(url)
                     return
                 raise HTTPError(403)
-
             return method(self, *args, **kwargs)
-
         return wrapper
 
     def get_admin_login_url(self):
@@ -186,9 +200,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def admin_authed(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
-            # print "session值===>", self.session
             if not self.session.get('sysid'):
-                print "没有sysid了"
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_admin_login_url()
                     print "url1===>", url
@@ -201,6 +213,36 @@ class BaseHandler(tornado.web.RequestHandler):
                         print "next_url===>", next_url
                         url += "?" + urlencode(dict(next=next_url))
                     print "url2===>", url
+                    self.redirect(url)
+                    return
+                raise HTTPError(403)
+            # else:
+                # if self.session['data'].get("role", "") != "superadmin":
+                # if self.session['data'].get("role", "admin") != "superadmin":
+                        # raise HTTPError(403)
+                        # self.redirect('/admin/login')
+                        # return
+            return method(self, *args, **kwargs)
+        return wrapper
+
+    @classmethod
+    def wechat_authenticated(self, method):
+        @functools.wraps(method)
+        def wrapper(self, *args, **kwargs):
+            skey = self.request.headers.get('skey', None)
+            if skey:
+                tbl_user = mongodb.getDB().get_collection("tb_user_profile")
+                tbl_user.find_one({"skey":skey})
+
+            if not self.session.get('skey'):
+                if self.request.method in ("GET", "HEAD"):
+                    url = self.get_login_url()
+                    if "?" not in url:
+                        if urlparse.urlsplit(url).scheme:
+                            next_url = self.request.full_url()
+                        else:
+                            next_url = self.request.uri
+                        url += "?" + urlencode(dict(next=next_url))
                     self.redirect(url)
                     return
                 raise HTTPError(403)

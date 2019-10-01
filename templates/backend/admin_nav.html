@@ -3,17 +3,15 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
-                    <span class="block m-t-xs"> <strong class="font-bold">后台管理系统</strong></span>
                     <span>
+                        <span class="block m-t-xs"> <strong class="font-bold">{{myuser.get("system","")}}</strong></span>
                         <img alt="image" class="img-circle" src="{{ static_url('img/default_avatar.png') }}">
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
-                            <!--<span class="block m-t-xs"> <strong class="font-bold">{{ myuser }}</strong>-->
-                            <span class="block m-t-xs"> <strong class="font-bold">{{ myuser.get('username') }}</strong>
-                            </span>
+                            <span class="block m-t-xs"> <strong class="font-bold">{{ myuser.get('username') }}</strong></span>
                             {% if myuser.get("role") == "admin" %}
-                                <span class="text-muted text-xs block"> 管理员 <b class="caret"></b></span>
+                                <span class="text-muted text-xs block"> 超级管理员 <b class="caret"></b></span>
                             {% else %}
                                 <span class="text-muted text-xs block"> 普通用户 <b class="caret"></b></span>
                             {% end %}
@@ -32,11 +30,11 @@
             <li>
                 <a href="/admin/sysusers"><i class="fa fa-user"></i> <span class="nav-label">用户管理</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <!--<li><a href="/admin/sysusers">系统用户</a></li>-->
                     {% if myuser.get('role') == "admin" %}
                     <li><a href="/admin/sysusers">系统用户</a></li>
                     <li><a href="/admin/permissions">权限管理</a></li>
                     {% end %}
+                    <li><a href="/admin/users">用户列表</a></li>
                 </ul>
             </li>
 
@@ -48,10 +46,10 @@
             </li>
 
             <li>
-                <a href="/admin/keywords"><i class="fa fa-film"></i> <span class="nav-label">关键词管理</span> <span
+                <a href="/admin/keywords"><i class="fa fa-film"></i> <span class="nav-label">媒体管理</span> <span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <li><a href="/admin/keywords">关键词列表</a></li>
+                    <li><a href="/admin/media">媒体列表</a></li>
                 </ul>
             </li>
 
