@@ -95,7 +95,7 @@ class AdminSysUsers(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=11, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
+        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=21, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminAddSysUser(BaseHandler):
@@ -201,7 +201,7 @@ class AdminPermissions(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        self.render("backend/right_query.html", myuser=self.admin, admin_nav=12, right_list=rightlist, page=page,
+        self.render("backend/right_query.html", myuser=self.admin, admin_nav=22, right_list=rightlist, page=page,
                     pagesize=pagesize, pages=pages, count=count)
 
 
@@ -252,7 +252,7 @@ class AdminContents(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        self.render("backend/study_content_query.html", myuser=self.admin, admin_nav=12, right_list=rightlist, page=page,
+        self.render("backend/study_content_query.html", myuser=self.admin, admin_nav=22, right_list=rightlist, page=page,
                     pagesize=pagesize, pages=pages, count=count)
 
 
