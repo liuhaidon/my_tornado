@@ -72,10 +72,14 @@ class Application(tornado.web.Application):
             session_timeout=1800,
             store_options={
                 'redis_host': '127.0.0.1',
-                'redis_port': 6380,
+                'redis_port': 6379,
                 'redis_pass': 'redis123',
             },
-            record_of_one_page=15,
+            record_of_one_page=10,
+            # ui_modules={
+            #     "VideosListDisplay": VideosListDisplay,
+            #     "ParticipantsListDisplay": ParticipantListDisplay,
+            # }
         )
 
         self.settings = settings

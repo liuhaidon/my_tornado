@@ -95,7 +95,7 @@ class AdminSysUsers(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=11, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
+        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=11, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminAddSysUser(BaseHandler):
@@ -242,18 +242,19 @@ class AdminContents(BaseHandler):
     @BaseHandler.admin_authed
     def get(self):
         page = int(self.get_argument("page", 1))
-        pagesize = int(self.get_argument("pagesize", "10"))
+        pagesize = self.application.settings["record_of_one_page"]
 
         skiprecord = pagesize * (page - 1)
-        rightlist = self.application.dbutil.getPermissions(skiprecord, pagesize)
+        rightlist = self.application.dbutil.getContents(skiprecord, pagesize)
 
-        count = self.application.dbutil.getAllPermissions()
+        count = self.application.dbutil.getAllContents()
         pages = count / pagesize
         if count % pagesize > 0:
             pages += 1
 
-        self.render("backend/right_query.html", myuser=self.admin, admin_nav=12, right_list=rightlist, page=page,
+        self.render("backend/study_content_query.html", myuser=self.admin, admin_nav=12, right_list=rightlist, page=page,
                     pagesize=pagesize, pages=pages, count=count)
+
 
 
 
