@@ -65,14 +65,14 @@
         <div id="menu_playing">
             {% for k,x in enumerate(videos) %}
             <div class="menu_list" onclick="playvideo(this,{{k}});" data-dt="{{ json_encode(x) }}">
-                <img class="menu_list_img" src="/static/media/video_img/{{x.get('poster')}}" />
+                <img class="menu_list_img" src="/static/media/video_img/d0be2b7c-e54f-4990-92a7-37c28017eaa4.jpg}}" />
                 <div class="right">
-                    <div class="title">{{x.get("title")}}</div>
-                    <div class="author">{{x.get("userid")}}</div>
+                    <div class="title">标题</div>
+                        <div class="author">标题</div>
                     <div class="reading_time">
                         <div class="reading">
                             <img src="/static/images/视频_03.png" />
-                            <div class="reading_wb">{{x.get("visit")}}</div>
+                            <div class="reading_wb">点击数量</div>
                         </div>
                         <div class="bofang_wb">00:00播放</div>
                     </div>
@@ -99,7 +99,6 @@
                     alert('erroe');
                 }
             });
-
     };
 </script>
 {% end %}
