@@ -7,10 +7,9 @@ from view import *
 class index(BaseHandler):
     def get(self):
         store = dict()
-        print "store",store
-        store["playlist"] = [{"post":"ccc"}]
-        self.render("frontend/video.html", myuser=store)
-        print "ninini"
+        store["playlist"] = [{"post": "ccc"}]
+        return self.render("frontend/video.html", myuser=store)
+
 
 class user_login(BaseHandler):
     """登录页"""

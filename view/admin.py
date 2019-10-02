@@ -84,6 +84,7 @@ class AdminSysUsers(BaseHandler):
         current_page = int(self.get_argument("page", 1))
         # 每页显示多少条记录
         pagesize = int(self.get_argument("pagesize", "1"))
+        pagesize = self.application.settings["record_of_one_page"]
 
         skiprecord = pagesize * (current_page - 1)
         user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
