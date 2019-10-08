@@ -7,15 +7,17 @@ import re
 # print result
 # re.search(r'y','liuyan1').group() #返回y
 
+def introduction(name,age,hobby="runing"):
+    intro ="My name is %s,I'm %d years old,my hobby is %s."%(name,age,hobby)
+    print(intro)
 
-def main(name, *args):
-    print name, args, type(args)
+introduction("Amanda",23)
+#而给默认参数传值时，则覆盖
+introduction("Amanda",age=23,hobby="eating")
+
+def main(name, score=60, *args, **kwargs):
+    print name, score, args, kwargs
     return "success!!!"
-main("张三", "男", "playgame")
-main("张三", {"sex": "男"}, "dancing")
-main("张三", ["hello", "world"], "dancing")
-main("张三", *["hello", "world"])
-main("张三", *"hello")
-
-**kwargs表示创建一个名为 kwargs 的空字典，该字典可接受任意多个外界传入的关键字实参。
-kwargs 字典将多于的实参，以关键字参数的形式传入，以字典的形式接收。
+main("张三", sex="男")          # 不给默认参数传值时，默认使用默认参数值
+main("张三", 80, sex="男")      # 而给默认参数传值时，则覆盖
+main("张三", 80, 90, sex="男")
