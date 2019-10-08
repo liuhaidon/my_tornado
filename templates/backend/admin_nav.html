@@ -28,6 +28,13 @@
             </li>
 
             <li>
+                <a href="#"><i class="fa fa-home"></i> <span class="nav-label">记录管理</span> <span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
+                    <li><a href='/admin/login/records'>登陆记录</a></li>
+                </ul>
+            </li>
+
+            <li>
                 <a href="/admin/sysusers"><i class="fa fa-user"></i> <span class="nav-label">用户管理</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
                     {% if myuser.get('role') == "admin" %}
@@ -49,23 +56,23 @@
                 <a href="/admin/keywords"><i class="fa fa-film"></i> <span class="nav-label">媒体管理</span> <span
                         class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <li><a href="/admin/media">媒体列表</a></li>
+                    <li><a href="/admin/contents">媒体列表</a></li>
                 </ul>
             </li>
 
             <li>
-                <a href="/admin/ip_pool"><i class="fa fa-th-large"></i> <span class="nav-label">IP池管理</span> <span
-                        class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">商品管理</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <li><a href=/admin/ip_pool>IP池列表</a></li>
+                    <li><a href=/admin/shops>商品列表</a></li>
+                    <li><a href=/admin/orders>订单列表</a></li>
                 </ul>
             </li>
           
             <li>
-                <a href="/admin/logings"><i class="fa fa-gear"></i> <span class="nav-label">日志管理</span> <span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-gear"></i> <span class="nav-label">系统公告</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <li><a href='/admin/operate/record'>操作记录</a></li>
-                    <li><a href='/admin/landing/record'>登陆记录</a></li>
+                    <li><a href="/admin/notices">公告列表</a></li>
+                    <li><a href="/admin/schedules">下发任务列表</a></li>
                 </ul>
             </li>
         </ul>
@@ -188,7 +195,7 @@
             $(this).parent().parent().addClass("in");
             $(this).parent().parent().addClass("active");
         })
-         
+
     });
 </script>
 

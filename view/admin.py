@@ -1,6 +1,6 @@
 # encoding:utf-8
 import json
-from logger import *
+from utils.logger import *
 from passlib.hash import pbkdf2_sha512
 
 from tornado.escape import json_encode,json_decode
@@ -84,6 +84,7 @@ class AdminSysUsers(BaseHandler):
         current_page = int(self.get_argument("page", 1))
         # 每页显示多少条记录
         pagesize = int(self.get_argument("pagesize", "1"))
+        pagesize = self.application.settings["record_of_one_page"]
 
         skiprecord = pagesize * (current_page - 1)
         user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
@@ -95,7 +96,7 @@ class AdminSysUsers(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=11, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
+        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=21, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminAddSysUser(BaseHandler):
@@ -201,7 +202,7 @@ class AdminPermissions(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        self.render("backend/right_query.html", myuser=self.admin, admin_nav=12, right_list=rightlist, page=page,
+        self.render("backend/right_query.html", myuser=self.admin, admin_nav=22, right_list=rightlist, page=page,
                     pagesize=pagesize, pages=pages, count=count)
 
 
@@ -242,42 +243,15 @@ class AdminContents(BaseHandler):
     @BaseHandler.admin_authed
     def get(self):
         page = int(self.get_argument("page", 1))
-        pagesize = int(self.get_argument("pagesize", "10"))
+        pagesize = self.application.settings["record_of_one_page"]
 
         skiprecord = pagesize * (page - 1)
-        rightlist = self.application.dbutil.getPermissions(skiprecord, pagesize)
+        rightlist = self.application.dbutil.getContents(skiprecord, pagesize)
 
-        count = self.application.dbutil.getAllPermissions()
+        count = self.application.dbutil.getAllContents()
         pages = count / pagesize
         if count % pagesize > 0:
             pages += 1
 
-        self.render("backend/right_query.html", myuser=self.admin, admin_nav=12, right_list=rightlist, page=page,
+        self.render("backend/study_content_query.html", myuser=self.admin, admin_nav=22, right_list=rightlist, page=page,
                     pagesize=pagesize, pages=pages, count=count)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

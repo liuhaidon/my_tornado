@@ -5,9 +5,11 @@ from view import *
 
 
 class index(BaseHandler):
-    @BaseHandler.authenticated
     def get(self):
-        pass
+        store = dict()
+        store["playlist"] = [{"post": "ccc"}]
+        return self.render("frontend/video.html", myuser=store)
+
 
 class user_login(BaseHandler):
     """登录页"""
@@ -31,23 +33,22 @@ class user_login(BaseHandler):
         pass
 
     def post(self):
-        print (self.request.arguments)
+        print self.request.arguments
         userid = self.get_argument('account', None)
         pwd = self.get_argument('passwd', None)
         url = self.get_argument('url', None)
-        print userid,pwd,url
-        # arguments = self.request.arguments
+        print userid, pwd, url
 
         # print arguments.get('_xsrf', '')[0]
         # info = {}
         # if not mobile  or not pwd or arguments.get('_xsrf', '')[0] == '':
-        if not userid or not pwd:
-            return self.render("frontend/login.html", url=url, error=u"登录异常", myuser={"loginid": userid})
 
-        res = self.begin_frontend_session(userid, pwd)
-        print "sse==>", res
-        if not res:
-            return self.render("frontend/login.html", url=url, error=u"用户名或密码不正确", myuser={"loginid": userid})
+        # if not userid or not pwd:
+        #     return self.render("frontend/login.html", url=url, error=u"登录异常", myuser={"loginid": userid})
+
+        # res = self.begin_frontend_session(userid, pwd)
+        # if not res:
+        #     return self.render("frontend/login.html", url=url, error=u"用户名或密码不正确", myuser={"loginid": userid})
 
         print "url is ", url
         if url:

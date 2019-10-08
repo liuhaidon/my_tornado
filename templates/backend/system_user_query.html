@@ -81,6 +81,7 @@
                                         <th>用户名</th>
                                         <th>角色</th>
                                         <th>注册时间</th>
+                                        <th>用户状态</th>
                                         <th>修改密码</th>
                                         <th>权限</th>
                                     </tr>
@@ -93,6 +94,7 @@
                                         <td><a href="/admin/sysuser/{{ u.get('userid') }}">{{ u.get('username','') }}</a></td>
                                         <td>{{ u.get('role','') }}</td>
                                         <td>{{ u.get('createdat','') }}</td>
+                                        <td>{{ u.get('status',None) }}</td>
                                         <td><a class="btn btn-primary" onclick="repass(this,'{{u.get('''userid''')}}')">修改密码</a></td>
                                         <td><a class="btn btn-primary" onclick="test(this, '{{u.get('''userid''')}}', '{{ u.get('''username''')}}')">绑定</a></td>
                                     </tr>
