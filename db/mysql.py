@@ -276,6 +276,27 @@ class DBUtil:
             flag = False
         return flag
 
+    def getContents(self,m,n):
+        sql = 'select * from tb_media order by mid desc limit %s,%s'
+        params = (m, n)
+        self.cursor.execute(sql, params)
+        result = self.cursor.fetchall()
+        domainlist = []
+        for b in result:
+            info = {}
+            info['dmid'] = b[0]
+            info['image'] = b[1]
+            info['video'] = b[2]
+            info['content'] = b[3]
+            domainlist.append(info)
+        return domainlist
+
+    def getAllContents(self):
+        sql = 'select count(*) from tb_media'
+        self.cursor.execute(sql)
+        count = self.cursor.fetchone()
+        return count[0]
+
     def getDomains(self, m, n):
         # sql = 'select * from tb_domain where type is not null limit %s,%s' % (m, n)
         sql = 'select * from tb_domain where type is not null order by dmid desc limit %s,%s'

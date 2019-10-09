@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}内容管理{% end %}
 {% block content %}
+<script type="text/javascript" src="{{ static_url('plupload/js/plupload.full.min.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('ueditor/ueditor.config.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('ueditor/ueditor.all.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('ueditor/ueditor.parse.js') }}"></script>
@@ -63,7 +64,6 @@
     <!--});-->
 <!--</script>-->
 
-<script type="text/javascript" src="{{ static_url('plupload/js/plupload.full.min.js') }}"></script>
 <div class="pace  pace-inactive">
     <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
         <div class="pace-progress-inner"></div>
@@ -100,7 +100,7 @@
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>内容列表
-                                <small>共计：{{ contents.count() }}</small>
+                                <small>共计：{{ count }}</small>
                                 <div style="display:inline;">
                                 <a href="/admin/study/contents?page={{ page-1 if page> 1 else 1 }}"><span>上一页</span></a>
                                 {% if pages < 10 %}
@@ -297,6 +297,15 @@
                                                     <textarea class="form-control" name="brief" id="brief" cols=10 rows=6 placeholder="不多于256个字"></textarea>
                                                     <p class="showInfo"></p>
 
+                                                    <label>上传图片：</label>
+                                                    <a class="btn new_btn-w-m btn-primary" href="javascript:void(0);" id="index_image" name="index_image">上传图标
+                                                        <span id="Progress2" style=" opacity: 0.6;z-index:10; position: absolute; bottom: 0; left: 0; height: 100%; width: 0%; display: block; background-color: #003399"></span>
+                                                    </a>
+                                                    <input type="text" name="image" id="image_url" style="display: none">
+                                                    <span>支持jpg、jpeg、png、gif格式，大小不超过2M.建议尺寸：16X16</span>
+                                                    <img id="poster" src="" style="margin-top: 10px;max-width: 400px;width: 100%;">
+                                                    <p class="showInfo"></p>
+
                                                     <label>上传视频：</label>
                                                     <input type="text" name="video_url" id="video_url" style="display: none">
                                                     <button class="btn new_btn-w-m btn-primary" href="#" id="video_upload_btn">上传视频
@@ -314,32 +323,16 @@
                                                     <!--<textarea class="form-control" name="detail" id="detail" rows="10" cols="76" placeholder="不多于256个字"></textarea>-->
                                                     <p class="showInfo"></p>
 
-                                                    <label>归属分类：</label>
-                                                    <select id="category" name="category" class="form-control" >
-                                                        {% for c in categories %}
-                                                        <option value="{{ c.get('title') }}">{{ c.get('title') }}</option>
-                                                        {% end %}
-                                                    </select>
-                                                    <p class="showInfo"></p>
+                                                    <!--<label>归属分类：</label>-->
+                                                    <!--<select id="category" name="category" class="form-control" >-->
+                                                        <!--{% for c in categories %}-->
+                                                        <!--<option value="{{ c.get('title') }}">{{ c.get('title') }}</option>-->
+                                                        <!--{% end %}-->
+                                                    <!--</select>-->
+                                                    <!--<p class="showInfo"></p>-->
 
-                                                    <label>分类标签：</label>
-                                                    <input class="form-control" placeholder="不多于32个字" name="tag" id="tag">
-                                                    <p class="showInfo"></p>
-
-                                                    <label>人物海报：</label>
-                                                    <a class="btn new_btn-w-m btn-primary" href="javascript:void(0);" id="index_image" name="index_image">上传图标</a>
-                                                    <input type="text" name="icon" id="image_url" style="display: none">
-                                                    <span>支持jpg、jpeg、png、gif格式，大小不超过2M.建议尺寸：640X480</span>
-                                                    <p class="showInfo"></p>
-                                                    <img id="poster" src="" style="margin-top: 10px;max-width: 400px;width: 100%;">
-                                                    <p class="showInfo"></p>
-
-                                                    <label>人物名称：</label>
-                                                    <input class="form-control" placeholder="不多于32个字" name="postname" id="postname">
-                                                    <p class="showInfo"></p>
-
-                                                    <label>阅读量：</label>
-                                                    <input class="form-control" placeholder="" name="reading" id="reading">
+                                                    <label>视频点击量：</label>
+                                                    <input class="form-control" placeholder="不多于32个字" name="reading" id="reading">
                                                     <p class="showInfo"></p>
                                                 </p>
                                             </div>
@@ -365,55 +358,49 @@
 
 <script>
 $(function () {
-    var trs = $("td[class='userListId']")
+    var trs = $("td[class='userListId']");
     for (i = 0; i < trs.length; i++) {
         trs[i].style.display = "none";
     }
 
     // editor.sync();
-    var uploader = new plupload.Uploader({
+    var uploader_image  = new plupload.Uploader({
         browse_button: 'index_image',
         url: "/ajax/upload_image?path=study_img",
-
         filters: {
-          max_file_size : '4mb',
-          prevent_duplicates : true,
+            max_file_size : '4mb',     // 最大上传文件大小（格式100b, 10kb, 10mb, 1gb）
+            prevent_duplicates : true,
+            mime_types: [              // 允许文件上传类型
+                {title: "files", extensions: "jpg,png,gif,jpeg"}
+            ]
         },
         multipart_params: {
             '_xsrf': $("input[name='_xsrf']").val()
+        },
+        init:{
+            FilesAdded:function(up, files) {        // 文件添加后立即上传
+                plupload.each(files, function (file) {
+                    uploader_image.start();
+                });
+            },
+            UploadProgress: function(up, file) {    // 上传中显示进度条
+                $('#Progress2').css('width', file.percent+'%');
+            },
+            FileUploaded:function(up, file, info) { // 上传内容图片
+                var base = '/static/media/study_img/';
+                var response = $.parseJSON(info.response);
+                if (response.status == 'ok') {
+                    $("#poster").show().attr("src", base + response.name);
+                    $("#image_url").val(response.name);
+                }
+                else {alert(response.error);}
+            },
+            Error:function(up, errObject) {
+                alert(errObject.code+errObject.message);
+            },
         }
     });
-
-    uploader.init();
-//        console.log(uploader);
-
-    // 文件添加后立即上传
-    uploader.bind('FilesAdded', function (up, files) {
-        plupload.each(files, function (file) {
-            uploader.start();
-        });
-    });
-
-    // 上传内容图片
-    uploader.bind('FileUploaded', function (up, file, info) {
-        var base = '/static/media/study_img/';
-        var response = $.parseJSON(info.response);
-        if (response.status == 'ok') {
-            $("#poster").show().attr("src", base + response.name);
-            $("#image_url").val(response.name);
-        }
-        else {
-            alert(response.error);
-        }
-    });
-
-    uploader.bind('UploadProgress',function(up,file){
-        $('#Progress').css('width', file.percent+'%');
-    });
-
-    uploader.bind('Error', function (up, errObject) {
-        alert(errObject.code+errObject.message);
-    });
+    uploader_image.init();
 
     var uploader_video = new plupload.Uploader({//创建实例的构造方法
         runtimes: 'gears,html5,html4,silverlight,flash', //上传插件初始化选用那种方式的优先级顺序

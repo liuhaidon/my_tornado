@@ -246,12 +246,13 @@ class AdminContents(BaseHandler):
         pagesize = self.application.settings["record_of_one_page"]
 
         skiprecord = pagesize * (page - 1)
-        rightlist = self.application.dbutil.getContents(skiprecord, pagesize)
+        contents = self.application.dbutil.getContents(skiprecord, pagesize)
 
         count = self.application.dbutil.getAllContents()
         pages = count / pagesize
         if count % pagesize > 0:
             pages += 1
+        categories = []
 
-        self.render("backend/study_content_query.html", myuser=self.admin, admin_nav=22, right_list=rightlist, page=page,
-                    pagesize=pagesize, pages=pages, count=count)
+        self.render("backend/study_content_query.html", myuser=self.admin, admin_nav=41, contents=contents, page=page,
+                    pagesize=pagesize, pages=pages, count=count,categories=categories)

@@ -49,11 +49,15 @@ class Application(tornado.web.Application):
             (r"/admin/permission/add", AdminAddPermission),
             (r"/admin/permission/delete", AdminDeletePermission),
 
-            (r"/admin/contents", AdminContents),
+            (r"/admin/media/contents", AdminContents),
 
             (r"/ajax/sysuser/find", AjaxFindSysUser),
             (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
             (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
+
+            (r"/ajax/upload_image", UploadImageFile),
+            (r"/ajax/upload_video", UploadVideoFile),
+            # (r"/admin/study/ueditor/upload", RemotePictureHandler),
         ]
         self.dbutil = DBUtil()
         self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "loginid")
