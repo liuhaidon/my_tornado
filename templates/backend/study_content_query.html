@@ -5,29 +5,33 @@
 <script type="text/javascript" src="{{ static_url('ueditor/ueditor.config.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('ueditor/ueditor.all.js') }}"></script>
 <script type="text/javascript" src="{{ static_url('ueditor/ueditor.parse.js') }}"></script>
-<script type="text/javascript" src="{{ static_url('ueditor/lang/zh-cn/zh-CN.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('ueditor/lang/zh-cn/zh-cn.js') }}"></script>
 <!--<script type="text/javascript" src="{{ static_url('kindeditor-4.1.11/kindeditor-all.js') }}"></script>-->
 <!--<script type="text/javascript" src="{{ static_url('kindeditor-4.1.11/kindeditor-all-min.js') }}"></script>-->
 <!--<script type="text/javascript" src="{{ static_url('kindeditor-4.1.11/lang/zh-CN.js') }}"></script>-->
 <script>
     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
-    //相见文档配置属于你自己的编译器
-    //  $(function(){
-        var ue = UE.getEditor('editor', {
-            initialFrameHeight: 300,
-            initialFrameWeight: 100,
-
-            // toolbars: [
-            //      ['fullscreen', 'source', 'undo', 'redo', 'bold']
-            //
-            // ],
-        });
-        ue.ready(function () {
-            ue.setContent("我是初始内容...");
-        });
-    // })
+    var ue = UE.getEditor('editor', {
+        initialFrameHeight: 300,
+        initialFrameWeight: 100,
+        // toolbars: [
+        //      ['fullscreen', 'source', 'undo', 'redo', 'bold']
+        //
+        // ],
+    });
+    UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+    UE.Editor.prototype.getActionUrl = function(action) {
+        if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadvideo') {
+            return '/admin/upload?action='+action;
+        } else {
+            return this._bkGetActionUrl.call(this, action);
+        }
+    };
+    //初始化编辑器 （该处用于设置编辑器回显值）
+    ue.ready(function () {
+        ue.setContent("我是初始内容...");
+    });
 </script>
-
 <!--<script type="text/javascript">-->
     <!--KindEditor.ready(function (K) {-->
         <!--window.editor = K.create('#detail', {-->
@@ -294,7 +298,7 @@
                                                     <p class="showInfo"></p>
 
                                                     <label>内容简介：</label>
-                                                    <textarea class="form-control" name="brief" id="brief" cols=10 rows=6 placeholder="不多于256个字"></textarea>
+                                                    <textarea class="form-control" name="brief" id="brief" cols=5 rows=5 placeholder="不多于256个字"></textarea>
                                                     <p class="showInfo"></p>
 
                                                     <label>上传图片：</label>
@@ -318,9 +322,7 @@
                                                     <p class="showInfo"></p>
 
                                                     <label>内容详情：</label>
-                                                    <script id="editor" type="text/plain" name="content"></script>
-                                                    <!--<label>内容详情：</label>-->
-                                                    <!--<textarea class="form-control" name="detail" id="detail" rows="10" cols="76" placeholder="不多于256个字"></textarea>-->
+                                                    <script id="editor" type="text/plain" name="editor"></script>
                                                     <p class="showInfo"></p>
 
                                                     <!--<label>归属分类：</label>-->
@@ -330,6 +332,11 @@
                                                         <!--{% end %}-->
                                                     <!--</select>-->
                                                     <!--<p class="showInfo"></p>-->
+
+                                                    <label>创建时间：</label>
+                                                    <input class="form-control" placeholder="生效时间" id="begin" name="begin"
+                                                           onclick="WdatePicker({lang:'zh-cn', dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                                    <p class="showInfo"></p>
 
                                                     <label>视频点击量：</label>
                                                     <input class="form-control" placeholder="不多于32个字" name="reading" id="reading">

@@ -203,16 +203,16 @@ class BaseHandler(tornado.web.RequestHandler):
             if not self.session.get('sysid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_admin_login_url()
-                    print "url1===>", url
+                    # print "url1===>", url
                     if "?" not in url:
                         if urlparse.urlsplit(url).scheme:
                             # if login url is absolute, make next absolute too
                             next_url = self.request.full_url()
                         else:
                             next_url = self.request.uri
-                        print "next_url===>", next_url
+                        # print "next_url===>", next_url
                         url += "?" + urlencode(dict(next=next_url))
-                    print "url2===>", url
+                    # print "url2===>", url
                     self.redirect(url)
                     return
                 raise HTTPError(403)
