@@ -56,16 +56,16 @@ class Application(tornado.web.Application):
             (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
             (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
 
-            (r"/ajax/upload_image", UploadImageFile),
-            (r"/ajax/upload_video", UploadVideoFile),
-            (r"/admin/media/upload", RemotePictureHandler),
+            (r"/ajax/upload_image", UploadImageFile),        # 上传图片
+            (r"/ajax/upload_video", UploadVideoFile),        # 上传视频
+            (r"/admin/media/upload", RemotePictureHandler)   # 上传富文本：还要改动html页面与ueditor.py页面
         ]
         self.dbutil = DBUtil()
         self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "loginid")
         self.backend_auth = MongoAuthentication("ads", "tb_system_user", "userid")
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
-            # xsrf_cookies=True,
+            xsrf_cookies=True,
             login_url='/login',
             admin_login_url="/admin/login",
             template_path=os.path.join(os.path.dirname(__file__), "templates"),

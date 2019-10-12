@@ -22,10 +22,13 @@ class RemotePictureHandler(tornado.web.RequestHandler):
     def options(self, *args, **kwargs):
         self.upload(args, kwargs)
 
+    def check_xsrf_cookie(self):
+        _xsrf = self.get_argument("_xsrf", None)
+        print "_xsrf===>", _xsrf
+
     def upload(self,*args, **kwargs):
         """UEditor文件上传接口； config 配置文件； result 返回结果"""
-        static_path = self.settings['static_path']
-        print "static_path===>", static_path
+        # static_path = self.settings['static_path']
         static_path = self.application.settings["static_path"]
         mimetype = 'application/json'
         result = {}
@@ -355,7 +358,7 @@ class Uploader:
         filename = re.sub(r'^/', '', self.fullName)
         return {
             'state': self.stateInfo,
-            'url': os.path.join('http://127.0.0.1:8800','static',filename),
+            'url': os.path.join('http://127.0.0.1:8066', 'static', filename),
             # 'url': os.path.join("http://", host, 'static', filename),
             'title': self.oriName,
             'original': self.oriName,
