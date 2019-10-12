@@ -12,28 +12,27 @@ import tornado.web
 # from conf.settings import static_path
 from werkzeug.utils import secure_filename
 
-static_path = self.application.settings["static_path"]
 class RemotePictureHandler(tornado.web.RequestHandler):
     def post(self, *args, **kwargs):
-        print "post===》"
+        print "post===》",self.request.uri
         self.upload(args, kwargs)
     def get(self, *args, **kwargs):
-        print "get===》"
+        print "get===》",self.request.uri
         self.upload(args, kwargs)
     def options(self, *args, **kwargs):
         self.upload(args, kwargs)
 
     def upload(self,*args, **kwargs):
-        """UEditor文件上传接口
-        config 配置文件
-        result 返回结果
-        """
+        """UEditor文件上传接口； config 配置文件； result 返回结果"""
+        static_path = self.settings['static_path']
+        print "static_path===>", static_path
+        static_path = self.application.settings["static_path"]
         mimetype = 'application/json'
         result = {}
         action = self.get_argument('action')
 
         # 解析JSON格式的配置文件
-        with open(os.path.join(static_path, 'Widget','ueditor','1.4.3', 'php', 'config.json')) as fp:
+        with open(os.path.join(static_path, 'ueditor', 'php', 'config.json')) as fp:
             try:
                 # 删除 `/**/` 之间的注释
                 CONFIG = json.loads(re.sub(r'\/\*.*\*\/', '', fp.read()))
@@ -70,6 +69,7 @@ class RemotePictureHandler(tornado.web.RequestHandler):
 
             if fieldName in self.request.files:
                 field = self.request.files[fieldName]
+                host = self.request.host
                 for fieldsss in field:
                     uploader = Uploader(fieldsss, config, static_path)
                     result = uploader.getFileInfo()
@@ -145,7 +145,6 @@ class RemotePictureHandler(tornado.web.RequestHandler):
 
 
 class Uploader:
-
     stateMap = [  # 上传状态映射表，国际化用户需考虑此处数据的国际化
         "SUCCESS",  # 上传成功标记，在UEditor中内不可改变，否则flash判断会出错
         "文件大小超出 upload_max_filesize 限制",
@@ -357,6 +356,7 @@ class Uploader:
         return {
             'state': self.stateInfo,
             'url': os.path.join('http://127.0.0.1:8800','static',filename),
+            # 'url': os.path.join("http://", host, 'static', filename),
             'title': self.oriName,
             'original': self.oriName,
             'type': self.fileType,

@@ -9,6 +9,7 @@ from view.ajax import *
 from view.front import *
 from db.mysql import DBUtil
 from utils.session import *
+from utils.ueditor import *
 
 from session.session import MongoSessions
 from session.auth import MongoAuthentication
@@ -57,14 +58,14 @@ class Application(tornado.web.Application):
 
             (r"/ajax/upload_image", UploadImageFile),
             (r"/ajax/upload_video", UploadVideoFile),
-            # (r"/admin/study/ueditor/upload", RemotePictureHandler),
+            (r"/admin/media/upload", RemotePictureHandler),
         ]
         self.dbutil = DBUtil()
         self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "loginid")
         self.backend_auth = MongoAuthentication("ads", "tb_system_user", "userid")
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
-            xsrf_cookies=True,
+            # xsrf_cookies=True,
             login_url='/login',
             admin_login_url="/admin/login",
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
