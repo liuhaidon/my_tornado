@@ -20,9 +20,9 @@
         // ],
     });
     UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
-    UE.Editor.prototype.getActionUrl = function(action) {
-        if (action == 'uploadimage' || action == 'uploadscrawl' || action == 'uploadvideo') {
-            return '/admin/upload?action='+action;
+    UE.Editor.prototype.getActionUrl = function(action) {uploadscrawl
+        if (action == 'uploadimage' || action == 'uploadvideo' || action == 'uploadscrawl') {
+            return '/admin/media/upload?action='+action;
         } else {
             return this._bkGetActionUrl.call(this, action);
         }
