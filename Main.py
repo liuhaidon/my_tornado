@@ -10,6 +10,7 @@ from view.front import *
 from db.mysql import DBUtil
 from utils.session import *
 from utils.ueditor import *
+from utils.pay import *
 
 from session.session import MongoSessions
 from session.auth import MongoAuthentication
@@ -58,7 +59,12 @@ class Application(tornado.web.Application):
 
             (r"/ajax/upload_image", UploadImageFile),        # 上传图片
             (r"/ajax/upload_video", UploadVideoFile),        # 上传视频
-            (r"/admin/media/upload", RemotePictureHandler)   # 上传富文本：还要改动html页面与ueditor.py页面
+            (r"/admin/media/upload", RemotePictureHandler),   # 上传富文本：还要改动html页面与ueditor.py页面
+
+            (r"/hehe", AdminIndex),
+            (r"/pay", AdminPay),
+            (r"/aysic", AdminAysic),
+            (r"/result", AdminResult),
         ]
         self.dbutil = DBUtil()
         self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "loginid")

@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="dist/css/bootstrap.css">
 </head>
 <body>
-    <h1>python!!! Welcome back, {{ user }}</h1>
+    <form action="/pay" method="POST">
+        {% module xsrf_form_html() %}
+        <input type="text" name="money">
+        <input type="submit" value="去支付" />
+    </form>
+<script></script>
 </body>
 </html>
