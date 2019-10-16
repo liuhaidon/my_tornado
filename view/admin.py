@@ -45,7 +45,9 @@ class AdminLoginHandler(BaseHandler):
         ip_info = self.request.remote_ip
         # logger().info("登陆用户：%s===>" % (name))
         username = "登陆用户：" + username
-        self.application.dbutil.login(username, ip_info)
+        atime = time.strftime("%Y-%m-%d %H:%M:%S")
+        sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % (username, ip_info, atime)
+        self.application.dbutil.execute(sql)
         if url == '/admin/login':
             self.redirect('/admin/home')
         else:
@@ -72,7 +74,7 @@ class AdminHomeHandler(BaseHandler):
     @BaseHandler.admin_authed
     def get(self):
         # myuser = self.get_cookie("username")
-        print "self.admin===>", self.admin
+        # print "self.admin===>", self.admin
         self.render("backend/home.html", myuser=self.admin, admin_nav=0)
 
 

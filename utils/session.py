@@ -42,7 +42,7 @@ class Session(SessionData):
         # print "第一次访问,先访问BaseHandler===>", self.session_id, self.hmac_key
 
     def save(self):
-        print "save===>", self
+        # print "save===>", self
         self.session_manager.set(self.request_handler, self)
 
 

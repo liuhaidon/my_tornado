@@ -41,18 +41,22 @@ class DBUtil:
         else:
             return False
 
-    def login(self, name, ip_info):
-        flag = True
-        atime = time.strftime("%Y-%m-%d %H:%M:%S")
+    # 执行SQL语句返回受影响行
+    def execute(self, sql):
         try:
-            sql = "insert into tb_login values(null, '%s', '%s', '%s')" % (name, ip_info, atime)
-            self.cursor.execute(sql)
+            result = self.cursor.execute(sql)
             self.connection.commit()
-        except:
+            self.close()
+            print result
+            return result
+        except Exception as ex:
             self.connection.rollback()
-            flag = False
-        print "flag===>", flag
-        return flag
+            return ex
+
+    # 关闭数据库连接
+    def close(self):
+        self.cursor.close()
+        self.connection.close()
 
     def getUsers(self, m, n):
         # sql = 'select * from tb_user limit %s, %s' % (m, n)
