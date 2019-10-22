@@ -12,8 +12,6 @@ import time
 class AdminLoginHandler(BaseHandler):
     """登录"""
     def get(self):
-        # print self.request.arguments
-        # print self.request.headers
         nexts = self.request.arguments.get("next")
         referer_url = '/admin/home'
         if 'Referer' in self.request.headers:
@@ -31,7 +29,7 @@ class AdminLoginHandler(BaseHandler):
         self.render("backend/login.html", url=next, error=error)
 
     def post(self, *args, **kwargs):
-        # print self.request.arguments
+        # print self.request.arguments, self.request.headers
         self.logging.info(('LoginHandler argument %s') % (self.request.arguments))
         url, pwd, username = (value[0] for key, value in self.request.arguments.items() if key != '_xsrf'
                           and key != 'checkbox')
@@ -48,10 +46,12 @@ class AdminLoginHandler(BaseHandler):
         atime = time.strftime("%Y-%m-%d %H:%M:%S")
         sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % (username, ip_info, atime)
         self.application.dbutil.execute(sql)
-        if url == '/admin/login':
+        self.set_cookie('username', username, expires=time.time() + 60, httponly=True, max_age=120)  # 设置过期时间为60秒
+        self.set_cookie('username', username, expires_days=1, path="/")   # 设置过期时间为1天，设置路径,限定哪些内容需要发送cookie,/表示全部
+        self.set_secure_cookie('username', username)  # 设置一个加密的cookie,但是必须在application里面添加cookie_secret值
+        if url=='/admin/login':
             self.redirect('/admin/home')
         else:
-            self.set_cookie("username", username)
             self.redirect(url)
 
     def check_xsrf_cookie(self):
@@ -74,7 +74,6 @@ class AdminHomeHandler(BaseHandler):
     @BaseHandler.admin_authed
     def get(self):
         # myuser = self.get_cookie("username")
-        # print "self.admin===>", self.admin
         self.render("backend/home.html", myuser=self.admin, admin_nav=0)
 
 

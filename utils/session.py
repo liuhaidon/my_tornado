@@ -76,13 +76,11 @@ class SessionManager(object):
         if (request_handler == None):
             session_id = self._generate_id()
             hmac_key = self._generate_hmac(session_id)
-            # print "session_id2=", session_id
-            # print "hmac_key==>", hmac_key
+            # print "session_id2=", session_id, hmac_key
             return SessionData(session_id, hmac_key)
 
         session_id = request_handler.get_secure_cookie("session_id")
         hmac_key = request_handler.get_secure_cookie("verification")
-
         if not session_id:
             session_id = self._generate_id()
             hmac_key = self._generate_hmac(session_id)
@@ -96,7 +94,6 @@ class SessionManager(object):
         session_data = self._fetch(session_id)
         for key, data in session_data.iteritems():
             session[key] = data
-
         return session
 
     def set(self, request_handler, session):
@@ -104,11 +101,8 @@ class SessionManager(object):
         request_handler.set_secure_cookie("session_id", session.session_id)
         request_handler.set_secure_cookie("verification", session.hmac_key)
 
-        # print session.items()
         session_data = ujson.dumps(dict(session.items()))
-
         self.redis.setex(session.session_id, self.session_timeout, session_data)
-        # print "sessionmgr set=", session.session_id, session_data
 
     def _generate_id(self):
         return hashlib.sha256(self.secret + str(uuid.uuid4())).hexdigest()
