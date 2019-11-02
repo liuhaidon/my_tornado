@@ -172,11 +172,15 @@ class BaseHandler(tornado.web.RequestHandler):
         self.session['sysid'] = None
         self.session.save()
 
+    def get_login_url(self):
+        self.require_setting("login_url", "@authenticated")   # @tornado.web.authenticated
+        return self.application.settings["login_url"]
+
     @classmethod
     def authenticated(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
-            print "session值1===>",self.session
+            # if not self.current_user:
             if not self.session.get('loginid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_login_url()
@@ -203,16 +207,13 @@ class BaseHandler(tornado.web.RequestHandler):
             if not self.session.get('sysid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_admin_login_url()
-                    # print "url1===>", url
                     if "?" not in url:
                         if urlparse.urlsplit(url).scheme:
                             # if login url is absolute, make next absolute too
                             next_url = self.request.full_url()
                         else:
                             next_url = self.request.uri
-                        # print "next_url===>", next_url
                         url += "?" + urlencode(dict(next=next_url))
-                    # print "url2===>", url
                     self.redirect(url)
                     return
                 raise HTTPError(403)
