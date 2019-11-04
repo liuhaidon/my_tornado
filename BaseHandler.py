@@ -180,7 +180,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def authenticated(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
-            # if not self.current_user:
+            # if not self.get_current_user:
             if not self.session.get('loginid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_login_url()
