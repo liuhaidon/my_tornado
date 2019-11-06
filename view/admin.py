@@ -77,6 +77,30 @@ class AdminHomeHandler(BaseHandler):
         self.render("backend/home.html", myuser=self.admin, admin_nav=0)
 
 
+class AdminLanding(BaseHandler):
+    """用户登陆记录查询"""
+    @BaseHandler.admin_authed
+    def get(self):
+        current_page = int(self.get_argument("page", 1))
+        pagesize = self.application.settings["record_of_one_page"]
+        pagesize = int(self.get_argument("pagesize", "10"))
+
+        skiprecord = pagesize * (current_page - 1)
+        login_list = self.application.dbutil.getLoginRecord(skiprecord, pagesize)
+
+        count = self.application.dbutil.getAllLoginRecord()
+        pages = count / pagesize
+        if count % pagesize > 0:
+            pages += 1
+
+        # myuser = self.get_cookie("username")
+        myuser = self.admin
+        permission = self.permission
+        if not permission:
+            permission = []
+        self.render("backend/login_record.html", myuser=myuser, admin_nav=52, login_list=login_list, page=page,
+                    pagesize=pagesize, pages=pages, count=count, permission=permission)
+
 class AdminSysUsers(BaseHandler):
     """用户列表"""
     @BaseHandler.admin_authed
@@ -84,7 +108,6 @@ class AdminSysUsers(BaseHandler):
         # 当前第几页,默认第一页
         current_page = int(self.get_argument("page", 1))
         # 每页显示多少条记录
-        pagesize = int(self.get_argument("pagesize", "1"))
         pagesize = self.application.settings["record_of_one_page"]
 
         skiprecord = pagesize * (current_page - 1)
@@ -257,3 +280,82 @@ class AdminContents(BaseHandler):
 
         self.render("backend/study_content_query.html", myuser=self.admin, admin_nav=41, contents=contents, page=page,
                     pagesize=pagesize, pages=pages, count=count,categories=categories)
+
+
+class AdminNoticeList(BaseHandler):
+    """系统公告列表"""
+    @BaseHandler.admin_authed
+    def get(self):
+        current_page = int(self.get_argument("page", 1))
+        pagesize = int(self.get_argument("pagesize", "20"))
+
+        skiprecord = pagesize * (current_page - 1)
+        notice_list = self.application.dbutil.getNotices(skiprecord, pagesize)
+
+        count = self.application.dbutil.getAllNotices()
+        pages = count / pagesize
+        if count % pagesize > 0:
+            pages += 1
+        self.render("backend/notice_list.html", myuser=self.admin, admin_nav=91, notices=notice_list, page=current_page, pagesize=pagesize, pages=pages)
+
+
+class AdminAddNotice(BaseHandler):
+    """发布公告"""
+    @BaseHandler.admin_authed
+    def post(self):
+        info = dict()
+        info['title'] = self.get_argument('title')
+        info['content'] = self.get_argument('content')
+        info['userid'] = self.admin['userid']
+        info['status'] = 1
+        info['openid'] = -1
+        info['atime'] = time.strftime("%Y-%m-%d %H:%M:%S")
+        last = self.db.tb_notice_profile.find_one({}, {"id": 1, "_id": 0}, sort=[("id", pymongo.DESCENDING)])
+        info['id'] = int(last.get("id", 0)) + 1 if last else 1
+        self.db.tb_notice_profile.insert(info)
+
+        return self.write(json.dumps({"status": "ok", "msg": u'增加系统公告成功'}))
+
+
+class AdminDeleteNotice(BaseHandler):
+    """删除公告"""
+    @BaseHandler.admin_authed
+    def post(self):
+        datas = self.request.arguments
+        del datas['_xsrf']
+        for key, value in datas.items():
+            self.db.tb_notice_profile.remove({"_id": ObjectId(value[0])})
+        self.write(json.dumps({"status": 'ok', "msg": u'删除成功'}))
+
+
+class AdminModifyNotice(BaseHandler):
+    """修改公告"""
+
+    @BaseHandler.admin_authed
+    def get(self, id):
+        record = self.db.tb_notice_profile.find_one({"_id": ObjectId(id)})
+        self.render("backend/notice_modify.html", myuser=self.admin, admin_nav=91, notice=record)
+
+    @BaseHandler.admin_authed
+    def post(self, noticeid):
+        print "noticeid=", noticeid
+        record = self.db.tb_notice_profile.find_one({"_id": ObjectId(noticeid)})
+        print record
+        if not record:
+            return self.write(json.dumps({"status": 'error', "msg": "修改的公告不存在！"}))
+
+        newprofile = {
+            'title': self.get_argument("title", None),
+            'content': self.get_argument("content", None),
+            'userid': self.get_argument("userid", None),
+            'atime': self.get_argument("atime", None),
+        }
+        for k, v in newprofile.iteritems():
+            if not v:
+                return self.write(json.dumps({"status": 'error', "msg": k + "为必选项，请输入信息！"}))
+
+        newprofile['status'] = self.get_argument("status", 1)
+
+        m = self.db.tb_notice_profile.update({"_id": record.get('_id')}, {"$set": newprofile})
+        print m
+        return self.write(json.dumps({"status": 'ok', "msg": "修改公告成功！"}))

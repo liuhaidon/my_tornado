@@ -867,6 +867,18 @@ class DBUtil:
             flag = False
         return flag
 
+    # 执行SQL语句返回数据集
+    def query(self, sql):
+        if not self.__Conn(): return self.__DB_ERR
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            data = map(list, result)   # 将元组转换成列表
+            self.__Close()
+            return data
+        except Exception as ex:
+            return ex
+
     # 登陆记录查询
     def getLoginRecord(self, m, n):
         sql = 'select * from tb_login order by createdat desc limit %s,%s' % (m, n)
@@ -899,3 +911,4 @@ class DBUtil:
             self.connection.rollback()
             flag = False
         return flag
+

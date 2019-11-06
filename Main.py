@@ -57,9 +57,17 @@ class Application(tornado.web.Application):
             (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
             (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
 
+            (r"/admin/notices", AdminNoticeList),
+            (r"/admin/notice/add", AdminAddNotice),
+            (r"/admin/notice/delete", AdminDeleteNotice),
+            # (r"/admin/notice/([0-9a-z]{24})", AdminModifyNotice),
+
             (r"/ajax/upload_image", UploadImageFile),        # 上传图片
             (r"/ajax/upload_video", UploadVideoFile),        # 上传视频
             (r"/admin/media/upload", RemotePictureHandler),   # 上传富文本：还要改动html页面与ueditor.py页面
+
+            # (r"/admin/login/select", AdminLoginSelect),   # 用户登陆记录查询
+            # (r"/admin/login/delete", AdminLoginDelete),   # 用户登陆记录删除
 
             (r"/hehe", AdminIndex),
             (r"/pay", AdminPay),
@@ -105,4 +113,16 @@ if __name__ == "__main__":
     app = Application()
     app.listen(options.port)
     print("visit at", "http://127.0.0.1:%s" % options.port)
+
+    # 创建后台执行的 schedulers
+    scheduler = BackgroundScheduler()
+    # 添加调度任务,调度方法为 timedTask，触发器选择 interval(间隔性)，间隔时长为 30 秒
+    # scheduler.add_job(task, "cron", hour="13", minute="03", second="0")
+    # scheduler.add_job(task, "interval", seconds=60*60*24)   # 定期执行任务
+    # 启动调度任务
+    scheduler.start()
+
+    # t = threading.Thread(target=task, args=())
+    # t.start()
+    scheduler_job(app)   # 执行计划任务，定时推送任务
     tornado.ioloop.IOLoop.instance().start()
