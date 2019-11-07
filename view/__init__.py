@@ -61,3 +61,10 @@ def load_base_data(app):
         g_robots[openId] = v
     app.robots = g_robots
     print "robots==>", app.robots
+
+def list_to_dict(field, list):
+    data_list = []
+    for u in list:
+        data = dict(zip(field, u))
+        data_list.append(data)
+    return data_list

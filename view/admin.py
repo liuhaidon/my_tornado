@@ -1,6 +1,7 @@
 # encoding:utf-8
 import json
 from utils.logger import *
+from view.ajax import *
 from passlib.hash import pbkdf2_sha512
 
 from tornado.escape import json_encode,json_decode
@@ -40,16 +41,17 @@ class AdminLoginHandler(BaseHandler):
         res = self.begin_backend_session(username, pwd)
         if not res:
             return self.render("backend/login.html", url=url, error="用户名或密码不正确")
+
         ip_info = self.request.remote_ip
         # logger().info("登陆用户：%s===>" % (name))
-        username = "登陆用户：" + username
         atime = time.strftime("%Y-%m-%d %H:%M:%S")
-        sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % (username, ip_info, atime)
+        sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % ("登陆用户：" + username, ip_info, atime)
         self.application.dbutil.execute(sql)
+
         self.set_cookie('username', username, expires=time.time() + 60, httponly=True, max_age=120)  # 设置过期时间为60秒
         self.set_cookie('username', username, expires_days=1, path="/")   # 设置过期时间为1天，设置路径,限定哪些内容需要发送cookie,/表示全部
         self.set_secure_cookie('username', username)  # 设置一个加密的cookie,但是必须在application里面添加cookie_secret值
-        if url=='/admin/login':
+        if url=="/admin/login":
             self.redirect('/admin/home')
         else:
             self.redirect(url)
@@ -77,29 +79,43 @@ class AdminHomeHandler(BaseHandler):
         self.render("backend/home.html", myuser=self.admin, admin_nav=0)
 
 
-class AdminLanding(BaseHandler):
+class AdminLoginSelect(BaseHandler):
     """用户登陆记录查询"""
     @BaseHandler.admin_authed
     def get(self):
         current_page = int(self.get_argument("page", 1))
         pagesize = self.application.settings["record_of_one_page"]
-        pagesize = int(self.get_argument("pagesize", "10"))
 
         skiprecord = pagesize * (current_page - 1)
-        login_list = self.application.dbutil.getLoginRecord(skiprecord, pagesize)
+        sql = "select * from tb_login_record order by createdat desc limit %s,%s" % (skiprecord, pagesize)
+        login_list = self.application.dbutil.query(sql)
 
-        count = self.application.dbutil.getAllLoginRecord()
+        field = ["id", "username", "ip_address", "createdat"]
+        data_list = list_to_dict(field, login_list)
+
+        sql = "select count(*) from tb_login_record"
+        count = self.application.dbutil.queryall(sql)
         pages = count / pagesize
         if count % pagesize > 0:
             pages += 1
+        self.render("backend/login_record.html", myuser=self.admin, admin_nav=11, login_list=data_list, page=current_page,
+                    pagesize=pagesize, pages=pages, count=count)
 
-        # myuser = self.get_cookie("username")
-        myuser = self.admin
-        permission = self.permission
-        if not permission:
-            permission = []
-        self.render("backend/login_record.html", myuser=myuser, admin_nav=52, login_list=login_list, page=page,
-                    pagesize=pagesize, pages=pages, count=count, permission=permission)
+
+class AdminLoginDelete(BaseHandler):
+    """删除用户登陆记录"""
+    @BaseHandler.admin_authed
+    def post(self):
+        datas = self.request.arguments
+        del datas['_xsrf']
+        for key, value in datas.items():
+            lid = int(value[0])
+            sql = "DELETE FROM tb_login_record WHERE id=%d" % lid
+            result = self.application.dbutil.execute(sql)
+        if result:
+            self.write(json.dumps({"status": 'ok', "msg": u'删除登陆记录成功'}))
+        self.write(json.dumps({"status": 'ok', "msg": u'删除登陆记录失败'}))
+
 
 class AdminSysUsers(BaseHandler):
     """用户列表"""
