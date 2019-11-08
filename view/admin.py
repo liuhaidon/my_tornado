@@ -48,9 +48,9 @@ class AdminLoginHandler(BaseHandler):
         sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % ("登陆用户：" + username, ip_info, atime)
         self.application.dbutil.execute(sql)
 
-        self.set_cookie('username', username, expires=time.time() + 60, httponly=True, max_age=120)  # 设置过期时间为60秒
-        self.set_cookie('username', username, expires_days=1, path="/")   # 设置过期时间为1天，设置路径,限定哪些内容需要发送cookie,/表示全部
-        self.set_secure_cookie('username', username)  # 设置一个加密的cookie,但是必须在application里面添加cookie_secret值
+        # self.set_cookie('username', username, expires=time.time() + 60, httponly=True, max_age=120)  # 设置过期时间为60秒
+        # self.set_cookie('username', username, expires_days=1, path="/")   # 设置过期时间为1天，设置路径,限定哪些内容需要发送cookie,/表示全部
+        # self.set_secure_cookie('username', username)  # 设置一个加密的cookie,但是必须在application里面添加cookie_secret值
         if url=="/admin/login":
             self.redirect('/admin/home')
         else:
@@ -117,8 +117,29 @@ class AdminLoginDelete(BaseHandler):
         self.write(json.dumps({"status": 'ok', "msg": u'删除登陆记录失败'}))
 
 
+class AdminUserList(BaseHandler):
+    """前端用户列表"""
+    @BaseHandler.admin_authed
+    def get(self):
+        current_page = int(self.get_argument("page", "1"))
+        pagesize = int(self.get_argument("pagesize", "20"))
+
+        skiprecord = pagesize * (current_page - 1)
+        sql = "select * from tb_user_profile order by createdat desc limit %s,%s" % (skiprecord, pagesize)
+        user_list = self.application.dbutil.query(sql)
+        field = ["id", "username", "ip_address", "createdat"]
+        data_list = list_to_dict(field, user_list)
+
+        sql = "select count(*) from tb_user_profile"
+        count = self.application.dbutil.queryall(sql)
+        pages = count / pagesize
+        if count % pagesize > 0:
+            pages += 1
+        self.render("backend/front_user_query.html", myuser=self.admin, admin_nav=21, users=data_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
+
+
 class AdminSysUsers(BaseHandler):
-    """用户列表"""
+    """系统用户列表"""
     @BaseHandler.admin_authed
     def get(self):
         # 当前第几页,默认第一页
@@ -136,7 +157,7 @@ class AdminSysUsers(BaseHandler):
         if count % pagesize > 0:
             pages += 1
 
-        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=21, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
+        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=22, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminAddSysUser(BaseHandler):
@@ -187,7 +208,7 @@ class AdminModifySysUser(BaseHandler):
     @BaseHandler.admin_authed
     def get(self, id):
         record = self.db.tb_system_user.find_one({"_id": ObjectId(id)})
-        return self.render("backend/system_user_modify.html", myuser=self.admin, admin_nav=21, user=record)
+        return self.render("backend/system_user_modify.html", myuser=self.admin, admin_nav=22, user=record)
 
     def post(self, id):
         newprofile = {
@@ -346,7 +367,6 @@ class AdminDeleteNotice(BaseHandler):
 
 class AdminModifyNotice(BaseHandler):
     """修改公告"""
-
     @BaseHandler.admin_authed
     def get(self, id):
         record = self.db.tb_notice_profile.find_one({"_id": ObjectId(id)})

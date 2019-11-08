@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+{% block title %}用户管理{% end %}
+{% block content %}
+<div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+        <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+</div>
+<div id="wrapper">
+    {% include "admin_nav.html" %}
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            {% include 'header_nav.html' %}
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>用户管理</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="/admin/home">主页</a>
+                    </li>
+                    <li>
+                        <a href="/admin/userlist">用户管理</a>
+                    </li>
+                    <li>
+                        <strong>用户列表</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>用户列表
+                                <small>共计：{{ count }}</small>
+                                <div style="display:inline;">
+                                <a href="/admin/users?page={{ page-1 if page> 1 else 1 }}"><span>上一页</span></a>
+                                {% if pages < 10 %}
+                                {% for i in range(1,pages+1) %} <a href="/admin/users?page={{i}}"><span>{{i}}</span></a>{% end %}
+                                {% else %}
+                                {% for i in range(1,10) %} <a href="/admin/users?page={{i}}"><span>{{i}}</span></a>{% end %}
+                                <a href="/admin/users?page={{pages}}"><span>{{pages}}</span></a>
+                                跳转<input id="pager" style="display:inline;width:26px;height:20px;" class="form-control" onpropertychange="JumpPage()" onblur="JumpPage()">页
+                                {% end %}
+                                <a href="/admin/users?page={{ page+1 if page<pages else pages }}"><span>下一页</span></a>
+                                </div>
+                            </h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-wrench"></i> </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <!--<li><a href="/admin/userlist?role=jury">评审员管理</a></li>-->
+                                    <!--<li><a href="/admin/userlist?role=scientist">科学家</a></li>-->
+                                    <!--<li><a href="/admin/userlist?role=investor">投资人</a></li>-->
+                                    <!--<li><a href="/admin/userlist?role=gm">客服人员</a></li>-->
+                                </ul>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <form action="javascript:;" method="post" name="login_form" id="login_form">
+                                {% module xsrf_form_html() %}
+                                <table class="table table-striped table-bordered table-hover dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" class="i-checks" id="userListCheck"/></th>
+                                            <th>ID</th>
+                                            <th>手机号</th>
+                                            <th>省份</th>
+                                            <th>城市</th>
+                                            <th>县区</th>
+                                            <th>注册时间</th>
+                                            <th>最近登录时间</th>
+                                            <th>绑定审核</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for u in users %}
+                                        <tr class="gradeX">
+                                            <td><input type="checkbox" class="i-checks"></td>
+                                            <td class="userListId" style="display:none;">{{ u.get("id") }}</td>
+                                            <td><a href="/admin/user/{{ u.get('id') }}" target="_self">{{ u.get('id') }}</a></td>
+                                            <td>{{ u.get('phone','') }}</td>
+                                            <td>{{ v.get('province','') }}</td>
+                                            <td>{{ v.get('city','') }}</td>
+                                            <td>{{ v.get('area','') }}</td>
+                                            <td>{{ u.get('create_time','') }}</td>
+                                            <td>{{ u.get('last_visit_time','') }}</td>
+                                            <td>{% if v.get("bind") %}<a onclick="audit_id(this,{{ json_encode(v.get('bind').get('audit')) }});">审核</a>{%else%}投资者{%end%}</td>
+                                        </tr>
+                                        {% end %}
+                                    </tbody>
+                                </table>
+                                <input type="button" class="btn btn-w-m btn-primary delete" value="删除选中"
+                                       data-toggle="modal" data-target="#myModal2" disabled/>
+                                <input type="button" class="btn new-btn-w-m btn-primary audit1" value="增加用户"
+                                       data-toggle="modal" data-target="#myModal3"/>
+
+                                <div class="modal inmodal fade" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">删除用户</h4>
+                                                <small class="font-bold">删除创意</small>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="deleteContent"></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white deleteUserId" data-dismiss="modal">确定</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal inmodal fade" id="myModal3" tabindex="-1" role="dialog"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">增加用户</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="ideaId">
+                                                    <label>手机号码:</label>
+                                                    <input class="form-control" type="text" id="phone" name="phone" placeholder="4-16位字符，字母/中文/数字/下划线">
+                                                    <p class="showInfo"></p>
+
+                                                    <label>密码:</label>
+                                                    <input class="form-control" type="password" id="pwd" name="pwd" placeholder="6-20位字符，字母与数字组合"/>
+                                                    <p class="showInfo"></p>
+
+                                                    <label>确认密码:</label>
+                                                    <input class="form-control" type="password" id="pwd2" name="pwd2" placeholder="请再次输入密码"/>
+                                                    <p class="showInfo"></p>
+
+                                                    <label>省份：</label>
+                                                    <select class="form-control" id="province" name="province">
+                                                        <option value=''>请选择省份或直辖市</option>
+                                                        <option value='河南省' selected="selected">河南省</option>
+                                                    </select>
+                                                    <p class="showInfo"></p>
+
+                                                    <label>城市：</label>
+                                                    <select class="form-control" id="city" name="city">
+                                                        <option value=''>请选择城市</option>
+                                                        <option value='信阳市' selected="selected">信阳市</option>
+                                                    </select>
+                                                    <p class="showInfo"></p>
+
+                                                    <label>县区：</label>
+                                                    <select class="form-control" id="area" name="area">
+                                                        <option value=''>请选择县区</option>
+                                                        <option value='商城县' selected="selected">商城县</option>
+                                                    </select>
+                                                    <p class="showInfo"></p>
+
+                                                    <!--<label>简介:</label>-->
+                                                    <!--<textarea class="form-control" type="text" id="brief" name="brief" cols=10 rows=6 placeholder="不多于256个字">用户简介</textarea>-->
+
+                                                    <label>注册时间:</label>
+                                                    <input class="form-control" placeholder="生效时间" id="atime" name="atime" onclick="WdatePicker({lang:'zh-cn', dateFmt:'yyyy-MM-dd HH:mm:ss'})">
+                                                    <p class="showInfo"></p>
+                                                </p>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white add_sysuser"
+                                                        data-dismiss="modal">确定
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">拉入黑名单</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="audit1Content"></p>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white auditUserId"
+                                                        data-dismiss="modal">确定
+                                                </button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal inmodal fade" id="myModal4" tabindex="-1" role="dialog"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">审核绑定</h4>
+                                                {#  <small class="font-bold">删除创意</small>#}
+                                            </div>
+                                            <div class="modal-body">
+                                                <p id="refuse1Content">
+                                                    <label>用户编号：</label>
+                                                    <input readonly="readonly" class="form-control" type="text" id="_id">
+                                                    <br/>
+                                                    <label>用户名称：</label>
+                                                    <input readonly="readonly" class="form-control" type="text" id="_name">
+                                                    <input class="form-control" type="hidden" id="_status">
+                                                    <br/>
+                                                    <label>审核结果：</label>
+                                                    <select class="form-control" id="_result">
+                                                        <option value="1">通过</option>
+                                                        <option value="-1">不通过</option>
+                                                        <option value="0">待定</option>
+                                                    </select>
+                                                    <br/>
+                                                    <label>审核意见：</label>
+                                                    <textarea class="form-control" rows="10" id="_opinion">
+                                                    </textarea>
+                                                </p>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white audit_myid"
+                                                        data-dismiss="modal">确定
+                                                </button>
+                                                <button type="button" class="btn btn-primary cancel1"
+                                                        data-dismiss="modal">取消
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$(function () {
+    var json1 = _alert('.btn.btn-w-m.delete', '.modal-body .deleteContent', '您要删除的用户ID为');
+    var json2 = _alert('.btn.btn-w-m.audit1', '.modal-body .audit1Content', '您要拉入黑名单的用户ID为');
+
+    var list_to_handle;
+
+    $('tr.gradeX input[type="checkbox"],#userListCheck').click(function () {
+        list_to_handle = listNubmer();
+        console.log(listNubmer());
+    });
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+                xhr.setRequestHeader("X-XSRFToken", $("input[name='_xsrf']").val());
+            }
+        }
+    });
+
+    $('.btn.btn-white.deleteUserId').click(function () {
+        $.ajax({
+            url: '/admin/user/delete',
+            data: json1,
+            type: 'post',
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.status);
+                console.log(XMLHttpRequest.readyState);
+                console.log(textStatus);
+            }
+        });
+    });
+
+    $('.btn.btn-white.auditUserId').click(function () {
+        $.ajax({
+            url: '/admin/users',
+            type: 'put',
+            data: list_to_handle,
+            success: function (data) {
+                console.log(data);
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+    });
+
+    $('.btn.btn-white.audit_myid').click(function () {
+            var xjson = {
+                "oid":$('#_id').val(),
+                "result":$('#_result').val(),
+                "opinion":$('#_opinion').val(),
+                "_xsrf":$("input[name='_xsrf']").val(),
+                // "status":$('#_status').val()
+            };
+
+            $.ajax({
+                url: '/admin/user/audit',
+                type: 'post',
+                data: xjson,
+                success: function (data) {
+                    var json=jQuery.parseJSON(data);
+                    alert(json['msg']);
+                    if(json.status !="ok"){
+                        return false;
+                    }
+
+                    window.location.reload();
+                },
+                error: function () {
+                    alert('error');
+                }
+            });
+        });
+});
+
+function audit_id(obj, audit){
+    var tds=$(obj).parent().parent().find('td');
+    $("small.font-bold").each(function(){
+        $(this).html(tds.eq(2).text());
+    });
+
+    // console.log("tds==>",tds,audit);
+    $('#_id').val(tds.eq(1).text());
+    $('#_name').val(tds.eq(3).text());
+    // $('#_status').val("online");
+    //
+    if(undefined != audit){
+        $('#_result').val(audit.result);
+        $('#_opinion').val(audit.opinion);
+    }else{
+        $('#_result').val('1');
+        $('#_opinion').val('');
+    }
+
+    $('#myModal4').modal('show');
+};
+</script>
+<style>
+    th:first-child,
+    .gradeX td:first-child {
+        width: 20px;
+        cursor: pointer;
+    }
+
+    th:first-child input,
+    .gradeX td:first-child input {
+        cursor: pointer;
+    }
+</style>
+
+
+{% end %}
