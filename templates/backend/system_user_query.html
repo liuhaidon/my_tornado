@@ -395,7 +395,10 @@
                     // location.reload();
                     window.location.href="/admin/sysusers";
                 },
-                error: function () {
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(textStatus);
                 }
             });
         });

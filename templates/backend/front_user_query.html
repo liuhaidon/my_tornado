@@ -78,22 +78,22 @@
                                             <th>县区</th>
                                             <th>注册时间</th>
                                             <th>最近登录时间</th>
-                                            <th>绑定审核</th>
+                                            <th>修改密码</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% for u in users %}
                                         <tr class="gradeX">
                                             <td><input type="checkbox" class="i-checks"></td>
-                                            <td class="userListId" style="display:none;">{{ u.get("id") }}</td>
+                                            <td class="userListId" style="display:none;" data-id="{{ u.get('id') }}">{{ u.get("id") }}</td>
                                             <td><a href="/admin/user/{{ u.get('id') }}" target="_self">{{ u.get('id') }}</a></td>
                                             <td>{{ u.get('phone','') }}</td>
-                                            <td>{{ v.get('province','') }}</td>
-                                            <td>{{ v.get('city','') }}</td>
-                                            <td>{{ v.get('area','') }}</td>
-                                            <td>{{ u.get('create_time','') }}</td>
+                                            <td>{{ u.get('province','') }}</td>
+                                            <td>{{ u.get('city','') }}</td>
+                                            <td>{{ u.get('area','') }}</td>
+                                            <td>{{ u.get('createdat','') }}</td>
                                             <td>{{ u.get('last_visit_time','') }}</td>
-                                            <td>{% if v.get("bind") %}<a onclick="audit_id(this,{{ json_encode(v.get('bind').get('audit')) }});">审核</a>{%else%}投资者{%end%}</td>
+                                            <td><a class="btn btn-primary" onclick="repass(this,'{{u.get('''id''')}}')">修改密码</a></td>
                                         </tr>
                                         {% end %}
                                     </tbody>
@@ -124,14 +124,12 @@
                                     </div>
                                 </div>
 
-                                <div class="modal inmodal fade" id="myModal3" tabindex="-1" role="dialog"
-                                     aria-hidden="true">
+                                <div class="modal inmodal fade" id="myModal3" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span
-                                                        aria-hidden="true">&times;</span><span
-                                                        class="sr-only">Close</span></button>
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span>
+                                                    <span class="sr-only">Close</span></button>
                                                 <h4 class="modal-title">增加用户</h4>
                                             </div>
                                             <div class="modal-body">
@@ -177,13 +175,38 @@
                                                     <p class="showInfo"></p>
                                                 </p>
                                             </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white add_user" data-dismiss="modal">确定</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal inmodal fade" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <p class="newsysId">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">密码修改</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                    <label>新密码：</label>
+                                                    <input class="form-control" type="password" placeholder="请输入新密码" name="passwd1" id="passwd1">
+                                                    <p class="showInfo"></p>
+
+                                                    <label>确认密码：</label>
+                                                    <input class="form-control" type="password" placeholder="请确认新密码" name="passwd2" id="passwd2">
+                                                    <p class="showInfo"></p>
+                                            </div>
 
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-white add_sysuser"
-                                                        data-dismiss="modal">确定
-                                                </button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消
-                                                </button>
+                                                <button type="button" class="btn btn-white repass1"
+                                                        data-dismiss="modal">确定</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
                                             </div>
                                         </div>
                                     </div>
@@ -212,8 +235,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="modal inmodal fade" id="myModal4" tabindex="-1" role="dialog"
-                                     aria-hidden="true">
+                                <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -244,14 +266,9 @@
                                                     </textarea>
                                                 </p>
                                             </div>
-
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-white audit_myid"
-                                                        data-dismiss="modal">确定
-                                                </button>
-                                                <button type="button" class="btn btn-primary cancel1"
-                                                        data-dismiss="modal">取消
-                                                </button>
+                                                <button type="button" class="btn btn-white audit_myid" data-dismiss="modal">确定</button>
+                                                <button type="button" class="btn btn-primary cancel1" data-dismiss="modal">取消</button>
                                             </div>
                                         </div>
                                     </div>
@@ -266,18 +283,15 @@
 </div>
 
 <script>
-
 $(function () {
-    var json1 = _alert('.btn.btn-w-m.delete', '.modal-body .deleteContent', '您要删除的用户ID为');
+    var json = _alert('.btn.btn-w-m.delete', '.modal-body .deleteContent', '您要删除的用户ID为');
     var json2 = _alert('.btn.btn-w-m.audit1', '.modal-body .audit1Content', '您要拉入黑名单的用户ID为');
 
     var list_to_handle;
-
     $('tr.gradeX input[type="checkbox"],#userListCheck').click(function () {
         list_to_handle = listNubmer();
         console.log(listNubmer());
     });
-
     $.ajaxSetup({
         beforeSend: function (xhr, settings) {
             if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
@@ -287,12 +301,49 @@ $(function () {
     });
 
     $('.btn.btn-white.deleteUserId').click(function () {
+        json['_xsrf'] = $("input[name='_xsrf']").val();
         $.ajax({
-            url: '/admin/user/delete',
-            data: json1,
-            type: 'post',
+            url: "/admin/user/delete",
+            data: json,
+            type: "post",
             success: function (data) {
                 console.log(data);
+                window.location.href="/admin/users";
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                console.log(XMLHttpRequest.status);
+                console.log(XMLHttpRequest.readyState);
+                console.log(textStatus);
+            }
+        });
+    });
+
+    $('.btn.btn-white.add_user').click(function () {
+        var xjson={
+            "_xsrf":$("input[name='_xsrf']").val(),
+            "phone": $("#phone").val(),
+            "password": $("#pwd").val(),
+            "province": $("#province").find("option:selected").text(),
+            "city": $("#city").find("option:selected").text(),
+            "area": $("#area").find("option:selected").text(),
+            "createdat": $("#atime").val(),
+        };
+        if (xjson['phone'] == '' || xjson['password'] == '') {
+            alert("手机号码或者密码不能为空！");
+            return false;
+        }
+        $.ajax({
+            url: "/admin/user/add",
+            type: "post",
+            data: xjson,
+            success: function (data) {
+                var json = $.parseJSON(data);
+                alert(json.msg);
+                if (json.status != "ok") {
+                    return false;
+                }
+                // location.reload();
+                window.location.href="/admin/users";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.status);
@@ -317,33 +368,39 @@ $(function () {
     });
 
     $('.btn.btn-white.audit_myid').click(function () {
-            var xjson = {
-                "oid":$('#_id').val(),
-                "result":$('#_result').val(),
-                "opinion":$('#_opinion').val(),
-                "_xsrf":$("input[name='_xsrf']").val(),
-                // "status":$('#_status').val()
-            };
+        var xjson = {
+            "oid":$('#_id').val(),
+            "result":$('#_result').val(),
+            "opinion":$('#_opinion').val(),
+            "_xsrf":$("input[name='_xsrf']").val(),
+            // "status":$('#_status').val()
+        };
 
-            $.ajax({
-                url: '/admin/user/audit',
-                type: 'post',
-                data: xjson,
-                success: function (data) {
-                    var json=jQuery.parseJSON(data);
-                    alert(json['msg']);
-                    if(json.status !="ok"){
-                        return false;
-                    }
-
-                    window.location.reload();
-                },
-                error: function () {
-                    alert('error');
+        $.ajax({
+            url: '/admin/user/audit',
+            type: 'post',
+            data: xjson,
+            success: function (data) {
+                var json=jQuery.parseJSON(data);
+                alert(json['msg']);
+                if(json.status !="ok"){
+                    return false;
                 }
-            });
+
+                window.location.reload();
+            },
+            error: function () {
+                alert('error');
+            }
         });
+    });
 });
+</script>
+<script>
+    function repass (obj,uid){
+        $(".newsysId").data("id",uid);
+        $("#myModal4").modal("show");
+    }
 
 function audit_id(obj, audit){
     var tds=$(obj).parent().parent().find('td');
@@ -363,9 +420,8 @@ function audit_id(obj, audit){
         $('#_result').val('1');
         $('#_opinion').val('');
     }
-
     $('#myModal4').modal('show');
-};
+}
 </script>
 <style>
     th:first-child,
@@ -373,12 +429,9 @@ function audit_id(obj, audit){
         width: 20px;
         cursor: pointer;
     }
-
     th:first-child input,
     .gradeX td:first-child input {
         cursor: pointer;
     }
 </style>
-
-
 {% end %}

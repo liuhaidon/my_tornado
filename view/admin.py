@@ -127,7 +127,7 @@ class AdminUserList(BaseHandler):
         skiprecord = pagesize * (current_page - 1)
         sql = "select * from tb_user_profile order by createdat desc limit %s,%s" % (skiprecord, pagesize)
         user_list = self.application.dbutil.query(sql)
-        field = ["id", "username", "ip_address", "createdat"]
+        field = ["id", "phone", "passwd", "createdat", "last_visit_time", "province", "city", "area"]
         data_list = list_to_dict(field, user_list)
 
         sql = "select count(*) from tb_user_profile"
@@ -136,6 +136,49 @@ class AdminUserList(BaseHandler):
         if count % pagesize > 0:
             pages += 1
         self.render("backend/front_user_query.html", myuser=self.admin, admin_nav=21, users=data_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
+
+
+class AdminAddUser(BaseHandler):
+    """添加前端用户"""
+    @BaseHandler.admin_authed
+    def post(self):
+        phone = self.get_argument("phone", None)
+        password = self.get_argument("password", None)
+        province = self.get_argument("province", None)
+        city = self.get_argument("city", None)
+        area = self.get_argument("area", None)
+        createdat = self.get_argument("createdat", None)
+        last_time = time.strftime("%Y-%m-%d %H:%M:%S")
+        info = dict()
+        info["phone"] = phone
+        info["password"] = password
+        info["createdat"] = createdat
+        for k, v in info.iteritems():
+            if not v:
+                return self.write(json.dumps({"status": 'error', "msg": k + "为必选项，请输入信息！"}))
+        password = pbkdf2_sha512.encrypt(password)
+        sql = "insert into tb_user_profile values(null, '%s', '%s', '%s', '%s', '%s', '%s','%s')" % \
+              (phone, password, createdat, last_time, province, city, area)
+        res = self.application.dbutil.execute(sql)
+        if not res:
+            return self.write(json.dumps({"msg": u'增加用户失败', "status": 'error'}))
+        return self.write(json.dumps({"status": 'ok', "msg": u"增加用户成功！"}))
+
+
+class AdminDeleteUser(BaseHandler):
+    """删除前端用户"""
+    @BaseHandler.admin_authed
+    def post(self):
+        datas = self.request.arguments
+        del datas['_xsrf']
+        for key, value in datas.items():
+            uid = int(value[0])
+            sql = "DELETE FROM tb_user_profile WHERE uid=%d" % uid
+            result = self.application.dbutil.execute(sql)
+        print "result==",result
+        if not result:
+            return self.write(json.dumps({"status": "error", "msg": u'删除用户失败'}))
+        return self.write(json.dumps({"status": "ok", "msg": u'删除用户成功'}))
 
 
 class AdminSysUsers(BaseHandler):
@@ -156,7 +199,6 @@ class AdminSysUsers(BaseHandler):
         pages = count / pagesize
         if count % pagesize > 0:
             pages += 1
-
         return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=22, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
 
 
@@ -181,13 +223,13 @@ class AdminAddSysUser(BaseHandler):
         res = self.application.dbutil.addUser(username, password, role, createdat)
         if not res:
             logger().info("增加用户失败：===>")
-            return self.write(json.dumps({"msg": u'增加用户失败', "status": 'error'}))
+            return self.write(json.dumps({"msg": u'增加系统用户失败', "status": 'error'}))
         logger().info("增加用户成功：===>")
-        return self.write(json.dumps({"status": 'ok', "msg": u"增加用户成功！"}))
+        return self.write(json.dumps({"status": 'ok', "msg": u"增加系统用户成功！"}))
 
 
 class AdminDeleteSysUser(BaseHandler):
-    """删除用户"""
+    """删除系统用户"""
     @BaseHandler.admin_authed
     def post(self):
         datas = self.request.arguments

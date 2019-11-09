@@ -91,7 +91,6 @@ function _alert(btn1, msgClss, msg1) {
             if ($(v).prop('checked')) {
                 // n.push($(v).parent().parent().children('.userListId').text());
                 n.push($(v).parent().parent().children('.userListId').data("id"));
-                console.log("选中我了")
             }
         });
         for (var i in n) {
@@ -103,7 +102,6 @@ function _alert(btn1, msgClss, msg1) {
             $(msgClss).html(msg1 + '<span style="color:red;font-weight: bold">' + msg + '</span>');
         } else {
             $(btn1).prop('disabled', true);
-            console.log("选中我了2")
         }
     });
     return j;

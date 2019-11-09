@@ -42,7 +42,8 @@ class Application(tornado.web.Application):
             (r"/admin/home", AdminHomeHandler),
 
             (r"/admin/users", AdminUserList),
-            # (r"/admin/user/delete", AdminDeleteUser),
+            (r"/admin/user/add", AdminAddUser),
+            (r"/admin/user/delete", AdminDeleteUser),
             # (r"/admin/user/audit", AdminAuditUser),
             # (r"/admin/user/([0-9a-z]{24})", AdminModifyUser),
 

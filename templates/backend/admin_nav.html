@@ -41,16 +41,14 @@
                     <li><a href="/admin/users">用户列表</a></li>
                     {% if myuser.get('role') == "admin" %}
                     <li><a href="/admin/sysusers">系统用户</a></li>
-                    <li><a href="/admin/permissions">权限管理</a></li>
-                    <li><a href="/admin/permissions">用户权限</a></li>
                     {% end %}
                 </ul>
             </li>
 
             <li>
-                <a href="/admin/domains"><i class="fa fa-tags"></i> <span class="nav-label">权限管理</span> <span class="fa arrow"></span></a>
+                <a href=/admin/permissions"><i class="fa fa-tags"></i> <span class="nav-label">权限管理</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <li><a href='/admin/domains'>权限列表</a></li>
+                    <li><a href="/admin/permissions">权限列表</a></li>
                 </ul>
             </li>
 
