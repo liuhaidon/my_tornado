@@ -2,16 +2,17 @@
 import pymysql
 import time
 import json
+import traceback
 from passlib.hash import pbkdf2_sha512
 
 
 class DBUtil:
     def __init__(self, **kwargs):
+        host = kwargs.get('host', '49.232.57.79')
+        database = kwargs.get('database', 'tornado')
         user = kwargs.get('user', 'tornado')
         password = kwargs.get('password', 'liujiadon')
-        host = kwargs.get('host', '106.15.88.182')
         port = kwargs.get('port', 3306)
-        database = kwargs.get('database', 'tornado')
         charset = kwargs.get('charset', 'utf8')
         connection = pymysql.connect(user=user, password=password, host=host, port=port, database=database, charset=charset)
         self.connection = connection
@@ -49,6 +50,7 @@ class DBUtil:
             return result
         except Exception as ex:
             self.connection.rollback()
+            traceback.print_exc()
             return ex
 
     # 关闭数据库连接

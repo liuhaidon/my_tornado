@@ -9,6 +9,12 @@ from BaseHandler import BaseHandler
 from bson import DBRef, ObjectId
 import time
 
+if sys.version_info[0] == 3:
+    from importlib import reload
+if sys.version_info[0] == 2:
+    reload(sys)
+    sys.setdefaultencoding("utf-8")
+
 
 class AdminLoginHandler(BaseHandler):
     """登录"""

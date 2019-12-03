@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+import sys
 import tornado.ioloop
 import tornado.web
 from tornado.options import define, options
@@ -15,6 +16,8 @@ from utils.pay import *
 from session.session import MongoSessions
 from session.auth import MongoAuthentication
 from apscheduler.schedulers.background import BackgroundScheduler
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 define("domain", default="", help="run on the given domain", type=str)
 define("ip", default="162.247.101.143", help="run on the given port", type=str)
@@ -81,8 +84,10 @@ class Application(tornado.web.Application):
             (r"/result", AdminResult),
         ]
         self.dbutil = DBUtil()
-        self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "loginid")
+        self.sessions = MongoSessions("sessions", timeout=30)
+        self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "phone")
         self.backend_auth = MongoAuthentication("ads", "tb_system_user", "userid")
+        # self.sessions.clear_all_sessions()
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
             xsrf_cookies=True,

@@ -6,7 +6,7 @@ from db.database import database as mongodb
 
 
 class MongoSessions:
-    def __init__(self, database, collection, timeout=60, ):
+    def __init__(self, database, collection, timeout=60):
         # self._conn = pymongo.Connection(**kwargs)
         self._conn = mongodb.conn
         self._coll = self._conn[database][collection]
