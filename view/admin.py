@@ -1,5 +1,6 @@
 # encoding:utf-8
 import json
+import time,pymongo
 from utils.logger import *
 from view.ajax import *
 from passlib.hash import pbkdf2_sha512
@@ -7,7 +8,6 @@ from passlib.hash import pbkdf2_sha512
 from tornado.escape import json_encode,json_decode
 from BaseHandler import BaseHandler
 from bson import DBRef, ObjectId
-import time
 
 if sys.version_info[0] == 3:
     from importlib import reload
@@ -24,10 +24,16 @@ class AdminLoginHandler(BaseHandler):
         if 'Referer' in self.request.headers:
             referer_url = '/' + '/'.join(self.request.headers['Referer'].split("/")[3:])
         error = ""
-        username = self.get_cookie("username")
-        if username:
-            error = "您已登录账号:%s,如继续则退出当前账号" % username
-
+        # username = self.get_cookie("username")
+        # if username:
+            # error = "您已登录账号:%s,如继续则退出当前账号" % username
+        if self.admin:
+            if self.admin.get("role", "") in ['admin', "superadmin"]:
+                print self.admin.get("role", "role is xxx")
+                self.redirect(referer_url)
+                error = ""
+            else:
+                error = "您已登录账号:%s,如继续则退出当前账号" % self.admin['userid']
         next = referer_url
         if nexts:
             next = nexts[0]
@@ -48,11 +54,9 @@ class AdminLoginHandler(BaseHandler):
         if not res:
             return self.render("backend/login.html", url=url, error="用户名或密码不正确")
 
-        ip_info = self.request.remote_ip
-        # logger().info("登陆用户：%s===>" % (name))
-        atime = time.strftime("%Y-%m-%d %H:%M:%S")
-        sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % ("登陆用户：" + username, ip_info, atime)
-        self.application.dbutil.execute(sql)
+
+        # sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % ("登陆用户：" + username, ip_info, atime)
+        # self.application.dbutil.execute(sql)
 
         # self.set_cookie('username', username, expires=time.time() + 60, httponly=True, max_age=120)  # 设置过期时间为60秒
         # self.set_cookie('username', username, expires_days=1, path="/")   # 设置过期时间为1天，设置路径,限定哪些内容需要发送cookie,/表示全部
@@ -191,21 +195,16 @@ class AdminSysUsers(BaseHandler):
     """系统用户列表"""
     @BaseHandler.admin_authed
     def get(self):
-        # 当前第几页,默认第一页
-        current_page = int(self.get_argument("page", 1))
-        # 每页显示多少条记录
-        pagesize = self.application.settings["record_of_one_page"]
+        current_page = int(self.get_argument("page", 1))             # 当前第几页,默认第一页
+        pagesize = self.application.settings["record_of_one_page"]   # 每页显示多少条记录
 
-        skiprecord = pagesize * (current_page - 1)
-        user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
+        user_list = self.db.tb_system_user.find({}).sort("time", pymongo.DESCENDING).skip((current_page - 1) * pagesize).limit(pagesize)
 
-        # 一共有多少条记录
-        count = self.application.dbutil.getAllUsers()
-        # 一共有多少页
-        pages = count / pagesize
-        if count % pagesize > 0:
+        pages = user_list.count() / pagesize
+        if user_list.count() % pagesize > 0:
             pages += 1
-        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=22, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)
+        print "myuser===>",self.admin
+        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=22, users=user_list, page=current_page, pagesize=pagesize, pages=pages)
 
 
 class AdminAddSysUser(BaseHandler):
@@ -443,3 +442,23 @@ class AdminModifyNotice(BaseHandler):
         m = self.db.tb_notice_profile.update({"_id": record.get('_id')}, {"$set": newprofile})
         print m
         return self.write(json.dumps({"status": 'ok', "msg": "修改公告成功！"}))
+
+
+class AdminSysUsers(BaseHandler):
+    """系统用户列表"""
+    @BaseHandler.admin_authed
+    def get(self):
+        current_page = int(self.get_argument("page", 1))             # 当前第几页,默认第一页
+        pagesize = self.application.settings["record_of_one_page"]   # 每页显示多少条记录
+
+        skiprecord = pagesize * (current_page - 1)
+        user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
+        user_list = self.db.tb_system_user.find({}).sort("time", pymongo.DESCENDING).skip((current_page - 1) * pagesize).limit(pagesize)
+
+        # 一共有多少条记录
+        count = self.application.dbutil.getAllUsers()
+        # 一共有多少页
+        pages = count / pagesize
+        if count % pagesize > 0:
+            pages += 1
+        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=22, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)

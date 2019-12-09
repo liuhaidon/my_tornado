@@ -84,9 +84,9 @@ class Application(tornado.web.Application):
             (r"/result", AdminResult),
         ]
         self.dbutil = DBUtil()
-        self.sessions = MongoSessions("sessions", timeout=30)
-        self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "phone")
-        self.backend_auth = MongoAuthentication("ads", "tb_system_user", "userid")
+        self.sessions = MongoSessions("tornado", "sessions", timeout=30)
+        self.frontend_auth = MongoAuthentication("tornado", "tb_store_profile", "phone")
+        self.backend_auth = MongoAuthentication("tornado", "tb_system_user", "userid")
         # self.sessions.clear_all_sessions()
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",

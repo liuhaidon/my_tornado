@@ -127,27 +127,29 @@ class BaseHandler(tornado.web.RequestHandler):
     def begin_backend_session(self, sysid, password):
         self.logging.info(('start login', sysid, password))
         logger().info(('start login', sysid, password))
-        # if not self.application.backend_auth.login(sysid, password):
-        user = self.application.dbutil.isloginsuccess(sysid, password)
-        if not user:
+        # if not self.application.dbutil.isloginsuccess(sysid, password)   # mysql数据库
+        if not self.application.backend_auth.login(sysid, password):       # mongodb数据库
             print "login failed"
             return False
         self.logging.info(('login checked', sysid, password))
-        now = time.strftime('%Y-%m-%d %H:%M', time.localtime(time.time()))
-        # now = time.strftime('%Y-%m-%d %H:%M:%S')
-        ip = self.request.remote_ip
-        # user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
-        # if not user:
-            # print "no user exists!",sysid
-            # return False
+
+        # now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        now = time.strftime('%Y-%m-%d %H:%M:%S')
+        ip_info = self.request.remote_ip
+
+        user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
+        if not user:
+            print "no user exists!",sysid
+            return False
         # user["db"] = self.application.settings["database"]
         # user["system"] = self.application.settings["system"]
-        # logininfos = user.get('login', [])
-        # print logininfos
-        # logininfos.append({"ip": ip, "time": now})
-        # self.db.tb_system_user.update({'userid': sysid}, {'$set': {'status': 'online', "login": logininfos[-10:]}})
-        # user['status'] = "online"
-        # user['login'] = logininfos[-10:]
+        logininfos = user.get('login', [])
+        logininfos.append({"ip": ip_info, "time": now})
+        self.db.tb_system_user.update({'userid': sysid}, {'$set': {'status': 'online', "login": logininfos[-10:]}})
+        user['status'] = "online"
+        user['login'] = logininfos[-10:]
+        print "==========================",logininfos,logininfos[-10:]
+        print user['login']
 
         # 查找该用户的所有权限
         # permission = self.application.dbutil.getFindPermission(sysid)
@@ -155,7 +157,7 @@ class BaseHandler(tornado.web.RequestHandler):
         # for p in permission:
         #     arr.append(p["title"])
 
-        self.session['data'] = user
+        self.session["data"] = user
         self.session["sysid"] = sysid
         # self.session['permission'] = arr
         self.session.save()
