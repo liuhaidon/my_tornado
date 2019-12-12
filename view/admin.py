@@ -199,11 +199,9 @@ class AdminSysUsers(BaseHandler):
         pagesize = self.application.settings["record_of_one_page"]   # 每页显示多少条记录
 
         user_list = self.db.tb_system_user.find({}).sort("time", pymongo.DESCENDING).skip((current_page - 1) * pagesize).limit(pagesize)
-
         pages = user_list.count() / pagesize
         if user_list.count() % pagesize > 0:
             pages += 1
-        print "myuser===>",self.admin
         return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=22, users=user_list, page=current_page, pagesize=pagesize, pages=pages)
 
 
@@ -211,26 +209,32 @@ class AdminAddSysUser(BaseHandler):
     """添加用户"""
     @BaseHandler.admin_authed
     def post(self):
+        print self.request.arguments
         info = dict()
-        username = self.get_argument("username", None)
-        password = self.get_argument("password", None)
-        role = self.get_argument("role", None)
-        createdat = time.strftime("%Y-%m-%d %H:%M:%S")
-
-        info["username"] = username
-        info["password"] = password
-        info["role"] = role
+        username = self.get_argument("userid", None)
+        record = self.db.tb_system_user.find_one({"userid": username})
+        if record:
+            return self.write(json.dumps({"status": "error", "msg": "系统用户已经存在！"}))
+        info["userid"] = username
+        info["passwd"] = self.get_argument("passwd", None)
+        info["role"] = self.get_argument("role", None)
+        info["brief"] = self.get_argument("brief", None)
+        info["email"] = self.get_argument("email", None)
+        info["phone"] = self.get_argument("phone", None)
 
         for k, v in info.iteritems():
             if not v:
-                return self.write(json.dumps({"status": 'error', "msg": k + "为必选项，请输入信息！"}))
+                return self.write(json.dumps({"status": "error", "msg": k + "为必选项，请输入信息！"}))
+        last = self.db.tb_system_user.find_one({}, {"id": 1, "_id": 0}, sort=[("id", pymongo.DESCENDING)])
+        info["id"] = int(last.get("id", 0)) + 1 if last else 1
+        info["status"] = 1
+        info["regtime"] = time.strftime("%Y-%m-%d %H:%M:%S")
 
-        res = self.application.dbutil.addUser(username, password, role, createdat)
-        if not res:
-            logger().info("增加用户失败：===>")
-            return self.write(json.dumps({"msg": u'增加系统用户失败', "status": 'error'}))
-        logger().info("增加用户成功：===>")
-        return self.write(json.dumps({"status": 'ok', "msg": u"增加系统用户成功！"}))
+        res = self.application.backend_auth.register(info)
+        if res:
+            print "register error", res
+            return self.write(json.dumps({"msg": u'注册系统用户失败', "status": "error"}))
+        return self.write(json.dumps({"status": "success", "msg": u"系统用户增加成功！"}))
 
 
 class AdminDeleteSysUser(BaseHandler):
@@ -239,37 +243,37 @@ class AdminDeleteSysUser(BaseHandler):
     def post(self):
         datas = self.request.arguments
         del datas['_xsrf']
-        ip_infp = self.request.remote_ip
         for key, value in datas.items():
-            uid = int(value[0])
-            flag = self.application.dbutil.delUser(uid, ip_infp)
-        if flag:
-            logger().info("删除用户失败：===>")
-            self.write(json.dumps({"status": 'ok', "msg": u'删除系统用户成功'}))
-        logger().info("删除用户成功：===>")
-        self.write(json.dumps({"status": 'ok', "msg": u'删除系统用户失败'}))
+            self.db.tb_system_user.remove({"_id": ObjectId(value[0])})
+        self.write(json.dumps({"status": 'ok', "msg": u'删除系统用户成功'}))
 
 
 class AdminModifySysUser(BaseHandler):
-    """修改用户"""
+    """修改系统用户"""
     @BaseHandler.admin_authed
     def get(self, id):
         record = self.db.tb_system_user.find_one({"_id": ObjectId(id)})
-        return self.render("backend/system_user_modify.html", myuser=self.admin, admin_nav=22, user=record)
+        return self.render("backend/system_user_modify.html", myuser=self.admin, admin_nav=22, sysuser=record)
 
+    @BaseHandler.admin_authed
     def post(self, id):
+        record = self.db.tb_system_user.find_one({"_id": ObjectId(id)})
+        if not record:
+            return self.write(json.dumps({"status": 'error', "msg": "修改的系统用户不存在！"}))
         newprofile = {
-            'id': self.get_argument("id", None),
             'userid': self.get_argument("userid", None),
             'brief': self.get_argument("brief", None),
-            'mobile': self.get_argument("mobile", None),
-            'status': self.get_argument("status", None),
+            'phone': self.get_argument("phone", None),
+            'email': self.get_argument("email", None),
+            'role': self.get_argument("role", None),
+            'status': int(self.get_argument("status", None)),
             'regtime': self.get_argument("regtime", None),
         }
         for k, v in newprofile.iteritems():
             if not v:
                 return self.write(json.dumps({"status": 'error', "msg": k + "为必选项，请输入信息！"}))
-        return self.write(json.dumps({"status": 'ok', "msg": "修改管理员用户成功！"}))
+        m = self.db.tb_system_user.update_one({"_id": record.get('_id')}, {"$set": newprofile})
+        return self.write(json.dumps({"status": 'ok', "msg": "修改系统用户成功！"}))
 
 
 class AdminRepassSystem(BaseHandler):
@@ -444,21 +448,3 @@ class AdminModifyNotice(BaseHandler):
         return self.write(json.dumps({"status": 'ok', "msg": "修改公告成功！"}))
 
 
-class AdminSysUsers(BaseHandler):
-    """系统用户列表"""
-    @BaseHandler.admin_authed
-    def get(self):
-        current_page = int(self.get_argument("page", 1))             # 当前第几页,默认第一页
-        pagesize = self.application.settings["record_of_one_page"]   # 每页显示多少条记录
-
-        skiprecord = pagesize * (current_page - 1)
-        user_list = self.application.dbutil.getUsers(skiprecord, pagesize)
-        user_list = self.db.tb_system_user.find({}).sort("time", pymongo.DESCENDING).skip((current_page - 1) * pagesize).limit(pagesize)
-
-        # 一共有多少条记录
-        count = self.application.dbutil.getAllUsers()
-        # 一共有多少页
-        pages = count / pagesize
-        if count % pagesize > 0:
-            pages += 1
-        return self.render("backend/system_user_query.html", myuser=self.admin, admin_nav=22, users=user_list, page=current_page, pagesize=pagesize, pages=pages, count=count)

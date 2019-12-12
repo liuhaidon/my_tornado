@@ -207,6 +207,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def admin_authed(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
+            print "1111"
             if not self.session.get('sysid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_admin_login_url()

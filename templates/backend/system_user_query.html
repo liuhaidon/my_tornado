@@ -36,21 +36,33 @@
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <!--<div class="ibox-tools">-->
-                                <!--<input type="button" class="btn new-btn-w-m btn-primary audit1" value="搜索用户" data-toggle="modal" onclick="query()"/>-->
-                            <!--</div>-->
                             <h5>系统用户列表
-                                <small>共计：{{ count }}</small>
+                                <small>共计：{{ users.count() }}</small>
+                                <div style="display:inline;">
+                                <a href="/admin/sysusers?page={{ page-1 if page> 1 else 1 }}"><span>上一页</span></a>
+                                {% if pages < 10 %}
+                                {% for i in range(1,pages+1) %} <a href="/admin/sysusers?page={{i}}"><span>{{i}}</span></a>{% end %}
+                                {% else %}
+                                {% for i in range(1,10) %} <a href="/admin/sysusers?page={{i}}"><span>{{i}}</span></a>{% end %}
+                                <a href="/admin/sysusers?page={{pages}}"><span>{{pages}}</span></a>
+                                跳转<input id="pager" style="display:inline;width:26px;height:20px;" class="form-control" onpropertychange="JumpPage()" onblur="JumpPage()">页
+                                {% end %}
+                                <a href="/admin/sysusers?page={{ page+1 if page<pages else pages }}"><span>下一页</span></a>
+                                </div>
                             </h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
                                 </a>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <a class="dropdown-toggle" data-toggle="dropdown"
+                                   href="#">
                                     <i class="fa fa-wrench"></i>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user">
-                                    <li><a onclick="query()" >搜索用户</a></li>
+                                    <li><a href="#">选项1</a>
+                                    </li>
+                                    <li><a href="#">选项2</a>
+                                    </li>
                                 </ul>
                                 <a class="close-link">
                                     <i class="fa fa-times"></i>
@@ -58,100 +70,49 @@
                             </div>
                         </div>
                         <div class="ibox-content">
-                            <style>
-                                th:first-child,
-                                .gradeX td:first-child {
-                                    width: 20px;
-                                    cursor: pointer;
-                                }
-
-                                th:first-child input,
-                                .gradeX td:first-child input {
-                                    cursor: pointer;
-                                }
-                            </style>
 
                             <form action="javascript:;" method="post" name="login_form" id="login_form">
                                 {% module xsrf_form_html() %}
-                                <table class="table table-striped table-bordered table-hover dataTable dataTables-example">
+                                <table class="table table-striped table-bordered table-hover dataTables-example">
                                     <thead>
                                     <tr>
-                                        <th class="sorting_disabled"><input type="checkbox" class="i-checks" id="userListCheck"/></th>
+                                        <th><input type="checkbox" class="i-checks" id="userListCheck"/></th>
                                         <th>ID</th>
                                         <th>用户名</th>
-                                        <th>角色</th>
+                                        <th>昵称</th>
+                                        <th>简介</th>
+                                        <th>手机号</th>
+                                        <th>邮箱</th>
                                         <th>注册时间</th>
-                                        <th>用户状态</th>
+                                        <th>状态</th>
                                         <th>修改密码</th>
-                                        <th>权限</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+                                    {% set status = {-1:"未痛关",0:"离线",1:"在线"} %}
+                                    {% set t = {"information":"资讯",'activity':"活动","course":"课程","video":"视频"} %}
                                     {% for u in users %}
                                     <tr class="gradeX">
                                         <td><input type="checkbox" class="i-checks"></td>
-                                        <td class="userListId" data-id="{{ u.get('userid') }}" style="">{{ u.get('userid') }}</td>
-                                        <td><a href="/admin/sysuser/{{ u.get('userid') }}">{{ u.get('username','') }}</a></td>
-                                        <td>{{ u.get('role','') }}</td>
-                                        <td>{{ u.get('createdat','') }}</td>
-                                        <td>{{ u.get('status',None) }}</td>
-                                        <td><a class="btn btn-primary" onclick="repass(this,'{{u.get('''userid''')}}')">修改密码</a></td>
-                                        <td><a class="btn btn-primary" onclick="test(this, '{{u.get('''userid''')}}', '{{ u.get('''username''')}}')">绑定</a></td>
+                                        <td class="userListId" data-id="{{ u.get('_id') }}">{{ u.get('_id') }}</td>
+                                        <td><a href="/admin/sysuser/{{ u.get('_id') }}" target="_self">{{ u.get('userid','无') }}</a></td>
+                                        <td>{{ u.get("name", "") }}</td>
+                                        <td>{{ u.get('brief','无') }}</td>
+                                        <td>{{ u.get('mobile','无') }}</td>
+                                        <td>{{ u.get('email','无') }}</td>
+                                        <td>{{ u.get('regtime','未知') }}</td>
+                                        <td>{{ status.get(u.get('status',0),"未知") }}</td>
+                                        <td><a class="btn btn-primary" onclick="repass(this,'{{u.get('''_id''')}}')">密码修改</a></td>
                                     </tr>
                                     {% end %}
                                     </tbody>
                                 </table>
-
-                                <div class="ibox float-e-margins">
-                                    <div class="ibox-title">
-                                        <div style="display: flex;align-content: space-between;align-items: center;margin-top: 10px">
-                                            <label>每页显示： </label>
-                                            <select class="form-control" type="text" id="num" name="num" style="width: 5%;margin-left: 0.3%; margin-right: 0.5%">
-                                               <option value='1'>1</option>
-                                               <option value='2'>2</option>
-                                               <option value='3'>3</option>
-                                               <option value='5'>5</option>
-                                               <option value='10'>10</option>
-                                            </select>
-
-                                            <!--<h5>系统用户列表-->
-                                                <!--<small>共计：{{ count }}</small>-->
-                                                <div style="display:inline;" class="fenye" data-dt="{{page}}" id="fenye" data-size="{{pagesize}}">
-                                                <a href="/admin/sysusers?page={{ page-1 if page>1 else 1 }}&pagesize={{pagesize}}"><span>上一页</span></a>
-                                                {% if pages>10 %}
-                                                    {% if page<9 %}
-                                                    	{% for i in range(1,10) %} <a href="/admin/sysusers?page={{i}}&pagesize={{pagesize}}"><span>{{i}}</span></a>{% end %}
-                                                   		 ...<a href="/admin/sysusers?page={{pages}}&pagesize={{pagesize}}"><span>{{pages}}</span></a>
-                                                    {% else %}
-                                                        {% if page+3<pages %}
-                                                            {% for i in range(page-6,page+3) %} <a href="/admin/sysusers?page={{i}}&pagesize={{pagesize}}"><span>{{i}}</span></a>{% end %}
-                                                            ...<a href="/admin/sysusers?page={{pages}}&pagesize={{pagesize}}"><span>{{pages}}</span></a>
-                                                        {% else %}
-                                                            <a href="/admin/sysusers?page=1&pagesize={{pagesize}}"><span>1</span></a>...
-                                                            {% for i in range(pages-8,pages+1) %} <a href="/admin/sysusers?page={{i}}&pagesize={{pagesize}}"><span>{{i}}</span></a>{% end %}
-                                                        {% end %}
-                                                    {% end %}
-                                                    跳转<input id="pager" style="display:inline;width:26px;height:20px;" class="form-control" onblur="JumpPage()">页
-                                                {% else %}
-                                                    {% for i in range(1,pages+1) %}<a href="/admin/sysusers?page={{i}}&pagesize={{pagesize}}"><span>{{i}}</span></a>{% end %}
-                                                {% end %}
-                                                {% if pages==0 %}
-                                                    <a href="/admin/sysusers?page=1&pagesize={{pagesize}}"><span>下一页</span></a>
-                                                {% else %}
-                                                    <a href="/admin/sysusers?page={{ page+1 if page<pages else pages }}&pagesize={{pagesize}}"><span>下一页</span></a>
-                                                {% end %}
-                                                </div>
-                                            <!--</h5>-->
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <input type="submit" class="btn btn-w-m btn-primary delete1" value="删除选中"
-                                       data-toggle="modal" data-target="#myModal5"/>
+                                       data-toggle="modal" data-target="#myModal2"/>
                                 <input type="button" class="btn new-btn-w-m btn-primary audit1" value="增加系统用户"
-                                       data-toggle="modal" data-target="#myModal6"/>
+                                       data-toggle="modal" data-target="#myModal3"/>
 
-                                <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog"
+                                <div class="modal inmodal fade" id="myModal2" tabindex="-1" role="dialog"
                                      aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
@@ -166,79 +127,73 @@
                                                 <p class="ideaId"></p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-white deleteUser"
-                                                        data-dismiss="modal">确定
-                                                </button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消
-                                                </button>
+                                                <button type="button" class="btn btn-white deleteUser" data-dismiss="modal">确定</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"
+                                <div class="modal inmodal fade" id="myModal3" tabindex="-1" role="dialog"
                                      aria-hidden="true">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span
-                                                        aria-hidden="true">&times;</span><span
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                                                         class="sr-only">Close</span></button>
                                                 <h4 class="modal-title">增加系统用户</h4>
+                                                  <!--<small class="font-bold">这里可以显示副标题。</small>-->
                                             </div>
                                             <div class="modal-body">
-                                                <p class="ideaId">
-                                                    <!--<label>ID:</label>
-                                                    <input class="form-control"  type="text" id="uid" name="uid" placeholder=""/>-->
-
+                                                <p class="sysId">
                                                     <label>用户名:</label>
                                                     <input class="form-control"  type="text" id="username" name="username" onkeyup="keydownfun()"
-                                                       placeholder="4-16位字符，字母/中文/数字/下划线" value=>
+                                                       placeholder="4-16位字符，字母/中文/数字/下划线"/>
+                                                    <p class="showInfo"></p>
 
                                                     <label>密码:</label>
-                                                    <input  class="form-control" type="password" id="pwd" name="pwd"
-                                                       onKeyUp="ps.update(this.value);"
-                                                       placeholder="6-20位字符，字母与数字组合"/>
+                                                    <input class="form-control" type="password" id="pwd" name="pwd" placeholder="请输入用户密码"/>
+                                                    <p class="showInfo"></p>
 
                                                     <label>确认密码:</label>
                                                     <input class="form-control" type="password" id="pwd2" name="pwd2" placeholder="请再次输入密码"/>
+                                                    <p class="showInfo"></p>
 
                                                     <label>角色:</label>
-                                                    <select class="form-control"  id="role" name="role">
+                                                    <select  class="form-control" id="role" name="role">
+                                                        <!--<option value="questioner">出题员</option>-->
+                                                        <!--<option value="auditor">审核员</option>-->
                                                         <option value="admin">管理员</option>
-                                                        <!--<option value="check">检查员</option>-->
-                                                        <option value="user">普通用户</option>
                                                     </select>
+                                                    <p class="showInfo"></p>
 
-                                                    <!--<label>简介:</label>-->
-                                                    <!--<textarea class="form-control" type="text" id="brief" name="brief" cols=10 rows=6 placeholder="不多于256个字">用户简介</textarea>-->
+                                                    <label>简介:</label>
+                                                    <textarea class="form-control" name="brief" id="brief" cols=10 rows=6 placeholder="输入简介"></textarea>
+                                                    <p class="showInfo"></p>
 
-                                                    <!--<label>注册时间:</label>
-                                                    <input class="form-control"  type="text" id="atime" name="atime" placeholder="当前时间"/>-->
+                                                    <label>邮箱:</label>
+                                                    <input class="form-control"  type="text" id="email" name="email" placeholder="输入你的邮箱"/>
+                                                    <p class="showInfo"></p>
+
+                                                    <label>手机号:</label>
+                                                    <input class="form-control"  type="text" id="phone" name="phone" maxlength="11" placeholder="请输入您的手机号完成验证"/>
                                                 </p>
                                             </div>
-
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-white add_sysuser"
-                                                        data-dismiss="modal">确定
-                                                </button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消
-                                                </button>
+                                                <button type="button" class="btn btn-white add_sysuser" data-dismiss="modal">确定</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="modal inmodal fade" id="myModal2" tabindex="-1" role="dialog"
-                                     aria-hidden="true">
+                                <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
                                     <p class="newsysId">
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span
-                                                        aria-hidden="true">&times;</span><span
+                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                                                         class="sr-only">Close</span></button>
                                                 <h4 class="modal-title">密码修改</h4>
+                                                <!--<small class="font-bold">这里可以显示副标题。</small>-->
                                             </div>
                                             <div class="modal-body">
                                                     <label>新密码：</label>
@@ -249,106 +204,10 @@
                                                     <input class="form-control" type="password" placeholder="请确认新密码" name="passwd3" id="passwd3">
                                                     <p class="showInfo"></p>
                                             </div>
-
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-white repass1"
                                                         data-dismiss="modal">确定</button>
                                                 <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="modal inmodal fade" id="myModa11" tabindex="-1" role="dialog"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span
-                                                        aria-hidden="true">&times;</span><span
-                                                        class="sr-only">Close</span></button>
-                                                <h4 class="modal-title">用户查找</h4>
-                                                <!--<small class="font-bold">这里可以显示副标题。</small>-->
-                                            </div>
-                                            <div class="modal-body">
-                                                <p class="ideaId">
-                                                    <div style="display: flex;align-content: space-between;align-items: center;margin-top: 20px">
-                                                        <label>条件： </label>
-                                                        <select class="form-control" id="feilei" name="feilei" style="width: 90%;margin-left: 1.5%">
-                                                            <option value=''>用户名</option>
-                                                        </select>
-                                                        <p class="showInfo"></p>
-                                                    </div>
-                                                    <div style="display: flex;align-content: space-between;align-items: center;margin-top: 20px">
-                                                        <input class="form-control" placeholder="" name="content" id="content" style="width:90%; margin-left:50px">
-                                                        <p class="showInfo"></p>
-                                                    </div>
-                                                </p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-white select" data-dismiss="modal">确定
-                                                </button>
-                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                          
-                                <div class="modal inmodal fade" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span
-                                                        aria-hidden="true">&times;</span><span
-                                                        class="sr-only">Close</span></button>
-                                                <h4 class="modal-title">用户绑定权限列表</h4>
-                                                <small class="font-bold">删除</small>
-                                            </div>
-                                          
-                                            <div class="modal-body">
-                                                <label>已绑定权限：</label>
-                                                <div id="binded_playlist" style="height:220px;overflow-x:hidden;">
-                                                    <table id="dt_playlist"
-                                                           class="table table-striped table-bordered table-hover dataTables-schedule">
-                                                        <thead>
-                                                        <tr><th><input type="checkbox" class="i-checks" id="playListCheck1"/></th>
-                                                            <th>权限名</th>
-                                                            <th>权限标题</th>
-                                                            <th>操作</th>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody id="playlist3">
-                                                        </tbody>
-                                                    </table>
-                                                    <p class="showInfo"></p>
-                                                </div>  
-
-                                                <label>待绑定权限：</label>
-						  						<div style="height:220px;overflow-x:hidden;">
-                                                    <table id="dt_playlist2"
-                                                           class="table table-striped table-bordered table-hover dataTables-schedule">
-                                                        <thead>
-                                                        <tr><th><input type="checkbox" class="i-checks" id="playListCheck2"/></th>
-                                                            <th>权限名</th>
-                                                            <th>权限标题</th>
-                                                            <!--<th>操作</th>-->
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody id="playlist4">
-                                                        </tbody>
-                                                    </table>
-                                                    <p class="showInfo"></p>
-						                        </div>    
-                                            </div>
-                                          
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-white bind_playlist1"
-                                                        data-dismiss="modal">绑定
-                                                </button>
-                                                <button type="button" class="btn btn-primary cancel1"
-                                                        data-dismiss="modal">取消
-                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -362,116 +221,93 @@
     </div>
 </div>
 
-<script> 
+<script>
     function getCookie(name) {
         var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
         return r ? r[1] : undefined;
     }
-
-    function JumpPage(){
-        var page = $("#pager").val();
-        var pagesize = $("#fenye").data("size");
-        var n = /^[1-9]\d*$/;
-        if(!n.test(page)){
-            alert('跳转页数请输入正整数');
-            return false;
-        }
-        window.location.href = window.location.pathname+"?page="+page+"&pagesize="+pagesize;
+    function repass (obj,uid){
+        $(".newsysId").data("id",uid);
+        console.log("===========>",$(".newsysId").data("id"));
+        $('#myModal5').modal('show');
     }
-
     $(function () {
-        var pagesize = $("#fenye").data("size");
-        $("#num").val(pagesize);
-
-        var json1 = _alert('.btn.btn-w-m.delete', '.modal-body .ideaId', '您要删除的系统用户ID为');
-        // json1['_xsrf'] = getCookie("_xsrf");
-        json1['_xsrf'] = $("input[name='_xsrf']").val();
+        var json = _alert('.btn.btn-w-m.delete1', '.modal-body .ideaId', '您要删除的系统用户ID为');
+        json['_xsrf'] = getCookie("_xsrf");
         $('.btn.btn-white.deleteUser').click(function () {
             $.ajax({
-                url: '/admin/sysuser/delete',
-                type: 'post',
-                data: json1,
+                url: "/admin/sysuser/delete",
+                type: "post",
+                data: json,
                 success: function (data) {
-                    // location.reload();
-                    window.location.href="/admin/sysusers";
+                    console.log(data);
+                    location.reload();
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    console.log(XMLHttpRequest.status);
-                    console.log(XMLHttpRequest.readyState);
-                    console.log(textStatus);
+                error: function () {
+                    //  alert('error');
                 }
             });
         });
 
-        var page = $("#fenye").data("dt");
-        page = page.toString();
-        $("a span").each(function(i,item){
-            console.log(typeof $(this).text())
-            if($(this).text()==page){
-                $(this).parent().css("color","#D200D2")
+        $("#email").blur(function () {
+            if($("#email").val()==""){
+                alert("请输入邮箱！");
+                return false
             }
-        });
-    });
-
-    $('#num').change(function () {
-        var num = $("#num").find("option:selected").text();
-        window.location.href="/admin/sysusers?pagesize="+num;
-    });
-
-    $("#username").blur(function(){
-        var json2 = {};
-        var username = $("#username").val();
-        if(!username){
-            alert("用户名称不能为空")
-        }
-        json2["username"] = username;
-        json2['_xsrf'] = $("input[name='_xsrf']").val();
-        $.ajax({
-            url: '/ajax/sysuser/find',
-            type: 'post',
-            data: json2,
-            success: function (data) {
-                var json = $.parseJSON(data);
-                if (json.status != "ok") {
-                    $("#username").val("");
-                    alert("该用户已经注册过");
+            else{
+                var email = $("#email").val();
+                var myreg =  /^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/
+                if (myreg.test(email)) {return true}
+                else {
+                    alert("邮箱格式输入有误！");
+                    return false
                 }
-            },
-            error: function () {
             }
         });
+
+        $("#phone").blur(function (){
+            if($("#phone").val()==""){
+                alert("请输入手机号！")
+                return false
+            }
+            else{
+               var phone = $("#phone").val()
+                var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                if (!myreg.test(phone)) {
+                    alert("手机格式输入有误！");
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        })
     });
-  
-    $('.btn.btn-white.add_sysuser').click(function () {
-        var xjson={
-            '_xsrf':$("input[name='_xsrf']").val(),
-            // 'userid': $('#uid').val(),
-            'username': $('#username').val(),
-            'password': $('#pwd').val(),
-            'role': $('#role').val(),
-            // 'brief': $('#brief').val(),
-            // 'createdat': $('#atime').val(),
+
+    $(".btn.btn-white.add_sysuser").click(function () {
+        var json = {
+            "_xsrf":$("input[name='_xsrf']").val(),
+            "userid":$("#username").val(),
+            "passwd":$("#pwd").val(),
+            "role":$("#role").val(),
+            // "role":$("#role").find("option:selected").text(),
+            "brief":$('#brief').val(),
+            "email":$('#email').val(),
+            "phone":$('#phone').val(),
         };
-        if (xjson['username'] == '') {
-            alert("用户名称不能为空！");
-            return false;
-        }
-        if (xjson['password'] == '') {
-            alert("密码不能为空！");
+        if(json["passwd"] == "" || json["passwd"] !== $("#pwd2").val()) {
+            alert("用户密码两次输入不一致！");
             return false;
         }
         $.ajax({
             url: '/admin/sysuser/add',
             type: 'post',
-            data: xjson,
+            data: json,
             success: function (data) {
-                var json = $.parseJSON(data);
-                alert(json.msg);
-                if (json.status != "ok") {
-                    return false;
+                var jsons = jQuery.parseJSON(data);
+                alert(jsons.msg);
+                if (jsons.status == "success") {
+                    location.reload();
                 }
-                // location.reload();
-                window.location.href="/admin/sysusers";
             },
             error: function (XMLHttpRequest, textStatus, errorThrown) {
                 console.log(XMLHttpRequest.status);
@@ -479,7 +315,7 @@
                 console.log(textStatus);
             }
         });
-    });
+    })
 </script>
 
 <script>
@@ -513,203 +349,113 @@
         if (!patrn.exec(str)) return false;
         return true;
     }
-</script>
 
-<script>
-    function query(){
-        $('#myModa11').modal('show');
+    /*密码验证1*/
+    function psskeydown1() {
+        var sttr = $("#pwd").val();
+        var srr = checkusername(sttr, /^([a-zA-Z0-9]){5,19}$/);
+        var pwd = '.pwdErrMsg';
+        arr['pwd1'] = srr;
+        if (sttr == "") {
+            $("#pwd + span").html('');
+            $("#pwd + span").text("");
+            return;
+        }
+        if (srr == false) {
+            $("#pwd + span").html('<img src="/static/img/wrong.png"/>密码格式错误');
+            return;
+        } else {
+            $("#pwd + span").html('<img src="/static/img/rightPic.png"/>');
+        }
+        if (sttr.length < 6) {
+            $("#pwd + span").html('<img src="/static/img/wrong.png"/>密码长度小于6');
+        }
+        else if (sttr.length > 20) {
+            $("#pwd + span").html('<img src="/static/img/wrong.png"/>密码长度大于20');
+        }
     }
 
-    $(function(){
-        $('.btn.btn-white.select').click(function () {
-            var fenlei = $('#feilei').find("option:selected").text();
-            var content = $('#content').val();
-            window.location.href="/admin/sysuser/select?fenlei="+fenlei+"&content="+content;
-        })
-    })
-</script>
-
-<script>
-    function repass (obj,uid){
-        $(".newsysId").data("id",uid);
-        console.log("===========>",$(".newsysId").data("id"));
-        $('#myModal2').modal('show');
+    /*密码验证2*/
+    function psskeydown2() {
+        var sttr = $("#pwd2").val();
+        if (arr['pwd1'] == false || sttr == "") {
+            arr['pwd2'] = false;
+            $("#pwd2 + span").html('');
+            $("#pwd2 + span").text("");
+            return;
+        }
+        if (sttr != $("#pwd").val()) {
+            arr['pwd2'] = false;
+            $("#pwd2 + span").html('<img src="/static/img/wrong.png"/>两次输入的密码不一致');
+        } else {
+            arr['pwd2'] = true;
+            $("#pwd2 + span").html('<img src="/static/img/rightPic.png"/>');
+        }
     }
 
-    $("#passwd3").blur(function(){
-        var pass3 = $("#passwd3").val();
-        var pass2 = $("#passwd2").val();
-        if (pass3!=pass2){
-            alert("两次密码不一致")
+    function userphone() {
+        var sttr = $("#phone").val();
+        var srr = checkusername(sttr, /^([u4e00-u9fa5]|[ufe30-uffa0]|[a-za-z0-9_]){3,12}$/);
+        var sum = 0;
+        arr['userphone'] = false;
+        if (sttr == "") {
+            $("#pwd2 + span").html('');
+        }
+        for (var i = 0; i < sttr.length; i++) {
+            var c = sttr.charCodeAt(i);
+            if ((c >= 0x0001 && c <= 0x007e) || (0xff60 <= c && c <= 0xff9f)) {
+                sum++;
+            }
+            else {
+                sum += 2;
+            }
+        }
+        if (sum < 4) {
+            $("#pwd2 + span").html('<img src="/static/img/wrong.png"/>');
+            $("#pwd2 + span").text("手机号码长度小于4");
+        }
+        else if (sum > 14) {
+            $("#pwd2 + span").html('<img src="/static/img/wrong.png"/>');
+            $("#pwd2 + span").text("手机号码长度大于14");
+        } else {
+            arr['userphone'] = true;
+            $("#pwd2 + span").html('<img src="/static/img/rightPic.png"/>');
+            $("#pwd2 + span").text("手机号码正确");
+        }
+    }
+
+    $("#phone").keyup(function () {
+        var mobile_number = $("#phone").val();
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+
+        if (myreg.test(mobile_number)) {
+            $("#phone + span").html('<img src="/static/img/rightPic.png"/>');
+            $("#phone").focus();
+        }
+        else {
+            $("#phone + span").html('<img src="/static/img/wrong.png"/>格式不正确，请检查');
         }
     });
 
-    $('.btn.btn-white.repass1').click(function () {
-        var p2 = $("#passwd2").val();
-        var p3 = $("#passwd3").val();
-        if (p2==""){
-            alert("请输入新密码");
-            return false;
-        }
-        if (p3==""){
-            alert("请输入确认密码");
-            return false;
-        }
-        var json3 = {
-            "_xsrf": $("input[name='_xsrf']").val(),
-            'uid': $(".newsysId").data("id"),
-            'password3':p2,
-            'password4':p3,
-        };
-        $.ajax({
-            url: '/admin/system/repass',
-            type: 'post',
-            data: json3,
-            success: function (data) {
-                var jsons = jQuery.parseJSON(data);
-                alert(jsons.msg);
-                if (jsons.status == "ok") {
-                    location.reload();
-                }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.status);
-                console.log(XMLHttpRequest.readyState);
-                console.log(textStatus);
-            }
-        });
+    $("#pwd").focusout(function () {
+        $("#pwd + span").html("");
+        psskeydown1();
+    });
+    $("#pwd2").focusout(function () {
+        $("#pwd2 + span").html("");
+        psskeydown2();
     });
 </script>
-<script>
-    $(function(){
-        $("#binded_playlist").droppable({
-            drop:function(event, ui){
-                var draggable = ui.draggable;
-
-                /*insert if not playlist id is in*/
-                var playlistid = draggable.data("dt");
-                $("#playlist3 tr").each(function () {
-                  if($(this).children('td').eq(1).text() === playlistid){
-                    $(this).remove();
-                  }
-                });
-
-                var op = "<a class=\"btn btn-primary btn-xs delrow\" href=\"javacript:void(0);\"><span></span> 删除</a>";
-                var tr = "<tr data-dt='"+draggable.data("dt")+"' data-name='"+draggable.data("name")+"'>";
-                tr += "<td><input type=\"checkbox\" class=\"i-checks\"></td>";
-                tr += "<td>"+draggable.children('td').eq(1).text()+"</td>";
-                tr += "<td style=\"width:20%;\">"+draggable.children('td').eq(2).text()+"</td>";
-                tr += "<td>"+op+"</td>";
-                tr += "</tr>";
-                $("#playlist3").append(tr);
-            }
-        });
-
-        $('#playlist3 .delrow').on('click',function(){
-            var $tr = $(this).parents("tr");
-            $tr.remove();
-        });
-    });
-
-    function test(obj, userid, username){
-        // alert("准备绑定");
-        var tds = $(obj).parent().parent().find('td');
-        $("small.font-bold").each(function () {
-          $(this).html(tds.eq(2).text());
-        });
-        $("#binded_playlist").data("id",userid);
-        $("#binded_playlist").data("name",username);
-        $.ajax({
-            url: '/ajax/permission/bind',
-            type: 'post',
-            data: {
-              '_xsrf':$("input[name='_xsrf']").val(),
-              "userid":userid,
-            },
-            success: function (data) {
-                var json = $.parseJSON(data);
-                console.log(json);
-                var json1 = json.userpermission;
-                var json2 = json.allpermission;
-                //var alllists = Object.values(json1);
-                var xhtml = "";
-
-                for (var i = 0; i < json2.length; i++){
-                  var strid = json2[i].name;
-                  var title = json2[i].title;
-                  xhtml += "<tr class=\"gradeX draggable ui-draggable\" draggable=\"true\" data-dt='"+strid+"' data-name='"+title+"'>";
-                  xhtml += "<td><input type=\"checkbox\" class=\"i-checks\"></td>";
-                  xhtml += "<td>"+json2[i].name+"</td>";
-                  xhtml += "<td>"+json2[i].title+"</td>";
-                }
-                $("#playlist4").html(xhtml);
-                $('#playlist4 tr').draggable({helper:'clone'});
-
-                xhtml = "";
-                var op = "<a class=\"btn btn-primary btn-xs delrow\" href=\"javacript:void(0);\"><span></span> 删除</a>";
-                if(json1) {
-                  // var playlists = Array.from(new Set(json2)); //去重
-                  // var op = "<a class=\"btn btn-primary btn-xs delrow\" href=\"javacript:void(0);\"> 删除</a>";
-                  for (var i = 0; i < json1.length; i++){
-                    var strid = json1[i].name;
-                    var title = json1[i].title;
-                    xhtml += "<tr class=\"gradeX draggable ui-draggable\" draggable=\"true\" data-dt='"+strid+"' data-name='"+title+"'>";
-                    xhtml += "<td><input type=\"checkbox\" class=\"i-checks\"></td>";
-                    xhtml += "<td>"+json1[i].name+"</td>";
-                    xhtml += "<td>"+json1[i].title+"</td>";
-                    xhtml += "<td data-id='" + strid + "'>" + op + "</td>";
-                  }
-                }
-                $("#playlist3").html(xhtml);
-                $('#playlist3 .delrow').on('click',function(){
-                    var $tr = $(this).parents("tr");
-                    $tr.remove();
-                });
-                $('#myModal4').modal('show');
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-                console.log(XMLHttpRequest.status);
-                console.log(XMLHttpRequest.readyState);
-                console.log(textStatus);
-            }
-        });
+<style>
+    th:first-child,
+    .gradeX td:first-child {
+        width: 20px;
+        cursor: pointer;
     }
 
-    $('.btn.btn-white.bind_playlist1').click(function () {
-        // 遍历每条数据的id
-        var playlist=[];
-        $("#playlist3 tr").each(function(k,v) {
-            var d = {}
-            var vid = $(v).data("dt");
-            var title = $(v).data("name");
-            d["vid"] = vid;
-            d["title"] = title;
-            d = JSON.stringify(d);
-            playlist.push(d);
-        });
-        var json2 = {
-            "_xsrf": $("input[name='_xsrf']").val(),
-            'userid': $("#binded_playlist").data("id"),
-            'username': $("#binded_playlist").data("name"),
-            'playlist':playlist,
-        };
-        $.ajax({
-            url: '/ajax/bind/permission',
-            type: 'post',
-            data: json2,
-            success: function (data) {
-              var jsons = jQuery.parseJSON(data);
-              if (jsons.status == "ok") {
-                alert("ok")
-                location.reload();
-              }
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-              console.log(XMLHttpRequest.status);
-              console.log(XMLHttpRequest.readyState);
-              console.log(textStatus);
-            }
-        });
-    });
-</script>
+    th:first-child input,
+    .gradeX td:first-child input {
+        cursor: pointer;
+    }
+</style>
 {% end %}
