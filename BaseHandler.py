@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import os
+import os, pymongo
 import logging
 import tornado.web
 import time
@@ -132,15 +132,18 @@ class BaseHandler(tornado.web.RequestHandler):
             print "login failed"
             return False
         self.logging.info(('login checked', sysid, password))
-
-        # now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        now = time.strftime('%Y-%m-%d %H:%M:%S')
-        ip_info = self.request.remote_ip
-
         user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
         if not user:
             print "no user exists!",sysid
             return False
+
+        # now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        now = time.strftime('%Y-%m-%d %H:%M:%S')
+        last = self.db.tb_login_record.find_one({}, {"id": 1, "_id": 0}, sort=[("id", pymongo.DESCENDING)])
+        id = int(last.get("id", 0)) + 1 if last else 1
+        ip_info = self.request.remote_ip
+        self.db.tb_login_record.insert({"userid": sysid, "ip": ip_info, "atime": now, "id": id})
+
         # user["db"] = self.application.settings["database"]
         # user["system"] = self.application.settings["system"]
         logininfos = user.get('login', [])
@@ -207,7 +210,6 @@ class BaseHandler(tornado.web.RequestHandler):
     def admin_authed(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
-            print "1111"
             if not self.session.get('sysid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_admin_login_url()

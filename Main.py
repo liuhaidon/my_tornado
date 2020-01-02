@@ -75,8 +75,8 @@ class Application(tornado.web.Application):
             (r"/ajax/upload_video", UploadVideoFile),        # 上传视频
             (r"/admin/media/upload", RemotePictureHandler),   # 上传富文本：还要改动html页面与ueditor.py页面
 
-            (r"/admin/login/select", AdminLoginSelect),   # 用户登陆记录查询
-            (r"/admin/login/delete", AdminLoginDelete),   # 用户登陆记录删除
+            (r"/admin/login/record", AdminLoginRecord),        # 用户登陆记录查询
+            (r"/admin/login/delete", AdminLoginDelete),        # 用户登陆记录删除
 
             (r"/hehe", AdminIndex),
             (r"/pay", AdminPay),
@@ -106,7 +106,7 @@ class Application(tornado.web.Application):
                 'redis_port': 6379,
                 'redis_pass': 'redis123',
             },
-            record_of_one_page=10,
+            record_of_one_page=3,
             # ui_modules={
             #     "VideosListDisplay": VideosListDisplay,
             #     "ParticipantsListDisplay": ParticipantListDisplay,

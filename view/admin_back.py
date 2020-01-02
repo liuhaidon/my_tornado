@@ -53,6 +53,8 @@ class AdminLoginHandler(BaseHandler):
         res = self.begin_backend_session(username, pwd)
         if not res:
             return self.render("backend/login.html", url=url, error="用户名或密码不正确")
+
+
         # sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % ("登陆用户：" + username, ip_info, atime)
         # self.application.dbutil.execute(sql)
 
@@ -87,37 +89,27 @@ class AdminHomeHandler(BaseHandler):
         self.render("backend/home.html", myuser=self.admin, admin_nav=0)
 
 
-class AdminLoginRecord(BaseHandler):
+class AdminLoginSelect(BaseHandler):
     """用户登陆记录查询"""
     @BaseHandler.admin_authed
     def get(self):
         current_page = int(self.get_argument("page", 1))
         pagesize = self.application.settings["record_of_one_page"]
+
         skiprecord = pagesize * (current_page - 1)
-        login_list = self.db.tb_login_record.find().skip(skiprecord).limit(pagesize).sort("atime", pymongo.ASCENDING)
-        # login_list = self.db.tb_login_record.find().skip(skiprecord).limit(pagesize).sort("atime", pymongo.DESCENDING)
-        pages = int(round(login_list.count() / pagesize))
-        if login_list.count() % pagesize:
+        sql = "select * from tb_login_record order by createdat desc limit %s,%s" % (skiprecord, pagesize)
+        login_list = self.application.dbutil.query(sql)
+
+        field = ["id", "username", "ip_address", "createdat"]
+        data_list = list_to_dict(field, login_list)
+
+        sql = "select count(*) from tb_login_record"
+        count = self.application.dbutil.queryall(sql)
+        pages = count / pagesize
+        if count % pagesize > 0:
             pages += 1
-
-        list_page = []
-        if current_page > 1:
-            last_page = '<a href="/admin/login/record?page=%s">上一页</a>' % (current_page - 1)
-        else:
-            last_page = '<a href="/admin/login/record?page=%s">上一页</a>' % (current_page)
-        list_page.append(last_page)
-
-        for p in range(pages):
-            tmp = '<a href="/admin/login/record?page=%s">%s</a>' % (p + 1, p + 1)
-            list_page.append(tmp)
-
-        if current_page < pages:
-            next_page = '<a href="/admin/login/record?page=%s">下一页</a>' % (current_page + 1)
-        else:
-            next_page = '<a href="/admin/login/record?page=%s">下一页</a>' % (current_page)
-        list_page.append(next_page)
-        str_page = "".join(list_page)
-        self.render("backend/login_record.html", myuser=self.admin, admin_nav=11, login_list=login_list, page_count=str_page)
+        self.render("backend/login_record.html", myuser=self.admin, admin_nav=11, login_list=data_list, page=current_page,
+                    pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminLoginDelete(BaseHandler):
@@ -127,8 +119,12 @@ class AdminLoginDelete(BaseHandler):
         datas = self.request.arguments
         del datas['_xsrf']
         for key, value in datas.items():
-            self.db.tb_login_record.remove({"_id": ObjectId(value[0])})
-        self.write(json.dumps({"status": 'ok', "msg": u'删除登陆记录成功'}))
+            lid = int(value[0])
+            sql = "DELETE FROM tb_login_record WHERE id=%d" % lid
+            result = self.application.dbutil.execute(sql)
+        if result:
+            self.write(json.dumps({"status": 'ok', "msg": u'删除登陆记录成功'}))
+        self.write(json.dumps({"status": 'ok', "msg": u'删除登陆记录失败'}))
 
 
 class AdminUserList(BaseHandler):
@@ -450,5 +446,4 @@ class AdminModifyNotice(BaseHandler):
         m = self.db.tb_notice_profile.update({"_id": record.get('_id')}, {"$set": newprofile})
         print m
         return self.write(json.dumps({"status": 'ok', "msg": "修改公告成功！"}))
-
 

@@ -9,7 +9,7 @@
                     </span>
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                         <span class="clear">
-                            <span class="block m-t-xs"> <strong class="font-bold">{{ myuser.get('username') }}</strong></span>
+                            <span class="block m-t-xs"> <strong class="font-bold">{{ myuser.get('userid') }}</strong></span>
                             {% if myuser.get("role") == "admin" %}
                                 <span class="text-muted text-xs block"> 超级管理员 <b class="caret"></b></span>
                             {% else %}
@@ -18,8 +18,11 @@
                         </span>
                     </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                        <li><a href="/admin/logout">安全退出</a>
-                        </li>
+                        <!--<li><a href="#">修改头像</a></li>-->
+                        <!--<li><a href="#">个人资料</a></li>-->
+                        <!--<li><a href="#">联系我们</a></li>-->
+                        <!--<li><a href="#">信箱</a></li>-->
+                        <li><a href="/admin/logout">安全退出</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">
@@ -30,7 +33,7 @@
             <li>
                 <a href="#"><i class="fa fa-home"></i> <span class="nav-label">记录管理</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <li><a href='/admin/login/select'>登陆记录</a></li>
+                    <li><a href='/admin/login/record'>登陆记录</a></li>
                     <li><a href='/admin/push/select'>推送记录</a></li>
                 </ul>
             </li>
