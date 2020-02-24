@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+import sys
 import tornado.ioloop
 import tornado.web
 from tornado.options import define, options
@@ -15,6 +16,8 @@ from utils.pay import *
 from session.session import MongoSessions
 from session.auth import MongoAuthentication
 from apscheduler.schedulers.background import BackgroundScheduler
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 define("domain", default="", help="run on the given domain", type=str)
 define("ip", default="162.247.101.143", help="run on the given port", type=str)
@@ -41,6 +44,12 @@ class Application(tornado.web.Application):
             (r"/admin/logout", AdminLogoutHandler),
             (r"/admin/home", AdminHomeHandler),
 
+            (r"/admin/users", AdminUserList),
+            (r"/admin/user/add", AdminAddUser),
+            (r"/admin/user/delete", AdminDeleteUser),
+            # (r"/admin/user/audit", AdminAuditUser),
+            # (r"/admin/user/([0-9a-z]{24})", AdminModifyUser),
+
             (r"/admin/sysusers", AdminSysUsers),
             (r"/admin/sysuser/add", AdminAddSysUser),
             (r"/admin/sysuser/delete", AdminDeleteSysUser),
@@ -57,9 +66,17 @@ class Application(tornado.web.Application):
             (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
             (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
 
+            (r"/admin/notices", AdminNoticeList),
+            (r"/admin/notice/add", AdminAddNotice),
+            (r"/admin/notice/delete", AdminDeleteNotice),
+            # (r"/admin/notice/([0-9a-z]{24})", AdminModifyNotice),
+
             (r"/ajax/upload_image", UploadImageFile),        # 上传图片
             (r"/ajax/upload_video", UploadVideoFile),        # 上传视频
             (r"/admin/media/upload", RemotePictureHandler),   # 上传富文本：还要改动html页面与ueditor.py页面
+
+            (r"/admin/login/record", AdminLoginRecord),        # 用户登陆记录查询
+            (r"/admin/login/delete", AdminLoginDelete),        # 用户登陆记录删除
 
             (r"/hehe", AdminIndex),
             (r"/pay", AdminPay),
@@ -67,8 +84,10 @@ class Application(tornado.web.Application):
             (r"/result", AdminResult),
         ]
         self.dbutil = DBUtil()
-        self.frontend_auth = MongoAuthentication("ads", "tb_store_profile", "loginid")
-        self.backend_auth = MongoAuthentication("ads", "tb_system_user", "userid")
+        self.sessions = MongoSessions("tornado", "sessions", timeout=30)
+        self.frontend_auth = MongoAuthentication("tornado", "tb_store_profile", "phone")
+        self.backend_auth = MongoAuthentication("tornado", "tb_system_user", "userid")
+        # self.sessions.clear_all_sessions()
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
             xsrf_cookies=True,
@@ -87,7 +106,7 @@ class Application(tornado.web.Application):
                 'redis_port': 6379,
                 'redis_pass': 'redis123',
             },
-            record_of_one_page=10,
+            record_of_one_page=3,
             # ui_modules={
             #     "VideosListDisplay": VideosListDisplay,
             #     "ParticipantsListDisplay": ParticipantListDisplay,
@@ -105,4 +124,16 @@ if __name__ == "__main__":
     app = Application()
     app.listen(options.port)
     print("visit at", "http://127.0.0.1:%s" % options.port)
+
+    # 创建后台执行的 schedulers
+    scheduler = BackgroundScheduler()
+    # 添加调度任务,调度方法为 timedTask，触发器选择 interval(间隔性)，间隔时长为 30 秒
+    # scheduler.add_job(task, "cron", hour="13", minute="03", second="0")
+    # scheduler.add_job(task, "interval", seconds=60*60*24)   # 定期执行任务
+    # 启动调度任务
+    scheduler.start()
+
+    # t = threading.Thread(target=task, args=())
+    # t.start()
+    scheduler_job(app)   # 执行计划任务，定时推送任务
     tornado.ioloop.IOLoop.instance().start()

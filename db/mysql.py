@@ -2,16 +2,17 @@
 import pymysql
 import time
 import json
+import traceback
 from passlib.hash import pbkdf2_sha512
 
 
 class DBUtil:
     def __init__(self, **kwargs):
+        host = kwargs.get('host', '49.232.57.79')
+        database = kwargs.get('database', 'tornado')
         user = kwargs.get('user', 'tornado')
         password = kwargs.get('password', 'liujiadon')
-        host = kwargs.get('host', '106.15.88.182')
         port = kwargs.get('port', 3306)
-        database = kwargs.get('database', 'tornado')
         charset = kwargs.get('charset', 'utf8')
         connection = pymysql.connect(user=user, password=password, host=host, port=port, database=database, charset=charset)
         self.connection = connection
@@ -41,18 +42,21 @@ class DBUtil:
         else:
             return False
 
-    def login(self, name, ip_info):
-        flag = True
-        atime = time.strftime("%Y-%m-%d %H:%M:%S")
+    # 执行SQL语句返回受影响行
+    def execute(self, sql):
         try:
-            sql = "insert into tb_login values(null, '%s', '%s', '%s')" % (name, ip_info, atime)
-            self.cursor.execute(sql)
+            result = self.cursor.execute(sql)
             self.connection.commit()
-        except:
+            return result
+        except Exception as ex:
             self.connection.rollback()
-            flag = False
-        print "flag===>", flag
-        return flag
+            traceback.print_exc()
+            return ex
+
+    # 关闭数据库连接
+    def close(self):
+        self.cursor.close()
+        self.connection.close()
 
     def getUsers(self, m, n):
         # sql = 'select * from tb_user limit %s, %s' % (m, n)
@@ -863,35 +867,26 @@ class DBUtil:
             flag = False
         return flag
 
-    # 登陆记录查询
-    def getLoginRecord(self, m, n):
-        sql = 'select * from tb_login order by createdat desc limit %s,%s' % (m, n)
-        self.cursor.execute(sql)
-        result = self.cursor.fetchall()
-        loginlist = []
-        for b in result:
-            info = {}
-            info['lid'] = b[0]
-            info['content'] = b[1]
-            info['ip_info'] = b[2]
-            info['createdat'] = b[3]
-            loginlist.append(info)
-        return loginlist
-
-    def getAllLoginRecord(self):
-        sql = 'select count(*) from tb_login'
-        self.cursor.execute(sql)
-        count = self.cursor.fetchone()
-        return count[0]
-
-    # 删除登陆记录
-    def delLoginRecord(self, lid):
-        sql = "DELETE FROM tb_login WHERE lid=%d" % (lid)
-        flag = True
+    # 执行SQL语句返回数据集
+    def query(self, sql):
         try:
             self.cursor.execute(sql)
-            self.connection.commit()
-        except:
-            self.connection.rollback()
-            flag = False
-        return flag
+            result = self.cursor.fetchall()
+            data = map(list, result)   # 将元组转换成列表
+            # self.close()
+            return data
+        except Exception as ex:
+            return ex
+
+    def queryall(self, sql):
+        try:
+            self.cursor.execute(sql)
+            count = self.cursor.fetchone()
+            return count[0]
+        except Exception as ex:
+            return ex
+
+    # 关闭连接
+    def close(self):
+        self.cursor.close()
+        self.connection.close()

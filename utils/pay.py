@@ -32,29 +32,28 @@ class AdminPay(BaseHandler):
         print total_amount
 
         alipay = AliPay(
-            # appid="2019060165474076",
-            appid="2016092300578223",
-            app_notify_url="http://127.0.0.1:8080/aysic",
-            app_private_key_path=u"app_private_key.txt",
-            alipay_public_key_path=u"alipay_public_key.txt",
-            debug=True,  # 默认False,
-            return_url="http://127.0.0.1:8080/result"
+            appid="2016092300578223",                             # 设置签约的appid
+            app_notify_url="http://127.0.0.1:8080/aysic",         # 异步支付通知url
+            app_private_key_path="alipay/app_private_key.txt",    # 设置应用私钥
+            alipay_public_key_path="alipay/alipay_public_key.txt",# 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥
+            debug=True,                                           # 设置是否是沙箱环境，True是沙箱环境，默认False,
+            return_url="http://127.0.0.1:8080/result"             # 同步支付通知url
         )
         query_params = alipay.direct_pay(
-            subject=subject,
-            out_trade_no=out_trade_no,
-            total_amount=total_amount,)
-        # if alipay.debug is True:
-        #     pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
-        # else:
-        #     pay_url = "https://openapi.alipay.com/gateway.do?{0}".format(query_params)
+            subject=subject,                # 订单名称
+            out_trade_no=out_trade_no,      # 订单号生成，一般是当前时间(精确到秒)+用户ID+随机数
+            total_amount=total_amount,      # 支付金额
+            return_url="http://127.0.0.1:8080/result")     # 支付成功后，跳转url
+        if alipay.debug is True:
+            pay_url = "https://openapi.alipaydev.com/gateway.do?{0}".format(query_params)  # 支付宝网关地址（沙箱应用）
+        else:
+            pay_url = "https://openapi.alipay.com/gateway.do?{0}".format(query_params)
         self.redirect(pay_url)
 
 
 class AliPay(object):
     """支付宝支付接口"""
-    def __init__(self, appid, app_notify_url, app_private_key_path,
-                 alipay_public_key_path, return_url, debug=False):
+    def __init__(self, appid, app_notify_url, app_private_key_path,alipay_public_key_path, return_url, debug=False):
         self.appid = appid
         self.app_notify_url = app_notify_url
         self.app_private_key_path = app_private_key_path
@@ -163,11 +162,11 @@ class AdminAysic(BaseHandler):
         print "执行呀"
         self.render('aaa.html')
 
-
 # class AdminResult(BaseHandler):
 #     def get(self):
 #         print "好的"
 #         self.render('bbb.html')
+
 class AdminResult(BaseHandler):
     def get(self, *args, **kwargs):
         """

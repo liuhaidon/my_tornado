@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-import os
+import os, pymongo
 import logging
 import tornado.web
 import time
@@ -34,7 +34,8 @@ class BaseHandler(tornado.web.RequestHandler):
         self.session = Session(self.application.session_manager, self)
 
     def get_current_user(self):
-        return self.session.get("user_name")
+        # return self.session.get("user_name")
+        return self.get_secure_cookie("user")
 
     @property
     def get_session(self):
@@ -126,27 +127,32 @@ class BaseHandler(tornado.web.RequestHandler):
     def begin_backend_session(self, sysid, password):
         self.logging.info(('start login', sysid, password))
         logger().info(('start login', sysid, password))
-        # if not self.application.backend_auth.login(sysid, password):
-        user = self.application.dbutil.isloginsuccess(sysid, password)
-        if not user:
+        # if not self.application.dbutil.isloginsuccess(sysid, password)   # mysql数据库
+        if not self.application.backend_auth.login(sysid, password):       # mongodb数据库
             print "login failed"
             return False
         self.logging.info(('login checked', sysid, password))
-        now = time.strftime('%Y-%m-%d %H:%M', time.localtime(time.time()))
-        # now = time.strftime('%Y-%m-%d %H:%M:%S')
-        ip = self.request.remote_ip
-        # user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
-        # if not user:
-            # print "no user exists!",sysid
-            # return False
+        user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
+        if not user:
+            print "no user exists!",sysid
+            return False
+
+        # now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
+        now = time.strftime('%Y-%m-%d %H:%M:%S')
+        last = self.db.tb_login_record.find_one({}, {"id": 1, "_id": 0}, sort=[("id", pymongo.DESCENDING)])
+        id = int(last.get("id", 0)) + 1 if last else 1
+        ip_info = self.request.remote_ip
+        self.db.tb_login_record.insert({"userid": sysid, "ip": ip_info, "atime": now, "id": id})
+
         # user["db"] = self.application.settings["database"]
         # user["system"] = self.application.settings["system"]
-        # logininfos = user.get('login', [])
-        # print logininfos
-        # logininfos.append({"ip": ip, "time": now})
-        # self.db.tb_system_user.update({'userid': sysid}, {'$set': {'status': 'online', "login": logininfos[-10:]}})
-        # user['status'] = "online"
-        # user['login'] = logininfos[-10:]
+        logininfos = user.get('login', [])
+        logininfos.append({"ip": ip_info, "time": now})
+        self.db.tb_system_user.update({'userid': sysid}, {'$set': {'status': 'online', "login": logininfos[-10:]}})
+        user['status'] = "online"
+        user['login'] = logininfos[-10:]
+        print "==========================",logininfos,logininfos[-10:]
+        print user['login']
 
         # 查找该用户的所有权限
         # permission = self.application.dbutil.getFindPermission(sysid)
@@ -154,7 +160,7 @@ class BaseHandler(tornado.web.RequestHandler):
         # for p in permission:
         #     arr.append(p["title"])
 
-        self.session['data'] = user
+        self.session["data"] = user
         self.session["sysid"] = sysid
         # self.session['permission'] = arr
         self.session.save()
@@ -172,11 +178,15 @@ class BaseHandler(tornado.web.RequestHandler):
         self.session['sysid'] = None
         self.session.save()
 
+    def get_login_url(self):
+        self.require_setting("login_url", "@authenticated")   # @tornado.web.authenticated
+        return self.application.settings["login_url"]
+
     @classmethod
     def authenticated(self, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
-            print "session值1===>",self.session
+            # if not self.get_current_user:
             if not self.session.get('loginid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_login_url()
@@ -203,16 +213,13 @@ class BaseHandler(tornado.web.RequestHandler):
             if not self.session.get('sysid'):
                 if self.request.method in ("GET", "HEAD"):
                     url = self.get_admin_login_url()
-                    # print "url1===>", url
                     if "?" not in url:
                         if urlparse.urlsplit(url).scheme:
                             # if login url is absolute, make next absolute too
                             next_url = self.request.full_url()
                         else:
                             next_url = self.request.uri
-                        # print "next_url===>", next_url
                         url += "?" + urlencode(dict(next=next_url))
-                    # print "url2===>", url
                     self.redirect(url)
                     return
                 raise HTTPError(403)
