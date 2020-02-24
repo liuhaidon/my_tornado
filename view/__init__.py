@@ -63,6 +63,7 @@ def load_base_data(app):
     print "robots==>", app.robots
 
 def list_to_dict(field, list):
+    """列表转成字典："""
     data_list = []
     for u in list:
         data = dict(zip(field, u))

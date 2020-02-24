@@ -98,6 +98,7 @@ class Application(tornado.web.Application):
             upload_path=os.path.join(os.path.dirname(__file__), "static/media"),
             json_path=os.path.join(os.path.dirname(__file__), "json"),
             attachment_path=os.path.join(os.path.dirname(__file__), "attachment"),
+            debug=True,     # debug调试模式，当为True，文件保存后server会自动重启，默认False。
             develop_env="true",
             session_secret="3cdcb1f00803b6e78ab50b466a40b9977db396840c28307f428b25e2277f1bcc",
             session_timeout=1800,
