@@ -107,6 +107,9 @@ class Application(tornado.web.Application):
                 'redis_port': 6379,
                 'redis_pass': 'redis123',
             },
+            appid="wxdf26791ff0f192e5",
+            appsecret="f159318a4cf52422cf7720dae392bf0e",
+            timeout=7200,
             record_of_one_page=3,
             # ui_modules={
             #     "VideosListDisplay": VideosListDisplay,
@@ -137,4 +140,6 @@ if __name__ == "__main__":
     # t = threading.Thread(target=task, args=())
     # t.start()
     scheduler_job(app)   # 执行计划任务，定时推送任务
+
+    print("visit at", "http://0.0.0.0:%s" % options.port)
     tornado.ioloop.IOLoop.instance().start()
