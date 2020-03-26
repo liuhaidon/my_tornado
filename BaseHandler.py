@@ -268,3 +268,10 @@ class BaseHandler(tornado.web.RequestHandler):
                 raise HTTPError(403)
             return method(self, *args, **kwargs)
         return wrapper
+
+    @classmethod
+    def api_authentication(self, method):
+        @functools.wraps(method)
+        def wrapper(self, *args, **kwargs):
+            print("haah")
+        return wrapper
