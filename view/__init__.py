@@ -60,7 +60,7 @@ def load_base_data(app):
         g_robots["quene"].append(openId)
         g_robots[openId] = v
     app.robots = g_robots
-    print "robots==>", app.robots
+    print("robots==>", app.robots)
 
 def list_to_dict(field, list):
     """列表转成字典："""

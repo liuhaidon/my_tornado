@@ -1,7 +1,5 @@
 # encoding:utf-8
-import json
-import time
-import os
+import os, time, json, traceback
 import uuid
 from BaseHandler import BaseHandler
 from view import *
@@ -22,9 +20,7 @@ class AjaxFindSysUser(BaseHandler):
 class AjaxFindWebsite(BaseHandler):
     @BaseHandler.admin_authed
     def post(self):
-        print "ajax==============>"
         arry = self.get_arguments("arry[]")
-        print "arry=============>", arry
         num_arry = self.application.dbutil.getKeyDomain(arry)
         self.write(json.dumps(num_arry))
 
@@ -55,9 +51,6 @@ class AjaxBindPermission(BaseHandler):
         userid = self.get_argument("userid")
         result1 = self.application.dbutil.getUserPermission(userid)
         result2 = self.application.dbutil.getAllPermission()
-        print "++++++++++++++++++++++++++++++"
-        print result1
-        print result2
         self.write(json.dumps({"userpermission": result1, "allpermission": result2}))
 
 
@@ -67,10 +60,9 @@ class AjaxPermissionBind(BaseHandler):
         userid = self.get_argument("userid")
         username = self.get_argument("username")
         permission_list = self.get_arguments('playlist[]')
-        print "=====================>>>", userid, username, type(permission_list)
         # permission_list = json.loads(permission_list)
         for p in permission_list:
-            print p
+            pass
         result = self.application.dbutil.updatePermission(userid, username, permission_list)
         if not result:
             return self.write(json.dumps({"status": "success", "error": u'修改权限失败!'}))
@@ -83,7 +75,7 @@ class UploadImageFile(BaseHandler):
         path = self.get_argument("path")
         name = self.get_argument("name", "")
         upload_path = os.path.join(self.settings['upload_path'], path)
-        print path, name, upload_path
+        print(path, name, upload_path)
         # 若不存在此目录，则创建之
         if not os.path.isdir(upload_path):
             # upload_path = upload_path.replace("/", "\\") #windows platform
@@ -103,7 +95,7 @@ class UploadImageFile(BaseHandler):
         except Exception as e:
             return self.write(json.dumps({"status": 'error', "msg": u"上传失败，请重新上传"}))
         else:
-            print json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename})
+            print(json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename}))
             return self.write(json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename}))
 
 
@@ -117,7 +109,7 @@ class UploadVideoFile(BaseHandler):
         filename = self.get_argument("name", "")
 
         upload_path = os.path.join(self.settings['upload_path'], path)
-        print path, nums, num, filename, upload_path
+        print(path, nums, num, filename, upload_path)
 
         # 视频保存路径+视频文件名
         filepath = os.path.join(upload_path, filename)
@@ -137,8 +129,9 @@ class UploadVideoFile(BaseHandler):
                 with open(filepath, 'ab') as up:
                     up.write(meta['body'])
         except Exception as e:
-            print e
+            traceback.print_exc()
+            print('视频文件上传失败,失败原因[{0}]'.format(str(e)))
             return self.write(json.dumps({"status": 'error', "msg": u"视频文件上传失败，请重新上传"}))
         else:
-            print json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename})
+            print(json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename}))
             return self.write(json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename}))

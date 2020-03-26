@@ -1,31 +1,24 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
-import os, pymongo
-import logging
 import tornado.web
-import time
+import os, time, pymongo
 import functools
 import urlparse
-import datetime
-
 from tornado.web import HTTPError
 from db import database
 from utils.session import *
-from urllib import urlencode
 from utils.logger import *
 from db.database import database as mongodb
-def datediff(beginDate, endDate):
-    """计算时间相差天数，输入格式为：str"""
-    format = "%Y-%m-%d %H:%M:%S"
-    bd = datetime.datetime.strptime(beginDate, format)
-    ed = datetime.datetime.strptime(endDate, format)
-    oneday = datetime.timedelta(days=1)
-    count = 0
-    while bd.date() < ed.date():
-        ed = ed - oneday
-        count += 1
-    return count
+try:
+    from urllib import quote
+    from urlparse import urlparse
+    from urllib import urlencode
+    import urllib2 as request
+except ImportError:
+    from urllib.parse import quote
+    from urllib.parse import urlparse
+    from urllib.parse import urlencode
+    import urllib.request as request
 
 
 class BaseHandler(tornado.web.RequestHandler):
@@ -95,7 +88,7 @@ class BaseHandler(tornado.web.RequestHandler):
     def begin_frontend_session(self, userid, password):
         self.logging.info(('start login', userid, password))
         if not self.application.frontend_auth.login(userid, password):
-            print "login failed"
+            print("login failed")
             return False
         self.logging.info(('login checked', userid, password))
 
@@ -116,7 +109,7 @@ class BaseHandler(tornado.web.RequestHandler):
         store['status'] = "online"
         store['login'] = logininfos[-10:]
 
-        print "sssssss=>", store
+        print("sssssss=>", store)
         # self.session['name'] = store.get('loginid')
         self.session['data'] = store
         self.session["loginid"] = userid
@@ -128,7 +121,7 @@ class BaseHandler(tornado.web.RequestHandler):
         # print "end_frontend_session=",id
         # self.application.sessions.clear_session(id)
 
-        print self.session
+        print(self.session)
         if self.session is not None:
             username = self.session['loginid']
             # print uid,username
@@ -142,12 +135,12 @@ class BaseHandler(tornado.web.RequestHandler):
         logger().info(('start login', sysid, password))
         # if not self.application.dbutil.isloginsuccess(sysid, password)   # mysql数据库
         if not self.application.backend_auth.login(sysid, password):       # mongodb数据库
-            print "login failed"
+            print("login failed")
             return False
         self.logging.info(('login checked', sysid, password))
         user = self.db.tb_system_user.find_one({'userid': sysid}, {'passwd': 0, '_id': 0})
         if not user:
-            print "no user exists!",sysid
+            print("no user exists!",sysid)
             return False
 
         # now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
@@ -164,8 +157,8 @@ class BaseHandler(tornado.web.RequestHandler):
         self.db.tb_system_user.update({'userid': sysid}, {'$set': {'status': 'online', "login": logininfos[-10:]}})
         user['status'] = "online"
         user['login'] = logininfos[-10:]
-        print "==========================",logininfos,logininfos[-10:]
-        print user['login']
+        print("==========================",logininfos,logininfos[-10:])
+        print(user['login'])
 
         # 查找该用户的所有权限
         # permission = self.application.dbutil.getFindPermission(sysid)

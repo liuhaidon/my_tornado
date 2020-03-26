@@ -53,6 +53,9 @@ class DBUtil:
             traceback.print_exc()
             return ex
 
+    def query(self, sql):
+        pass
+
     # 关闭数据库连接
     def close(self):
         self.cursor.close()

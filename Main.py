@@ -24,13 +24,6 @@ define("ip", default="162.247.101.143", help="run on the given port", type=str)
 define("port", default=8066, help="run on the given port", type=int)
 define("develop", default=True, help="develop environment", type=bool)
 
-'''
-    author: liu
-    时间: 2019/09/23
-    服务端的架构体系:
-        db  : adspush (mongodb)
-        session : 基于mongodb
-'''
 
 class Application(tornado.web.Application):
     def __init__(self):
@@ -91,7 +84,7 @@ class Application(tornado.web.Application):
         settings = dict(
             cookie_secret="e446976943b4e8442f099fed1f3fea28462d5832f483a0ed9a3d5d3859f==78d",
             xsrf_cookies=True,
-            login_url='/login',
+            login_url="/login",
             admin_login_url="/admin/login",
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
             static_path=os.path.join(os.path.dirname(__file__), "static"),
@@ -105,7 +98,7 @@ class Application(tornado.web.Application):
             store_options={
                 'redis_host': '127.0.0.1',
                 'redis_port': 6379,
-                'redis_pass': 'redis123',
+                'redis_pass': 'redis123',        # requirepass
             },
             appid="wxdf26791ff0f192e5",
             appsecret="f159318a4cf52422cf7720dae392bf0e",
@@ -116,7 +109,6 @@ class Application(tornado.web.Application):
             #     "ParticipantsListDisplay": ParticipantListDisplay,
             # }
         )
-
         self.settings = settings
         tornado.web.Application.__init__(self, handlers, **settings)
         self.session_manager = SessionManager(settings["session_secret"], settings["store_options"],
