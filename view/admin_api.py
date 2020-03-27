@@ -7,12 +7,12 @@ import json
 from view.__init__ import *
 # 参考：http://blog.sina.com.cn/s/blog_13d84115b0102yg6q.html
 # 参考：https://www.cnblogs.com/Erick-L/p/7237459.html
-https://blog.csdn.net/WGH100817/article/details/101722014
-https://www.cnblogs.com/wanghzh/articles/5898327.html
-http://blog.sina.com.cn/s/blog_13d84115b0102yg6q.html
+# https://blog.csdn.net/WGH100817/article/details/101722014
+# https://www.cnblogs.com/wanghzh/articles/5898327.html
+# http://blog.sina.com.cn/s/blog_13d84115b0102yg6q.html
 
 class AdminSaveLog(BaseHandler):
-    @api_authentication
+    @BaseHandler.api_authentication
     def post(self):
         sitename = self.get_argument("sitename", None)
         log_type = self.get_argument("log_type", None)
@@ -62,30 +62,36 @@ class AdminSaveLog(BaseHandler):
             return False
 
 
-class AdminSelectLog(BaseHandler):
-    def get(self):
-        choose = self.get_argument("choose", None)
-        content = self.get_argument("content", None)
-        sitename = self.get_argument("sitename", None)
-        headers = self.request.headers
-        auth = headers.get("auth-api", None)
-        if not auth:
-            return self.write(json.dumps({"status": False, "msg": "can not to access！"}))
-        result = self.check_auth(auth)
-        if not result:
-            return self.write(json.dumps({"status": False, "msg": "auth fail！"}))
-        if sitename == "test_log":
-            sql = "SELECT * from table_log where %s='%s'" % (choose, content)
-            result = self.application.dbutil1.select(sql)
-        elif sitename == "www.alige.com":
-            sql = "SELECT * from table_log where %s='%s'" % (choose, content)
-            result = self.application.dbutil2.select(sql)
-        for r in result:
-            print("r===>", r)
-        return self.write(json.dumps({"status": "success", "msg": result}))
+# class AdminSelectLog(BaseHandler):
+#     def get(self):
+#         choose = self.get_argument("choose", None)
+#         content = self.get_argument("content", None)
+#         sitename = self.get_argument("sitename", None)
+#         headers = self.request.headers
+#         auth = headers.get("auth-api", None)
+#         if not auth:
+#             return self.write(json.dumps({"status": False, "msg": "can not to access！"}))
+#         result = self.check_auth(auth)
+#         if not result:
+#             return self.write(json.dumps({"status": False, "msg": "auth fail！"}))
+#         if sitename == "test_log":
+#             sql = "SELECT * from table_log where %s='%s'" % (choose, content)
+#             result = self.application.dbutil1.select(sql)
+#         elif sitename == "www.alige.com":
+#             sql = "SELECT * from table_log where %s='%s'" % (choose, content)
+#             result = self.application.dbutil2.select(sql)
+#         for r in result:
+#             print("r===>", r)
+#         return self.write(json.dumps({"status": "success", "msg": result}))
+#
+#     def check_auth(self, auth):
+#         if auth == "bt.cn.auth":
+#             return True
+#         else:
+#             return False
 
-    def check_auth(self, auth):
-        if auth == "bt.cn.auth":
-            return True
-        else:
-            return False
+
+class AdminParameter(BaseHandler):
+    def get(self):
+        return self.render("test_parameter.html")
+

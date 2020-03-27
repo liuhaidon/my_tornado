@@ -3,12 +3,12 @@
 import tornado.web
 import os, time, pymongo
 import functools
-import urlparse
+# import urlparse
 from tornado.web import HTTPError
 from db import database
-from utils.session import *
-from utils.logger import *
-from db.database import database as mongodb
+# from utils.session import *
+# from utils.logger import *
+# from db.database import database as mongodb
 try:
     from urllib import quote
     from urlparse import urlparse
@@ -24,7 +24,7 @@ except ImportError:
 class BaseHandler(tornado.web.RequestHandler):
     def __init__(self, *argc, **argkw):
         super(BaseHandler, self).__init__(*argc, **argkw)
-        self.session = Session(self.application.session_manager, self)
+        # self.session = Session(self.application.session_manager, self)
 
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")
@@ -32,8 +32,8 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_header("Access-Control-Allow-Headers", "x-requested-with")
         self.set_header("Access-Control-Allow-Headers", "x-requested-with,content-type")
         self.set_header("Access-Control-Allow-Methods", "POST, GET, OPTIONS")
-        self.set_header("Access-Control-Max-Age", 1000)
-        self.set_header("Content-type", "application/json")
+        # self.set_header("Access-Control-Max-Age", 1000)
+        # self.set_header("Content-type", "application/json")
 
     def options(self):
         self.set_status(204)
