@@ -136,6 +136,3 @@ if __name__ == "__main__":
 
     print("visit at", "http://127.0.0.1:%s" % options.port)
     tornado.ioloop.IOLoop.instance().start()
-
-# https://www.cnblogs.com/x54256/p/8186322.html
-# https://blog.csdn.net/yangczcsdn/article/details/81301999

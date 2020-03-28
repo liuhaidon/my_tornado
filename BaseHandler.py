@@ -39,9 +39,9 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_status(204)
         self.finish()
 
-    def get_current_user(self):
-        # return self.session.get("user_name")
-        return self.get_secure_cookie("user")
+    # def get_current_user(self):
+    #     # return self.session.get("user_name")
+    #     return self.get_secure_cookie("user")
 
     @property
     def get_session(self):

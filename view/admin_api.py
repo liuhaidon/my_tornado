@@ -90,8 +90,3 @@ class AdminSaveLog(BaseHandler):
 #         else:
 #             return False
 
-
-class AdminParameter(BaseHandler):
-    def get(self):
-        return self.render("test_parameter.html")
-

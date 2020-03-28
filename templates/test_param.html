@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" class="btn" value="参数测试" data-toggle="modal" onclick="test_get(this)"/>
+<script src="{{ static_url('js/jquery-3.3.1.min.js') }}" type="text/javascript"></script>
+<!--<script src="../static/js/jquery-3.3.1.min.js" type="text/javascript"></script>-->
+<script>
+    $(function (){
+        var dict_obj = {"age":26, "name":"liu"};
+        for(var k in dict_obj){
+            console.log(k+"--"+dict_obj[k]);
+        }
+        var dict_obj1 = {"age":28, "name":"hai"};
+
+        var arry1 = new Array();
+        arry1.push(1);
+        arry1.push("liu");
+        var arry2 = new Array();
+        arry2.push(dict_obj);
+        arry2.push(dict_obj1);
+    });
+    function test_get(obj){
+        var dict_obj = {"age":26, "name":"liu"};
+        for(var k in dict_obj){
+            console.log(k+"--"+dict_obj[k]);
+        }
+        var dict_obj1 = {"age":28, "name":"hai"};
+
+        var arry1 = new Array();
+        arry1.push(1);
+        arry1.push("liu");
+        var arry2 = new Array();
+        arry2.push(JSON.stringify(dict_obj));
+        arry2.push(JSON.stringify(dict_obj1));
+
+        var json = {};
+        // json['_xsrf'] = getCookie("_xsrf");
+        json["args1"] = "liu";
+        json["args2"] = JSON.stringify({"age":"30", "name":"don"});
+        json["args3"] = arry1;
+        json["args4"] = arry2;
+        $.ajax({
+            url: "/admin/test/result",
+            type: "post",
+            data: json,
+            success: function (data) {
+                console.log(data);
+                location.reload();
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>
