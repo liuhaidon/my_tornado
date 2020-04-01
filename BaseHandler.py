@@ -6,7 +6,7 @@ import functools
 # import urlparse
 from tornado.web import HTTPError
 from db import database
-# from utils.session import *
+from utils.session import *
 # from utils.logger import *
 # from db.database import database as mongodb
 try:
@@ -24,7 +24,7 @@ except ImportError:
 class BaseHandler(tornado.web.RequestHandler):
     def __init__(self, *argc, **argkw):
         super(BaseHandler, self).__init__(*argc, **argkw)
-        # self.session = Session(self.application.session_manager, self)
+        self.session = Session(self.application.session_manager, self)
 
     def set_default_headers(self):
         self.set_header("Access-Control-Allow-Origin", "*")

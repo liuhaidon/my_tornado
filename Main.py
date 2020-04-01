@@ -6,11 +6,11 @@ import tornado.web
 from tornado.options import define, options
 
 from view.ajax import *
-# from view.front import *
+from view.front import *
 # from view.admin import *
 from view.admin_api import *
 # from db.mysql import DBUtil
-# from utils.session import *
+from utils.session import *
 # from utils.ueditor import *
 # from utils.pay import *
 
@@ -31,8 +31,8 @@ class Application(tornado.web.Application):
         handlers = [
             # (r"/", index),
             # (r"/index", index),
-            # (r"/login", user_login),
-            # (r"/logout", user_logout),
+            (r"/login", user_login),
+            (r"/logout", user_logout),
             #
             # (r"/admin/login", AdminLoginHandler),
             # (r"/admin/logout", AdminLogoutHandler),
@@ -76,7 +76,6 @@ class Application(tornado.web.Application):
             # (r"/pay", AdminPay),
             # (r"/aysic", AdminAysic),
             # (r"/result", AdminResult),
-            (r"/admin/test/param", AdminParameter),
         ]
         # self.dbutil = DBUtil()
         # self.sessions = MongoSessions("tornado", "sessions", timeout=30)
@@ -113,8 +112,8 @@ class Application(tornado.web.Application):
         )
         self.settings = settings
         tornado.web.Application.__init__(self, handlers, **settings)
-        # self.session_manager = SessionManager(settings["session_secret"], settings["store_options"],
-        #                                       settings["session_timeout"])
+        self.session_manager = SessionManager(settings["session_secret"], settings["store_options"],
+                                              settings["session_timeout"])
 
 
 if __name__ == "__main__":

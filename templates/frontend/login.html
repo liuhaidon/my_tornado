@@ -16,8 +16,8 @@
 			<div class="login_xbg flex flex-v flex-align-center flex-pack-center">
 				<p class="title">网站推送系统</p>
 				<input type="hidden" id="url" name="url" value="{{ url }}">
-				<input id="account" name="account" type="text" placeholder="请输入账号" class="account" />
-				<input id="passwd" name="passwd" type="password" placeholder="请输入密码" class="password" />
+				<input id="username" name="username" class="username" type="text" placeholder="请输入账号"/>
+				<input id="password" name="password" class="password" type="password" placeholder="请输入密码"/>
 				<p style="color:red;margin-top:-10px;">{{ error }}</p>
 				<p class="jizhu_wb flex flex-pack-center"><input type="checkbox" class="jizhu"/>记住账号密码</p>
 				<div class="flex flex-pack-center">
@@ -26,8 +26,13 @@
 					<button class="chongzhi">重置</button>
 				</div>
 			</div>
+			<!--<div class="line yzm" style="top: -5px;">-->
+				<!--<input type="text" class="inputtxt Validform_error" name="code" nullmsg="请填写4位验证码" errormsg="验证码不对" datatype="*" placeholder="请填写验证码" style="width: 220px;">-->
+				<!--<div class="Validform_checktip Validform_wrong">请填写4位验证码</div>-->
+				<!--<img width="100" height="40" class="passcode" onclick="this.src=this.src.split('?')[0] + '?'+new Date().getTime()" src="http://112.74.30.14:8888/code?1585728833733" style="border: 1px solid #ccc; float: right;" title="点击换一张">-->
+			<!--</div>-->
 		</div>
-		 </form>
+		</form>
 	</body>
 </html>
 

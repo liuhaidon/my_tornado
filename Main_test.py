@@ -14,7 +14,7 @@ define("develop", default=True, help="develop environment", type=bool)
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/admin/test/param", AdminParam),    # 参数测试
+            (r"/admin/test/param", AdminParam),     # 参数测试
             (r"/admin/test/result", AdminResult),   # 参数测试
 
             (r"/(.*)", NotFoundHandler),               # 未定义路由处理

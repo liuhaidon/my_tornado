@@ -11,6 +11,7 @@ from view.__init__ import *
 # https://www.cnblogs.com/wanghzh/articles/5898327.html
 # http://blog.sina.com.cn/s/blog_13d84115b0102yg6q.html
 
+
 class AdminSaveLog(BaseHandler):
     @BaseHandler.api_authentication
     def post(self):

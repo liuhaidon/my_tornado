@@ -2,15 +2,12 @@
 # coding: utf-8
 import json
 
-import uuid
-import hmac
-
+import uuid, redis
+import hmac, hashlib
 try:
     import ujson
 except ImportError:
     import json as ujson
-import hashlib
-import redis
 
 
 class SessionData(dict):
@@ -20,10 +17,11 @@ class SessionData(dict):
 
     # @property
     # def sid(self):
-		# return self.session_id
-	# @x.setter
-	# def sid(self, value):
-	# 	self.session_id = value
+    #     return self.session_id
+    # @x.setter
+    # def sid(self, value):
+    # 	self.session_id = value
+
 
 class Session(SessionData):
     def __init__(self, session_manager, request_handler):
@@ -35,14 +33,13 @@ class Session(SessionData):
             current_session = session_manager.get(request_handler)
         except InvalidSessionException:
             current_session = session_manager.get()
-        for key, data in current_session.iteritems():
+        for key, data in current_session.items():
             self[key] = data
         self.session_id = current_session.session_id
         self.hmac_key = current_session.hmac_key
-        # print "第一次访问,先访问BaseHandler===>", self.session_id, self.hmac_key
 
     def save(self):
-        # print "save===>", self
+        # print("save===>", self)
         self.session_manager.set(self.request_handler, self)
 
 
@@ -57,7 +54,7 @@ class SessionManager(object):
             else:
                 self.redis = redis.StrictRedis(host=store_options['redis_host'], port=store_options['redis_port'])
         except Exception as e:
-            print e
+            print(e)
 
     def _fetch(self, session_id):
         try:
@@ -92,7 +89,7 @@ class SessionManager(object):
 
         session = SessionData(session_id, hmac_key)
         session_data = self._fetch(session_id)
-        for key, data in session_data.iteritems():
+        for key, data in session_data.items():  # python2:session_data.iteritems()
             session[key] = data
         return session
 
@@ -105,10 +102,12 @@ class SessionManager(object):
         self.redis.setex(session.session_id, self.session_timeout, session_data)
 
     def _generate_id(self):
-        return hashlib.sha256(self.secret + str(uuid.uuid4())).hexdigest()
+        # return hashlib.sha256(self.secret + str(uuid.uuid4())).hexdigest()                 # python2
+        return hashlib.sha256((self.secret + str(uuid.uuid4())).encode("utf8")).hexdigest()  # python3
 
     def _generate_hmac(self, session_id):
-        return hmac.new(session_id, self.secret, hashlib.sha256).hexdigest()
+        # return hmac.new(session_id, self.secret, hashlib.sha256).hexdigest()                                # python2
+        return hmac.new(bytes(session_id, "utf-8"), bytes(self.secret, "utf-8"), hashlib.sha256).hexdigest()  # python3
 
 
 class InvalidSessionException(Exception):

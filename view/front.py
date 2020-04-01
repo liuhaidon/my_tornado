@@ -15,12 +15,11 @@ class user_login(BaseHandler):
     """登录页"""
     def get(self):
         nexts = self.request.arguments.get("next")
-        print(self.request)
-        print(self.request.headers)
+        # print(self.request)
+        # print(self.request.headers)
         referer_url = '/index'
         if 'Referer' in self.request.headers:
             referer_url = '/' + '/'.join(self.request.headers['Referer'].split("/")[3:])
-            # print referer_url
         if self.user:
             if referer_url != '/register':
                 self.redirect(referer_url)
@@ -33,11 +32,11 @@ class user_login(BaseHandler):
         pass
 
     def post(self):
-        print self.request.arguments
+        print(self.request.arguments)
         userid = self.get_argument('account', None)
         pwd = self.get_argument('passwd', None)
         url = self.get_argument('url', None)
-        print userid, pwd, url
+        print(userid, pwd, url)
 
         # print arguments.get('_xsrf', '')[0]
         # info = {}
@@ -50,7 +49,7 @@ class user_login(BaseHandler):
         # if not res:
         #     return self.render("frontend/login.html", url=url, error=u"用户名或密码不正确", myuser={"loginid": userid})
 
-        print "url is ", url
+        print("url is ", url)
         if url:
             self.redirect(url)
         else:
