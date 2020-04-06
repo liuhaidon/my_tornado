@@ -9,7 +9,6 @@ from view.__init__ import *
 # 参考：https://www.cnblogs.com/Erick-L/p/7237459.html
 # https://blog.csdn.net/WGH100817/article/details/101722014
 # https://www.cnblogs.com/wanghzh/articles/5898327.html
-# http://blog.sina.com.cn/s/blog_13d84115b0102yg6q.html
 
 
 class AdminSaveLog(BaseHandler):
