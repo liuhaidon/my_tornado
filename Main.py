@@ -7,9 +7,9 @@ from tornado.options import define, options
 
 from view.ajax import *
 from view.front import *
-# from view.admin import *
+from view.admin_mysql import *
 from view.admin_api import *
-# from db.mysql import DBUtil
+from db.mysql import DBUtil
 from utils.session import *
 # from utils.ueditor import *
 # from utils.pay import *
@@ -34,9 +34,9 @@ class Application(tornado.web.Application):
             (r"/login", user_login),
             (r"/logout", user_logout),
             #
-            # (r"/admin/login", AdminLoginHandler),
-            # (r"/admin/logout", AdminLogoutHandler),
-            # (r"/admin/home", AdminHomeHandler),
+            (r"/admin/login", AdminLoginHandler),
+            (r"/admin/logout", AdminLogoutHandler),
+            (r"/admin/home", AdminHomeHandler),
             #
             # (r"/admin/users", AdminUserList),
             # (r"/admin/user/add", AdminAddUser),
@@ -77,7 +77,7 @@ class Application(tornado.web.Application):
             # (r"/aysic", AdminAysic),
             # (r"/result", AdminResult),
         ]
-        # self.dbutil = DBUtil()
+        self.dbutil = DBUtil()
         # self.sessions = MongoSessions("tornado", "sessions", timeout=30)
         # self.frontend_auth = MongoAuthentication("tornado", "tb_store_profile", "phone")
         # self.backend_auth = MongoAuthentication("tornado", "tb_system_user", "userid")

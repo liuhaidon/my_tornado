@@ -9,9 +9,9 @@ from passlib.hash import pbkdf2_sha512
 class DBUtil:
     def __init__(self, **kwargs):
         host = kwargs.get('host', '49.232.57.79')
-        database = kwargs.get('database', 'tornado')
-        user = kwargs.get('user', 'tornado')
-        password = kwargs.get('password', 'liujiadon')
+        database = kwargs.get('database', 'study_tornado')
+        user = kwargs.get('user', 'study_tornado')
+        password = kwargs.get('password', '123456')
         port = kwargs.get('port', 3306)
         charset = kwargs.get('charset', 'utf8')
         connection = pymysql.connect(user=user, password=password, host=host, port=port, database=database, charset=charset)
@@ -27,6 +27,7 @@ class DBUtil:
         params = (username,)
         self.cursor.execute(sql, params)
         result = self.cursor.fetchone()
+        print("result==>", result)
         user = dict()
         if result:
             password_hash = result[2]
@@ -228,7 +229,6 @@ class DBUtil:
         flag = True
         for p in permission_list:
             p = json.loads(p)
-            print "+++++++++++++++++++++++++++++", p, type(p), p["vid"], p["title"]
             sql = "INSERT INTO tb_user_permission VALUES (null, '%s','%s','%s','%s')" % (
             userid, username, p["vid"], p["title"])
             try:
@@ -430,7 +430,6 @@ class DBUtil:
         return flag
 
     def check_domain(self):
-        print "begin check===>>"
         sql = 'select * from tb_keyword'
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
@@ -445,17 +444,13 @@ class DBUtil:
                 self.cursor.execute(sql_m)
                 self.connection.commit()
             except:
-                print "sssssssssssssssss"
                 self.connection.rollback()
                 continue
-        print "end check===>>"
 
     def updateComment(self, dmid, comment):
-        print "-----------------------", dmid, comment, type(dmid)
         dmid = dmid.encode("utf-8")
         dmid = int(dmid)
         sql = "update tb_domain set remark='%s' WHERE dmid=%s" % (comment, dmid)
-        print sql
         flag = True
         try:
             self.cursor.execute(sql)
@@ -706,7 +701,6 @@ class DBUtil:
         return kwlist
 
     def updateDomain(self, dmid, ip_info, webname, keyword="", re=False):
-        print "re====>", re, webname
         dmid = int(dmid.encode("utf-8"))
         flag = True
         atime = time.strftime("%Y-%m-%d %H:%M:%S")
@@ -769,7 +763,6 @@ class DBUtil:
         params = (ipid,)
         self.cursor.execute(sql, params)
         result = self.cursor.fetchone()
-        print "======>", type(result), result[1]
         return result[1]
 
     def getDetails(self, m, n, result):
@@ -893,3 +886,9 @@ class DBUtil:
     def close(self):
         self.cursor.close()
         self.connection.close()
+
+
+if __name__ == "__main__":
+    db = DBUtil()
+    sql = ""
+    db.execute(sql)

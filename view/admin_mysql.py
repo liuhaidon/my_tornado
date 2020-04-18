@@ -26,10 +26,9 @@ class AdminLoginHandler(BaseHandler):
         error = ""
         # username = self.get_cookie("username")
         # if username:
-            # error = "您已登录账号:%s,如继续则退出当前账号" % username
+        #     error = "您已登录账号:%s,如继续则退出当前账号" % username
         if self.admin:
             if self.admin.get("role", "") in ['admin', "superadmin"]:
-                print self.admin.get("role", "role is xxx")
                 self.redirect(referer_url)
                 error = ""
             else:
@@ -43,7 +42,7 @@ class AdminLoginHandler(BaseHandler):
 
     def post(self, *args, **kwargs):
         # print self.request.arguments, self.request.headers
-        self.logging.info(('LoginHandler argument %s') % (self.request.arguments))
+        self.logging.info('LoginHandler argument %s' % self.request.arguments)
         url, pwd, username = (value[0] for key, value in self.request.arguments.items() if key != '_xsrf'
                           and key != 'checkbox')
         if not pwd:
@@ -68,7 +67,6 @@ class AdminLoginHandler(BaseHandler):
 
     def check_xsrf_cookie(self):
         _xsrf = self.get_argument("_xsrf", None)
-        print "_xsrf===>", _xsrf
 
 
 class AdminLogoutHandler(BaseHandler):
@@ -185,7 +183,6 @@ class AdminDeleteUser(BaseHandler):
             uid = int(value[0])
             sql = "DELETE FROM tb_user_profile WHERE uid=%d" % uid
             result = self.application.dbutil.execute(sql)
-        print "result==",result
         if not result:
             return self.write(json.dumps({"status": "error", "msg": u'删除用户失败'}))
         return self.write(json.dumps({"status": "ok", "msg": u'删除用户成功'}))
@@ -209,7 +206,7 @@ class AdminAddSysUser(BaseHandler):
     """添加用户"""
     @BaseHandler.admin_authed
     def post(self):
-        print self.request.arguments
+        print(self.request.arguments)
         info = dict()
         username = self.get_argument("userid", None)
         record = self.db.tb_system_user.find_one({"userid": username})
@@ -232,7 +229,7 @@ class AdminAddSysUser(BaseHandler):
 
         res = self.application.backend_auth.register(info)
         if res:
-            print "register error", res
+            print("register error", res)
             return self.write(json.dumps({"msg": u'注册系统用户失败', "status": "error"}))
         return self.write(json.dumps({"status": "success", "msg": u"系统用户增加成功！"}))
 
@@ -290,7 +287,7 @@ class AdminRepassSystem(BaseHandler):
 
         pass3 = pbkdf2_sha512.encrypt(pass3)
         userid = self.get_argument("uid", None)
-        print "pass3===>", pass3
+        print("pass3===>", pass3)
         flag = self.application.dbutil.updatePassWord(userid, pass3, ip_infp)
         if not flag:
             logger().info("修改用户密码失败：===>")
@@ -329,7 +326,6 @@ class AdminAddPermission(BaseHandler):
         title = self.get_argument("title", None)
 
         res = self.application.dbutil.addPermission(name, title, ip_info, createdat)
-        print "res===>", res
         if not res:
             return self.write(json.dumps({"msg": u'增加权限失败', "status": 'error'}))
         return self.write(json.dumps({"status": 'ok', "msg": u"增加权限成功！"}))
@@ -425,9 +421,7 @@ class AdminModifyNotice(BaseHandler):
 
     @BaseHandler.admin_authed
     def post(self, noticeid):
-        print "noticeid=", noticeid
         record = self.db.tb_notice_profile.find_one({"_id": ObjectId(noticeid)})
-        print record
         if not record:
             return self.write(json.dumps({"status": 'error', "msg": "修改的公告不存在！"}))
 
@@ -444,6 +438,5 @@ class AdminModifyNotice(BaseHandler):
         newprofile['status'] = self.get_argument("status", 1)
 
         m = self.db.tb_notice_profile.update({"_id": record.get('_id')}, {"$set": newprofile})
-        print m
         return self.write(json.dumps({"status": 'ok', "msg": "修改公告成功！"}))
 

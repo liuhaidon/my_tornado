@@ -7,7 +7,7 @@ import functools
 from tornado.web import HTTPError
 from db import database
 from utils.session import *
-# from utils.logger import *
+from utils.logger import *
 # from db.database import database as mongodb
 try:
     from urllib import quote
@@ -133,8 +133,8 @@ class BaseHandler(tornado.web.RequestHandler):
     def begin_backend_session(self, sysid, password):
         self.logging.info(('start login', sysid, password))
         logger().info(('start login', sysid, password))
-        # if not self.application.dbutil.isloginsuccess(sysid, password)   # mysql数据库
-        if not self.application.backend_auth.login(sysid, password):       # mongodb数据库
+        if not self.application.dbutil.isloginsuccess(sysid, password):      # mysql数据库
+        # if not self.application.backend_auth.login(sysid, password):       # mongodb数据库
             print("login failed")
             return False
         self.logging.info(('login checked', sysid, password))
@@ -143,8 +143,7 @@ class BaseHandler(tornado.web.RequestHandler):
             print("no user exists!",sysid)
             return False
 
-        # now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
-        now = time.strftime('%Y-%m-%d %H:%M:%S')
+        now = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))
         last = self.db.tb_login_record.find_one({}, {"id": 1, "_id": 0}, sort=[("id", pymongo.DESCENDING)])
         id = int(last.get("id", 0)) + 1 if last else 1
         ip_info = self.request.remote_ip

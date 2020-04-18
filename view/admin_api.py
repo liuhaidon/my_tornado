@@ -10,6 +10,8 @@ from view.__init__ import *
 # https://blog.csdn.net/WGH100817/article/details/101722014
 # https://www.cnblogs.com/wanghzh/articles/5898327.html
 # http://blog.sina.com.cn/s/blog_13d84115b0102yg6q.html
+# https://blog.csdn.net/hexu_blog/article/details/103893718
+# https://blog.csdn.net/yifan_lion/article/details/105180779?depth_1-utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-14&utm_source=distribute.pc_relevant.none-task-blog-OPENSEARCH-14
 
 
 class AdminSaveLog(BaseHandler):
