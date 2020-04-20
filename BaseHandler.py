@@ -130,11 +130,40 @@ class BaseHandler(tornado.web.RequestHandler):
         self.session['loginid'] = None
         self.session.save()
 
+    # mysql
     def begin_backend_session(self, sysid, password):
         self.logging.info(('start login', sysid, password))
         logger().info(('start login', sysid, password))
-        if not self.application.dbutil.isloginsuccess(sysid, password):      # mysql数据库
-        # if not self.application.backend_auth.login(sysid, password):       # mongodb数据库
+        user = self.application.dbutil.isloginsuccess(sysid, password)   # mysql数据库
+        if not user:
+            print("login failed")
+            return False
+        self.logging.info(('login checked', sysid, password))
+
+        # 添加用户登录记录
+        name = "登陆用户：" + sysid if type(sysid) != bytes else "登陆用户：" + sysid.decode()
+        ip_info = self.request.remote_ip
+        logtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
+        sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % (name, ip_info, logtime)
+        self.application.dbutil.execute(sql)
+
+        # 查找该用户的所有权限
+        # permission = self.application.dbutil.getFindPermission(sysid)
+        # arr = []
+        # for p in permission:
+        #     arr.append(p["title"])
+
+        self.session["data"] = user
+        self.session["sysid"] = sysid
+        # self.session['permission'] = arr
+        self.session.save()
+        return True
+
+    # mongo
+    def begin_backend_session1(self, sysid, password):
+        self.logging.info(('start login', sysid, password))
+        logger().info(('start login', sysid, password))
+        if not self.application.backend_auth.login(sysid, password):       # mongodb数据库
             print("login failed")
             return False
         self.logging.info(('login checked', sysid, password))

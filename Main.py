@@ -33,11 +33,11 @@ class Application(tornado.web.Application):
             # (r"/index", index),
             (r"/login", user_login),
             (r"/logout", user_logout),
-            #
+
             (r"/admin/login", AdminLoginHandler),
             (r"/admin/logout", AdminLogoutHandler),
             (r"/admin/home", AdminHomeHandler),
-            #
+
             # (r"/admin/users", AdminUserList),
             # (r"/admin/user/add", AdminAddUser),
             # (r"/admin/user/delete", AdminDeleteUser),

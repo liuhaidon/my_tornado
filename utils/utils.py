@@ -14,3 +14,13 @@ class Utils:
             ed = ed - oneday
             count += 1
         return count
+
+
+# 判断数据类型
+def data_type(data):
+    if isinstance(data, str):
+        print("字符串类型！")
+    if isinstance(data, bytes):
+        print("字节类型！")
+# data_type("liu")
+# data_type(b"liu")

@@ -23,11 +23,10 @@ class DBUtil:
 
     def isloginsuccess(self, username, password):
         # sql = 'select count(*) from tb_user WHERE username=%s and password=%s'
-        sql = 'select * from tb_user WHERE username=%s'
-        params = (username,)
-        self.cursor.execute(sql, params)
+        sql = "select * from tb_user WHERE username='%s'" % username
+        self.cursor.execute(sql)
         result = self.cursor.fetchone()
-        print("result==>", result)
+        print("result==>", type(username), type(password), result)
         user = dict()
         if result:
             password_hash = result[2]
@@ -43,7 +42,7 @@ class DBUtil:
         else:
             return False
 
-    # 执行SQL语句返回受影响行
+    # 执行SQL语句返回受影响行（插入）
     def execute(self, sql):
         try:
             result = self.cursor.execute(sql)
