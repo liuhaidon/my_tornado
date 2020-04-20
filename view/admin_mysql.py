@@ -88,7 +88,7 @@ class AdminHomeHandler(BaseHandler):
         self.render("backend/home.html", myuser=self.admin, admin_nav=0)
 
 
-class AdminLoginSelect(BaseHandler):
+class AdminLoginRecord(BaseHandler):
     """用户登陆记录查询"""
     @BaseHandler.admin_authed
     def get(self):
@@ -96,19 +96,19 @@ class AdminLoginSelect(BaseHandler):
         pagesize = self.application.settings["record_of_one_page"]
 
         skiprecord = pagesize * (current_page - 1)
-        sql = "select * from tb_login_record order by createdat desc limit %s,%s" % (skiprecord, pagesize)
+        sql = "select * from tb_login_record order by logtime desc limit %s, %s" % (skiprecord, pagesize)
         login_list = self.application.dbutil.query(sql)
 
-        field = ["id", "username", "ip_address", "createdat"]
+        field = ["id", "content", "ip_info", "logtime"]
         data_list = list_to_dict(field, login_list)
 
         sql = "select count(*) from tb_login_record"
-        count = self.application.dbutil.queryall(sql)
+        count = self.application.dbutil.query_all(sql)
         pages = count / pagesize
         if count % pagesize > 0:
             pages += 1
-        self.render("backend/login_record.html", myuser=self.admin, admin_nav=11, login_list=data_list, page=current_page,
-                    pagesize=pagesize, pages=pages, count=count)
+        self.render("backend/login_record.html", myuser=self.admin, admin_nav=11, login_list=data_list,
+                    page=current_page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminLoginDelete(BaseHandler):
@@ -120,7 +120,7 @@ class AdminLoginDelete(BaseHandler):
         for key, value in datas.items():
             lid = int(value[0])
             sql = "DELETE FROM tb_login_record WHERE id=%d" % lid
-            result = self.application.dbutil.execute(sql)
+        result = self.application.dbutil.execute(sql)
         if result:
             self.write(json.dumps({"status": 'ok', "msg": u'删除登陆记录成功'}))
         self.write(json.dumps({"status": 'ok', "msg": u'删除登陆记录失败'}))

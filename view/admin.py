@@ -116,7 +116,7 @@ class AdminLoginRecord(BaseHandler):
             next_page = '<a href="/admin/login/record?page=%s">下一页</a>' % (current_page)
         list_page.append(next_page)
         str_page = "".join(list_page)
-        self.render("backend/login_record.html", myuser=self.admin, admin_nav=11, login_list=login_list, page_count=str_page)
+        self.render("backend/login_record_1.html", myuser=self.admin, admin_nav=11, login_list=login_list, page_count=str_page)
 
 
 class AdminLoginDelete(BaseHandler):

@@ -27,8 +27,6 @@ class Session(SessionData):
     def __init__(self, session_manager, request_handler):
         self.session_manager = session_manager
         self.request_handler = request_handler
-        # print("session_manager===>", session_manager.get())
-        # print("request_handler===>", request_handler)
         try:
             current_session = session_manager.get(request_handler)
         except InvalidSessionException:
@@ -37,7 +35,7 @@ class Session(SessionData):
             self[key] = data
         self.session_id = current_session.session_id
         self.hmac_key = current_session.hmac_key
-        print("query===>", self.session_id, self.hmac_key)
+        # print("query===>", self.session_id, self.hmac_key)
 
     def save(self):
         print("save===>", self)
@@ -74,16 +72,17 @@ class SessionManager(object):
         if (request_handler == None):
             session_id = self._generate_id()
             hmac_key = self._generate_hmac(session_id)
-            print("first===>", session_id, hmac_key)
             return SessionData(session_id, hmac_key)
 
         session_id = request_handler.get_secure_cookie("session_id")
         hmac_key = request_handler.get_secure_cookie("verification")
-        print("session_idaaa===>",session_id)
+        if isinstance(hmac_key, bytes):
+            hmac_key = str(hmac_key.decode("utf-8"))
+        if isinstance(session_id, bytes):
+            session_id = str(session_id.decode("utf-8"))
         if not session_id:
             session_id = self._generate_id()
             hmac_key = self._generate_hmac(session_id)
-            print("second===>", session_id, hmac_key)
             return SessionData(session_id, hmac_key)
 
         check_hmac = self._generate_hmac(session_id)
@@ -97,11 +96,10 @@ class SessionManager(object):
         return session
 
     def set(self, request_handler, session):
-        print("set===>", session.session_id, session.hmac_key)
+        # print("set===>", session.session_id, session.hmac_key)
         request_handler.set_secure_cookie("session_id", session.session_id)
         request_handler.set_secure_cookie("verification", session.hmac_key)
 
-        print("123",dict(session.items()))
         session_data = ujson.dumps(dict(session.items()))
         self.redis.setex(session.session_id, self.session_timeout, session_data)
 
@@ -110,7 +108,7 @@ class SessionManager(object):
         return hashlib.sha256((self.secret + str(uuid.uuid4())).encode("utf8")).hexdigest()  # python3
 
     def _generate_hmac(self, session_id):
-        print("type===>", type(session_id), type(self.secret))
+        # print("type===>", type(session_id), type(self.secret))
         # return hmac.new(session_id, self.secret, hashlib.sha256).hexdigest()        # python2
         return hmac.new(bytes(session_id, "utf-8"), bytes(self.secret, "utf-8"), hashlib.sha256).hexdigest()  # python3
 

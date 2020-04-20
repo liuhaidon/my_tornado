@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+{% block title %}播放单推送统计{% end %}
+{% block content %}
+<div class="pace  pace-inactive">
+    <div class="pace-progress" data-progress-text="100%" data-progress="99" style="width: 100%;">
+        <div class="pace-progress-inner"></div>
+    </div>
+    <div class="pace-activity"></div>
+</div>
+<div id="wrapper">
+    {% include 'admin_nav.html' %}
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            {% include 'header_nav.html' %}
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>记录管理</h2>
+                <ol class="breadcrumb">
+                    <li><a href="/admin/home">主页</a></li>
+                    <li><a>记录管理</a></li>
+                    <li><strong>登陆记录列表</strong></li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+            </div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>登陆记录列表
+                                <small>共计：{{ login_list.count() }}</small>
+                            </h5>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown"
+                                   href="#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                    <li><a onclick="query()">查询</a>
+                                    </li>
+                                </ul>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <style>
+                                th:first-child,
+                                .gradeX td:first-child {
+                                    width: 20px;
+                                    cursor: pointer;
+                                }
+
+                                th:first-child input,
+                                .gradeX td:first-child input {
+                                    cursor: pointer;
+                                }
+                            </style>
+
+                            <form action="javascript:;" method="post" name="login_form" id="login_form">
+                                {% module xsrf_form_html() %}
+                                <table class="table table-striped table-bordered table-hover dataTable dataTables-example" id="ads-count">
+                                    <thead>
+                                    <tr>
+                                        <th class="sorting_disabled"><input type="checkbox" class="i-checks" id="userListCheck"/></th>
+                                        <th class="sorting">ID</th>
+                                        <th class="sorting">登陆用户</th>
+                                        <th class="sorting">登陆IP</th>
+                                        <th class="sorting">登陆时间</th>
+                                        <th class="sorting_disabled">删除</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="ads-list2">
+                                    {% for i in login_list %}
+                                    <tr class="gradeX">
+                                        <td><input type="checkbox" class="i-checks"></td>
+                                        <td class="userListId" data-id="{{ i.get('_id') }}">{{ i.get('id',None) }}</td>
+                                        <td>{{ i.get("userid") }}</td>
+                                        <td>{{ i.get("ip")}}</td>
+                                        <td>{{ i.get("atime") }}</td>
+                                        <td><a onclick="deltr('{{ i.get('_id') }}',this)">删除</a></td>
+                                    </tr>
+                                    {% end %}
+                                    </tbody>
+                                </table>
+                                <table class="table table-striped table-bordered table-hover dataTables-example" style="display: none;" id="tab">
+                                      <tr><td><div id="changePages" name="changePages"></div></td></tr>
+                                </table>
+                                <div class = "pager" id="pager">
+                                    {% raw page_count %}
+                                </div>
+                                <input type="submit" class="btn btn-w-m btn-primary delete1" value="删除选中"
+                                data-toggle="modal" data-target="#myModal6"/>
+
+                                <div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">删除区域</h4>
+                                                <small class="font-bold">这里可以显示副标题。</small>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="ideaId"></p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-white deleteActivity" data-dismiss="modal">确定</button>
+                                                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal inmodal fade" id="myModal3" tabindex="-1" role="dialog"
+                                     aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal"><span
+                                                        aria-hidden="true">&times;</span><span
+                                                        class="sr-only">Close</span></button>
+                                                <h4 class="modal-title">播放单推送统计</h4>
+                                                <!--<small class="font-bold">这里可以显示副标题。</small>-->
+                                            </div>
+                                            <div class="modal-body">
+                                                <p class="ideaId">
+                                                    <div style="display: flex;align-content: space-between;align-items: center">
+                                                        <label>播放单标题：</label>
+                                                        <input style="width: 90%" class="form-control" placeholder="请输入播放单标题" name="title" id="title">
+                                                <p class="showInfo"></p>
+                                            </div>
+                                            <div style="display: flex;align-content: space-between;align-items: center;margin-top: 20px">
+                                                        <label>播放次数： </label>
+                                                        <select class="form-control" id="cishu" name="cishu" style="width:45%;margin-left: 1.6%">
+                                                             <option value=''>大于</option>
+                                                             <option value=''>等于</option>
+                                                             <option value=''>小于</option>
+                                                        </select>
+                                                        <input class="form-control" placeholder="" name="cs" id="cs" style="width:45%">
+                                                        <p class="showInfo"></p>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-white addarea" data-dismiss="modal">确定
+                                            </button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">取消
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".dataTable").dataTable({
+            "paging":   false,
+            "info":     false,
+            "searching": false,
+            "columnDefs": [{
+                "orderable": false,
+                "targets": [0,5]
+            }],
+            "aoColumns": [
+                { "bSortable": false, "aTargets": [0,5]},
+                null,
+                null,
+                null,
+                null,
+                null,
+            ],
+            "aaSorting": [[1,"asc"]]
+        });
+    });
+    function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+    function deltr(id,row){
+        var json = {};
+        json['_xsrf'] = getCookie("_xsrf");
+        json['id'] = id;
+        $.ajax({
+            url: '/admin/login/delete',
+            type: 'post',
+            data: json,
+            success: function (data) {
+                console.log(data);
+                var jsons = jQuery.parseJSON(data);
+                if (jsons.status == "ok") {
+                    $(row).parent().parent().remove();
+                }
+            },
+            error: function () {
+                alert('error');
+            }
+        });
+
+    }
+    function query() {
+        $('#myModal3').modal('show');
+    }
+</script>
+<script>
+    $(function () {
+        // var trs = $("td[class='userListId']")
+        // for (i = 0; i < trs.length; i++) {
+        //     trs[i].style.display = "none";
+        // }
+
+        var json = _alert('.btn.btn-w-m.delete1', '.modal-body .ideaId', '您要删除的区域ID为');
+        json['_xsrf'] = $("input[name='_xsrf']").val();
+        $('.btn.btn-white.deleteActivity').click(function () {
+            $.ajax({
+                url: '/admin/login/delete',
+                type: 'post',
+                data: json,
+                success: function (data) {
+                    console.log(data);
+                    // location.reload();
+                    window.location.href = '/admin/login/record';
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(textStatus);
+                }
+            });
+        });
+
+        $('.btn.btn-white.addarea').click(function () {
+            // select=$('#select').find("option:selected").text(),
+            // if ($('#select').find("option:selected").text()!="推送次数"){
+            //     var xjson={
+            //         '_xsrf':$("input[name='_xsrf']").val(),
+            //         'con': $('#title').val(),
+            //         'select': $('#select').find("option:selected").text(),
+            //         'num': $('#num').val(),
+            //     };
+            // }
+            // else{
+            //     var xjson={
+            //         '_xsrf':$("input[name='_xsrf']").val(),
+            //         'select': $('#select').find("option:selected").text(),
+            //         'con': $('#select1').find("option:selected").text(),
+            //     };
+            // }
+            var xjson = {
+                '_xsrf': $("input[name='_xsrf']").val(),
+                'con': $('#title').val(),
+                'select': $('#cishu').find("option:selected").text(),
+                'num': $('#cs').val(),
+            };
+            if (xjson['con'] == '' && xjson['num'] == '') {
+                // alert("查找内容不能为空！");
+                alert("至少输入一种查询条件！");
+                return false;
+            }
+            console.log(xjson)
+            $.ajax({
+                url: '/admin/push/select',
+                type: 'post',
+                data: xjson,
+                success: function (data) {
+                    var json = $.parseJSON(data);
+                    // alert(json.msg);
+                    var xhtml = "";
+                    for (var i = 0; i < json.length; i++) {
+                        // var strd = "";
+                        var strd = json[i]._id;
+                        console.log("==>", strd);
+                        xhtml += "<tr class=\"gradeX\"> <td><input type=\"checkbox\" class=\"i-checks\"></td>";
+                        xhtml += "<td>" + json[i].id + "</td>";
+                        xhtml += "<td>" + json[i].userid + "</td>";
+                        xhtml += "<td>" + json[i].title + "</td>";
+                        xhtml += "<td>" + json[i].currtime + "</td>";
+                    }
+                    $("#ads-list2").html(xhtml);
+                    // document.getElementById("changePages")
+                    // $("#tab").hide()
+                    // var a = document.getElementById("ads-count")
+                    // var num = a.rows.length;
+                    $("#pager").hide();
+                    goPage(1,10)
+                    // window.location.href = window.location.href
+                    // location.reload();
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.log(XMLHttpRequest.status);
+                    console.log(XMLHttpRequest.readyState);
+                    console.log(textStatus);
+                }
+            });
+        });
+    });
+</script>
+<script>
+    function goPage(pno,psize){
+        var itable = document.getElementById("ads-count");//获取table
+        var num = itable.rows.length;//得到记录总数
+        var totalPage = 0;
+        var pageSize = psize;//一页显示pageSize条记录
+        //计算总页数
+        if(num/pageSize > parseInt(num/pageSize)){
+                totalPage=parseInt(num/pageSize)+1;
+           }else{
+               totalPage=parseInt(num/pageSize);
+           }
+         //当前页数
+        var currentPage = pno;
+        //获取当前页第一条、最后一条记录的行号
+        var startRow = (currentPage - 1) * pageSize+1;
+           var endRow = currentPage * pageSize;
+           endRow = (endRow > num)? num : endRow;
+        //修改table中当前页对应的行的属性为显示，非本页的记录为隐藏
+        for(var i=1;i<(num+1);i++){
+            var irow = itable.rows[i-1];
+            if(i>=startRow && i<=endRow){
+                // irow.style.display = "block";
+                $(irow).show()
+                // style="display: block;"
+            }else{
+                // irow.style.display = "none";
+                $(irow).hide()
+            }
+        }
+        //分页页码列表
+        var tempStr = "共"+(num-1)+"条记录  &nbsp&nbsp&nbsp  分"+totalPage+"页   &nbsp&nbsp&nbsp 当前第"+currentPage+"页";
+        if(currentPage>1){
+            tempStr += "<a href=\"#\"  onClick=\"goPage("+(1)+","+psize+")\">首页</a>";
+            tempStr += "<a href=\"#\"  onClick=\"goPage("+(currentPage-1)+","+psize+")\"><上一页</a>"
+        }else{
+            tempStr += "&nbsp&nbsp&nbsp 首页";
+            tempStr += "&nbsp&nbsp&nbsp <上一页";
+        }
+
+        if(currentPage<totalPage){
+            tempStr += "<a href=\"#\" onClick=\"goPage("+(currentPage+1)+","+psize+")\">下一页></a>";
+            tempStr += "<a href=\"#\" onClick=\"goPage("+(totalPage)+","+psize+")\">尾页</a>";
+        }else{
+            tempStr += "&nbsp&nbsp&nbsp 下一页>";
+            tempStr += "&nbsp&nbsp&nbsp 尾页";
+        }
+        $("#tab").show()
+        document.getElementById("changePages").innerHTML = tempStr;
+    }
+</script>
+{% end %}

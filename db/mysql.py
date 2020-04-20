@@ -4,6 +4,7 @@ import time
 import json
 import traceback
 from passlib.hash import pbkdf2_sha512
+from db import mysql_statement
 
 
 class DBUtil:
@@ -26,7 +27,6 @@ class DBUtil:
         sql = "select * from tb_user WHERE username='%s'" % username
         self.cursor.execute(sql)
         result = self.cursor.fetchone()
-        print("result==>", type(username), type(password), result)
         user = dict()
         if result:
             password_hash = result[2]
@@ -53,8 +53,25 @@ class DBUtil:
             traceback.print_exc()
             return ex
 
+    # 执行SQL语句返回数据集
     def query(self, sql):
-        pass
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            data = map(list, result)  # 将元组转换成列表
+            # self.close()
+            return data
+        except Exception as ex:
+            return ex
+
+    # 查询某张表一共有多少条记录
+    def query_all(self, sql):
+        try:
+            self.cursor.execute(sql)
+            count = self.cursor.fetchone()
+            return count[0]
+        except Exception as ex:
+            return ex
 
     # 关闭数据库连接
     def close(self):
@@ -827,8 +844,6 @@ class DBUtil:
         count = self.cursor.fetchone()
         return count[0]
 
-        # 操作记录查询
-
     def getOperateRecord(self, m, n):
         sql = 'select * from tb_operate order by createdat desc limit %s,%s' % (m, n)
         self.cursor.execute(sql)
@@ -849,8 +864,6 @@ class DBUtil:
         count = self.cursor.fetchone()
         return count[0]
 
-        # 删除操作记录
-
     def delOperateRecord(self, rid):
         sql = "DELETE FROM tb_operate WHERE rid=%d" % (rid)
         flag = True
@@ -862,25 +875,6 @@ class DBUtil:
             flag = False
         return flag
 
-    # 执行SQL语句返回数据集
-    def query(self, sql):
-        try:
-            self.cursor.execute(sql)
-            result = self.cursor.fetchall()
-            data = map(list, result)   # 将元组转换成列表
-            # self.close()
-            return data
-        except Exception as ex:
-            return ex
-
-    def queryall(self, sql):
-        try:
-            self.cursor.execute(sql)
-            count = self.cursor.fetchone()
-            return count[0]
-        except Exception as ex:
-            return ex
-
     # 关闭连接
     def close(self):
         self.cursor.close()
@@ -889,5 +883,6 @@ class DBUtil:
 
 if __name__ == "__main__":
     db = DBUtil()
-    sql = ""
+    # sql = mysql_statement.update_field_name
+    sql = "alter table tb_login_record change lid id int(11);"
     db.execute(sql)
