@@ -12,19 +12,22 @@ import tornado.web
 # from conf.settings import static_path
 from werkzeug.utils import secure_filename
 
+
 class RemotePictureHandler(tornado.web.RequestHandler):
     def post(self, *args, **kwargs):
-        print "post===》",self.request.uri
+        print("post===》",self.request.uri)
         self.upload(args, kwargs)
+
     def get(self, *args, **kwargs):
-        print "get===》",self.request.uri
+        print("get===》",self.request.uri)
         self.upload(args, kwargs)
+
     def options(self, *args, **kwargs):
         self.upload(args, kwargs)
 
     def check_xsrf_cookie(self):
         _xsrf = self.get_argument("_xsrf", None)
-        print "_xsrf===>", _xsrf
+        print("_xsrf===>", _xsrf)
 
     def upload(self,*args, **kwargs):
         """UEditor文件上传接口； config 配置文件； result 返回结果"""

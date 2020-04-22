@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-import datetime
-import random
+from utils.crontab import *
+from db.database import database
+from apscheduler.schedulers.background import BackgroundScheduler
+import random, datetime
 import sys
 sys.path.append("..")
 
-from db.database import database
 
 def id_auto_increment(last, id):
     """id自增1"""
@@ -45,8 +46,19 @@ def random_number(length):
     salt = ''.join(sa)
     return salt
 
+
 def scheduler_job(app):
-    pass
+    # 创建后台执行的 schedulers
+    scheduler = BackgroundScheduler()
+    # 添加调度任务,调度方法为 timedTask，触发器选择 interval(间隔性)，间隔时长为 30 秒
+    scheduler.add_job(test_task, "cron", hour="13", minute="03", second="0")
+    scheduler.add_job(test_task, "interval", seconds=30)   # 定期执行任务,每隔30秒执行一次
+    # 启动调度任务
+    scheduler.start()
+
+    # t = threading.Thread(target=task, args=())
+    # t.start()
+
 
 def load_base_data(app):
     db = database.getDB()

@@ -16,7 +16,6 @@ from utils.session import *
 
 # from session.session import MongoSessions
 # from session.auth import MongoAuthentication
-# from apscheduler.schedulers.background import BackgroundScheduler
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
 
@@ -121,17 +120,8 @@ if __name__ == "__main__":
     app = Application()
     app.listen(options.port)
 
-    # 创建后台执行的 schedulers
-    # scheduler = BackgroundScheduler()
-    # 添加调度任务,调度方法为 timedTask，触发器选择 interval(间隔性)，间隔时长为 30 秒
-    # scheduler.add_job(task, "cron", hour="13", minute="03", second="0")
-    # scheduler.add_job(task, "interval", seconds=60*60*24)   # 定期执行任务
-    # 启动调度任务
-    # scheduler.start()
-
-    # t = threading.Thread(target=task, args=())
-    # t.start()
-    scheduler_job(app)   # 执行计划任务，定时推送任务
+    scheduler_job(app)      # 执行计划任务，定时推送任务
+    # load_base_data(app)
 
     print("visit at", "http://127.0.0.1:%s" % options.port)
     tornado.ioloop.IOLoop.instance().start()
