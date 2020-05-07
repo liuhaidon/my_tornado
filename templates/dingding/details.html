@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <!--<title>个人 - OKR</title>-->
+    <link href="../static/css/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/site.css">
+    <script type="text/javascript" src="../static/js/axios.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.js"></script>
+</head>
+<body style="background-color: #f6f6f6;font-family: inherit;color: inherit;">
+	<section class="detail_content">
+		<section class="detail_box_list">
+			<ul class="pdt10">
+				{% for task in task_list %}
+					<li class="detail_list" data-delnum='{{task.get("id")}}'>
+						{% if task.get("status","0")=="0" %}
+							<input class="detail_check" type="checkbox"  name="check" value='{{task.get("id")}}'/>
+						{% else %}
+							<input class="detail_check" type="checkbox" checked name="check" value='{{task.get("id")}}'/>
+						{% end %}
+						<div class="detail_con">
+							<span class="detail_con_txt">{{ task.get("content","") }}</span>
+						</div>
+						<span class="del task_del"><i class="icons icon_del"></i></span>
+					</li>
+				{% end %}
+			</ul>
+		</section>
+		<section class="detail_footer_btn">
+			<div class="submit_list">提交</div>
+		</section>
+	</section>
+    <script type="text/javascript" src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.0.57/dingtalk.open.js"></script>
+    <script>
+    	dd.ready(function() {
+	        var detail = {
+    			url: 'https://dingding.aapanel.com:4433',
+    			init:function() {
+    				var _this = this;
+					
+    				if(dd.ios){
+    					// ios点击返回按钮时
+						dd.biz.navigation.setLeft({
+						    control: true,//是否控制点击事件，true 控制，false 不控制， 默认false
+						    text: '',//控制显示文本，空字符串表示显示默认文本
+						    showIcon: false,
+						    onSuccess : function(result) {
+			        			window.location.href = _this.url + "/index";
+						    },
+						    onFail : function(err) {}
+						});
+    				}
+    				// 删除任务
+    				$(".task_del").click(function(){
+    					var id =  $(this).parents(".detail_list").attr("data-delnum");
+    					var _index = $(this).parents(".detail_list").index()
+    					dd.device.notification.confirm({
+						    message: "此操作将会删除当前任务,请确认",
+						    title: "删除任务",
+						    buttonLabels: ['确认', '取消'],
+						    onSuccess : function(result) {
+						    	if(result.buttonIndex == 0){
+						    		dd.device.notification.toast({
+									    icon: '', 
+									    text: "删除成功", 
+									    duration: 1, 
+									    delay: 0, 
+									    onSuccess : function(result) {
+						    				$(".detail_list:eq("+_index+")").remove();
+						    				$.post(_this.url + "/task/delete",{taskid: id},function(){});
+									    },
+									    onFail : function(err) {console.log(err)}
+									})
+						    	}	
+						    },
+						    onFail : function(err) {}
+						});
+    				})
+    				// li点击选中复选框
+    				$(".detail_con").click(function(){
+    					var _check = $(this).siblings("input").is(':checked')
+    					if(_check){
+    						$(this).siblings("input").prop("checked",false)
+    					}else{
+    						$(this).siblings("input").prop("checked",true)
+    					}
+    				});
+    				// 提交
+    				$(".submit_list").click(function(){
+    					var arry = [];
+    					$("input[name='check']:checked").each(function(index) {
+    						arry[index] = $(this).val();
+    					})
+    					var _arry = JSON.stringify(arry)
+		        		$.post(_this.url + "/task/update",{tid:_arry,userid:_this.reg_filter("userid"),type:_this.reg_filter("type")},function(data){
+		        			var data = JSON.parse(data)
+		        			window.location.href = _this.url + "/index"
+		        		})
+	    			})
+    			},
+    			// 正则提取浏览器地址的参数
+    			reg_filter: function(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]); return null;
+				}
+    		}
+    		detail.init();
+    		
+    		// 标题
+			dd.biz.navigation.setTitle({title : detail.reg_filter("type") == "todayTask"?"今日要事":"周任务"});
+	        dd.error(function(error){
+	            alert('dd error: ' + JSON.stringify(err));
+	        });
+	    });
+    </script>
+</body>
+</html>

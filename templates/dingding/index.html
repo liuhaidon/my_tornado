@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>个人 - OKR</title>
+    <link href="../static/css/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/site.css">
+    <script type="text/javascript" src="../static/js/axios.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.js"></script>
+</head>
+<body style="background-color: #f6f6f6;font-family: inherit;">
+	<section class="okr_info_content pd10">
+        <section class="okr_box_list list_one">
+            <div class="bg_white pd15">
+                <div class="task_head">
+                    <div class="task_head_left">
+                        <i class="icons icon_compile"></i>
+                        <span>今日要事</span>
+                    </div>
+                    <div class="task_head_right">
+                        <span>添加</span>
+                    </div>
+                </div>
+                <div class="task_content todayContent set_task_edit">
+                    <ul class="pd0"></ul>
+                </div>
+            </div>
+            <div class="task_footer">
+                <div class="sub_task_page" style="display: none;">
+                    <div class="sub_head">
+                        <span class="sub_head_left">添加今日要事</span>
+                        <span class="sub_head_right"><a href="javascirpt:;">取消</a></span>
+                    </div>
+                    <div class="sub_body bg_white">
+                        <div class="sub_body_title"><span style="color:red">*</span>今日要事</div>
+                        <div class="sub_body_con">
+                            <textarea id="sub_txt_con" rows="4" placeholder="请输入任务描述"></textarea>
+                        </div>
+                    </div>
+                    <div class="sub_body_footer" name="todayTask" btn-type="0">
+                        <span class="sub_task">提交</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="okr_box_list list_two">
+            <div class="bg_white pd15">
+                <div class="task_head">
+                    <div class="task_head_left">
+                        <i class="icons icon_task"></i>
+                        <span>周任务</span>
+                    </div>
+                    <div class="task_head_right">
+                        <span>添加</span>
+                    </div>
+                </div>
+                <div class="task_content weekContent set_task_edit">
+                    <ul class="pd0"></ul>
+                </div>
+            </div>
+            <div class="task_footer">
+                <div class="sub_task_page" style="display: none;">
+                    <div class="sub_head">
+                        <span class="sub_head_left">添加周任务</span>
+                        <span class="sub_head_right"><a href="javascirpt:;">取消</a></span>
+                    </div>
+                    <div class="sub_body bg_white">
+                        <div class="sub_body_title"><span style="color:red">*</span>周任务</div>
+                        <div class="sub_body_con">
+                            <textarea id="sub_txt_con" rows="4" placeholder="请输入任务描述"></textarea>
+                        </div>
+                    </div>
+                    <div class="sub_body_footer" name="weekTask" btn-type="0">
+                        <span class="sub_task">提交</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="okr_box_list">
+            <div class="bg_white pd15">
+                <div class="task_head">
+                    <div class="task_head_left">
+                        <i class="icons icon_memo"></i>
+                        <span>待办</span>
+                    </div>
+                    <div class="task_head_right">
+                        <span>添加</span>
+                    </div>
+                </div>
+                <div class="task_content readyContent">
+                    <ul class="pd0"></ul>
+                </div>
+            </div>
+            <div class="task_footer">
+                <div class="sub_task_page" style="display: none;">
+                    <div class="sub_head">
+                        <span class="sub_head_left">添加待办</span>
+                        <span class="sub_head_right"><a href="javascirpt:;">取消</a></span>
+                    </div>
+                    <div class="sub_body bg_white">
+                        <div class="sub_body_title"><span style="color:red">*</span>待办</div>
+                        <div class="sub_body_con">
+                            <textarea id="sub_txt_con" rows="4" placeholder="请输入任务描述"></textarea>
+                        </div>
+                    </div>
+                    <div class="sub_body_footer" name="readyTask" btn-type="0">
+                        <span class="sub_task">提交</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="footer_fixed">
+        	<span>回顾</span>
+        </div>
+    </section>
+    
+    <script type="text/javascript" src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.0.57/dingtalk.open.js"></script>
+    <script>
+    	dd.ready(function() {
+    		// 免登
+	        dd.runtime.permission.requestAuthCode({
+	            corpId: "ding7058447ab2a8aabd35c2f4657eb6378f",
+	            onSuccess: function(info) {
+	            	//通过免登授权码获取用户详细信息
+	            	$.get(okr.url + "/get/user",'code='+info.code,function(data){
+	            		okr.userInfo = JSON.parse(data).userinfo;
+	            		okr.init();
+	            	})
+	            },
+	            onFail : function(err) {
+	            	alert('fail: ' + JSON.stringify(err));
+	            }
+	        });
+	        var okr = {
+    			url: 'https://dingding.aapanel.com:4433',
+    			userInfo: {},
+				types: [],
+				allTask: [],
+				init:function(){
+					var _this = this;
+	            	_this.get_all_task();
+	            	// 点击详情按钮
+	     //       	$(".task_head_right").click(function(){
+	     //       		var type = $(this).attr("data-type")
+						// window.location.href = _this.url + '/task/details?type=' + type + '&userid='+_this.userInfo.userid;
+	     //       	})
+	            	// 点击回顾按钮
+	            	$(".footer_fixed").click(function(){
+						window.location.href = _this.url + '/task/review?userid='+_this.userInfo.userid;
+	            	})
+					// 点击增加任务
+			        $(".task_head_right").click(function(){
+			        	$(this).hide().parents(".okr_box_list").children(".task_footer").find(".sub_task_page").show();
+			        	$(this).parents(".okr_box_list").find("#sub_txt_con").val('');
+			        })
+			        // 点击取消按钮
+			        $(".sub_head_right").click(function(){
+			        	$(this).parents('.sub_task_page').hide().parents(".okr_box_list").children(".bg_white").children(".task_head").find(".task_head_right").show();
+			        })
+			        // 创建任务/点击提交按钮
+			        $(".sub_body_footer").click(function(){
+			        	var sub_data = $(this).siblings(".sub_body").find("#sub_txt_con").val();
+			        	var type = $(this).attr("name");
+			        	var status = $(this).attr("btn-type");
+		        		if(sub_data == ''){
+			        		dd.device.notification.toast({
+							    icon: 'error', //icon样式，不同客户端参数不同，请参考参数说明
+							    text: '任务内容不能为空吧？', //提示信息
+							    duration: 1, //显示持续时间，单位秒，默认按系统规范[android只有两种(<=2s >2s)]
+							    delay: 0, //延迟显示，单位秒，默认0
+							    onSuccess : function(result) {
+							        /*{}*/
+							    },
+							    onFail : function(err) {}
+							})
+							return false;
+			        	}
+			        	if(status != 0){
+			        		return false
+			        	}else{
+			        		$(this).attr("btn-type","1")
+				        	$.post(_this.url + "/task/add",{userid:okr.userInfo.userid,name:okr.userInfo.name,content:$.trim(sub_data),type:type},function(){
+				        		dd.device.notification.toast({
+								    icon: '', 
+								    text: "已经帮你添加新的任务，加油。", 
+								    duration: 1, 
+								    delay: 0, 
+								    onSuccess : function(result) {
+								        $(".sub_head_right").click();
+			        					$(".sub_body_footer").attr("btn-type","0")
+								        _this.get_all_task();
+								    },
+								    onFail : function(err) {console.log(err)}
+								})
+			
+				        	})
+			        	}
+			        });
+			        // 今日/周任务 编辑按钮
+			        $(".set_task_edit").on('click',".onChangeTask",function(e){
+			        	var _index = $(this).attr("data-num"),_type = $(this).attr("name")
+			        	dd.device.notification.actionSheet({
+						    title: _type == 'todayTask'?_this.allTask.todayTask[_index].content : _this.allTask.weekTask[_index].content, 
+						    cancelButton: '取消', //取消按钮文本
+						    otherButtons: ["事项完成","删除事项"],
+						    onSuccess : function(result) {
+						        //onSuccess将在点击button之后回调
+						        if(result.buttonIndex == -1){return false;}
+						        if(result.buttonIndex == 1){
+						        	$.post(_this.url + "/task/delete",{taskid: _type == 'todayTask'?_this.allTask.todayTask[_index].id:_this.allTask.weekTask[_index].id},function(){
+						        		dd.device.notification.toast({
+										    icon: '', 
+										    text: "已经删除，这个任务不够好再换一个", 
+										    duration: 1, 
+										    delay: 0, 
+										    onSuccess : function(result) {
+										        _this.get_all_task();
+										    },
+										    onFail : function(err) {console.log(err)}
+										})
+						        	})
+						        }else{
+						        	$.post(_this.url +"/task/update",{tid:_type == 'todayTask'?_this.allTask.todayTask[_index].id:_this.allTask.weekTask[_index].id,userid:_this.userInfo.userid,type:_type},function(){
+						        		dd.device.notification.toast({
+										    icon: '', 
+										    text: "哇噢，恭喜你又拿下了一个艰巨的任务", 
+										    duration: 1, 
+										    delay: 0, 
+										    onSuccess : function(result) {
+										        _this.get_all_task();
+										    },
+										    onFail : function(err) {console.log(err)}
+										})
+						        	})
+						        }
+						    },
+						    onFail : function(err) {}
+			        	})
+			        });
+			        // 待办转移
+			        $(".readyContent").on('click',".onChangeEdit",function(e){
+			        	var _index = $(this).attr("data-num");
+			        	dd.device.notification.actionSheet({
+						    title: _this.allTask.readyTask[_index].content, 
+						    cancelButton: '取消', //取消按钮文本
+						    otherButtons: ["升级为今日要事","升级为周任务","删除待办"],
+						    onSuccess : function(result) {
+						        //onSuccess将在点击button之后回调
+						        if(result.buttonIndex == -1){return false;}
+						        if(result.buttonIndex == 2){
+						        	$.post(_this.url + "/task/delete",{taskid:_this.allTask.readyTask[_index].id},function(){
+						        		dd.device.notification.toast({
+										    icon: '', 
+										    text: "已经删除，这个任务不够好再换一个", 
+										    duration: 1, 
+										    delay: 0, 
+										    onSuccess : function(result) {
+										        _this.get_all_task();
+										    },
+										    onFail : function(err) {console.log(err)}
+										})
+						        	})
+						        }else{
+						        	$.get(_this.url +"/task/change",{taskid:_this.allTask.readyTask[_index].id,type:result.buttonIndex == 0? 'todayTask':'weekTask'},function(){
+						        		dd.device.notification.toast({
+										    icon: '', 
+										    text: result.buttonIndex == 0?"已经帮你升级为今日要事，加油。":"已经帮你升级为周任务，加油。", 
+										    duration: 1, 
+										    delay: 0, 
+										    onSuccess : function(result) {
+										        _this.get_all_task();
+										    },
+										    onFail : function(err) {console.log(err)}
+										})
+						        	})
+						        }
+						    },
+						    onFail : function(err) {}
+						})
+			        })
+				},
+				//获取所有任务
+	        	get_all_task:function(){
+	        		var _this = this;
+		        	$.get(_this.url + "/tasks",'userid='+okr.userInfo.userid,function(res){
+		        		var task = JSON.parse(res);
+		        		okr.allTask = [];
+		        		okr.types = [];
+		        		for(var g in task.data){
+		        			if(okr.types.indexOf(task.data[g].type) === -1){
+						        okr.types.push(task.data[g].type)
+						    }
+		        		}
+		        		for(var a in okr.types){
+		        			for(var j in task.data){
+		        				if(task.data[j].type == okr.types[a]){
+		        					okr.allTask[okr.types[a]] = okr.allTask[okr.types[a]] || [];
+		        					okr.allTask[okr.types[a]].push(task.data[j])
+		        				}
+		        			}
+		        		}
+		        		_this.task_view_list();
+		        	})
+		        },
+		        // 展示所有任务
+		        task_view_list:function(){
+		        	var _todayHTML = '',_weekHTML = '',_readyHTML = '',toAarry = okr.allTask.todayTask,weAarry = okr.allTask.weekTask,reAarry = okr.allTask.readyTask;
+		        	if(!toAarry){
+		        		_todayHTML = '<li style="text-align="center""><span>未添加任务</span></li>';
+		        	}else{
+			        	for(var t = 0; t<toAarry.length; t++){
+			        		_todayHTML += '<li class="task_list"><span class="task_con_txt">'+toAarry[t].content+'</span><button type="button" name="todayTask" class="btn btn-primary btn-xs onChangeTask" data-num='+t+'>编辑</button></li>'
+			        	}
+		        	}
+		        	if(!weAarry){
+		        		_weekHTML = '<li style="text-align="center""><span>未添加任务</span></li>';
+		        	}else{
+			        	for(var w = 0; w<weAarry.length; w++){
+			        		_weekHTML += '<li class="task_list"><span class="task_con_txt">'+weAarry[w].content+'</span><button type="button" name="weekTask" class="btn btn-primary btn-xs onChangeTask" data-num='+w+'>编辑</button></li>'
+			        	}
+		        	}
+		        	if(!reAarry){
+		        		_readyHTML = '';
+		        	}else{
+			        	for(var r = 0; r<reAarry.length; r++){
+			        		_readyHTML += '<li class="task_list"><span class="task_con_txt">'+reAarry[r].content+'</span><button type="button" class="btn btn-primary btn-xs onChangeEdit" data-num='+r+'>编辑</button></li>'
+			        	}
+		        	}
+		        	$(".todayContent ul").html(_todayHTML);
+		        	$(".weekContent ul").html(_weekHTML);
+		        	$(".readyContent ul").html(_readyHTML);
+		        }
+    		}
+	        dd.error(function(error){
+	            alert('dd error: ' + JSON.stringify(err));
+	        });
+	    });
+    </script>
+</body>
+</html>

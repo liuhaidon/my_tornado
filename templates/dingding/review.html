@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>回顾</title>
+    <link href="../static/css/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/site.css">
+    <script type="text/javascript" src="../static/js/axios.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery.js"></script>
+</head>
+<body style="background-color: #f6f6f6;font-family: inherit;color: inherit;">
+	<section class="back_content" data-task="{{json_encode(back_list)}}"></section>
+    <script type="text/javascript" src="https://g.alicdn.com/dingding/dingtalk-jsapi/2.0.57/dingtalk.open.js"></script>
+    <script>
+    	dd.ready(function() {
+	        var detail = {
+    			url: 'https://dingding.aapanel.com:4433',
+    			init:function() {
+    				var _this = this;
+					var tasks = $(".back_content").data("task");
+					_this.get_task_list(tasks)
+    				if(dd.ios){
+    					// ios点击返回按钮时
+						dd.biz.navigation.setLeft({
+						    control: true,//是否控制点击事件，true 控制，false 不控制， 默认false
+						    text: '',//控制显示文本，空字符串表示显示默认文本
+						    showIcon: false,
+						    onSuccess : function(result) {
+			        			window.location.href = _this.url + "/index";
+						    },
+						    onFail : function(err) {}
+						});
+    				}
+    				
+    			},
+    			// 生成界面
+    			get_task_list:function(res){
+    				var _html = '',_this = this;
+    				if(res.length <= 0){return $(".back_content").html('<div style="text-align:center;margin-top:5px"><span>快去完成你的任务吧！！！</span></div>')}
+    				for(var i=0;i<res.length;i++){
+						_html += '<section class="back_box_list">\
+							<div class="back_head">\
+								<span class="back_head_left">'+_this.format(res[i].addtime,"yyyy/MM/dd")+' - '+_this.format(res[i].endtime,"yyyy/MM/dd")+'</span>\
+								<span class="back_head_right">持续 '+_this.timeStamp(res[i].ctime)+'</span>\
+							</div>\
+							<div class="back_con">'+res[i].content+'</div>\
+						</section>'
+					}
+					$(".back_content").html(_html);
+    			},
+    			// 正则提取浏览器地址的参数
+    			reg_filter: function(name){
+					var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+					var r = window.location.search.substr(1).match(reg);
+					if(r!=null)return  unescape(r[2]); return null;
+				},
+				// 修改时间格式
+				format:function(time, format) {
+				    var t = new Date(time);
+				    var tf = function (i) {
+				      return (i < 10 ? '0' : '') + i
+				    };
+				    return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
+				      switch (a) {
+				        case 'yyyy':
+				          return tf(t.getFullYear());
+				          break;
+				        case 'MM':
+				          return tf(t.getMonth() + 1);
+				          break;
+				        case 'mm':
+				          return tf(t.getMinutes());
+				          break;
+				        case 'dd':
+				          return tf(t.getDate());
+				          break;
+				        case 'HH':
+				          return tf(t.getHours());
+				          break;
+				        case 'ss':
+				          return tf(t.getSeconds());
+				          break;
+				      }
+				    })
+				 },
+				 // 小时转换天数
+				 timeStamp:function(StatusMinute){
+					var day = parseInt(StatusMinute/60/24);
+					var hour=parseInt(StatusMinute/60%24);
+					var min= parseInt(StatusMinute % 60);
+					StatusMinute = ''
+					if(day > 0){
+						StatusMinute = day + '天';
+					}
+					if(hour > 0){
+						StatusMinute += hour + '小时';
+					}
+					if(min > 0){
+	    				StatusMinute += parseFloat(min) + "分钟";
+					}else{
+						StatusMinute = '1分钟'
+					}
+					return StatusMinute;
+				}
+    		}
+    		detail.init();
+	        dd.error(function(error){
+	            alert('dd error: ' + JSON.stringify(err));
+	        });
+	    });
+	    
+	    
+    </script>
+</body>
+</html>
