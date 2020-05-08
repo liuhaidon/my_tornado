@@ -1,5 +1,9 @@
-# encoding:utf-8
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-       # encoding:utf-8
+import io
+from utils.validate import VerifyCode
 from BaseHandler import BaseHandler
+import tornado.web
 
 
 class AdminParam(BaseHandler):
@@ -29,6 +33,25 @@ class AdminResult(BaseHandler):
         print(args2, type(args2))   # {"age":"30","name":"don"} <class 'str'>
         print(args3, type(args3))   # ['1', 'liu'] <class 'list'>
         print(args4, type(args4))   # ['{"age":26,"name":"liu"}', '{"age":28,"name":"hai"}'] <class 'list'>
+
+
+class LoginCode(tornado.web.RequestHandler):
+    def get(self):
+        self.render("image_code.html")       # 打开登录页面
+
+    def post(self):
+        username = self.get_argument('username')  # 接收用户提交的用户名
+        password = self.get_argument('password')
+        code = self.get_argument('code')
+        print(username, password, code)
+
+
+class ImageCode(tornado.web.RequestHandler):
+    def get(self):
+        mstream = io.BytesIO()
+        img, code = VerifyCode().GetCodeImage(30, 4)
+        img.save(mstream, "PNG")        # 将返回的验证码图片数据，添加到BytesIO临时保存
+        self.write(mstream.getvalue())  # 从BytesIO临时保存，获取图片返回给img的 src= 进行显示
 
 
 class NotFoundHandler(BaseHandler):

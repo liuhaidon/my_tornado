@@ -17,9 +17,13 @@ class Application(tornado.web.Application):
             (r"/admin/test/param", AdminParam),     # 参数测试
             (r"/admin/test/result", AdminResult),   # 参数测试
 
+            (r"/login_code", LoginCode),            # 验证码测试
+            (r"/image_code", ImageCode),            # 验证码测试
+
             (r"/(.*)", NotFoundHandler),               # 未定义路由处理
         ]
         settings = dict(
+            xsrf_cookies=True,   # https://www.jianshu.com/p/96994db07f03
             template_path=os.path.join(os.path.dirname(__file__), "templates"),
             static_path=os.path.join(os.path.dirname(__file__), "static"),
             debug=True,     # debug调试模式，当为True，文件保存后server会自动重启，默认False。

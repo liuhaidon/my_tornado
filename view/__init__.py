@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 from utils.crontab import *
 from db.database import database
-from apscheduler.schedulers.background import BackgroundScheduler
+# from apscheduler.schedulers.background import BackgroundScheduler
 import random, datetime
 import sys
 sys.path.append("..")
