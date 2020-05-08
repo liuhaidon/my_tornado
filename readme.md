@@ -9,3 +9,6 @@
 
 redis:
 1.cmd输入：services.msc 命令，查看redis服务
+
+模板：
+https://www.cnblogs.com/jingqi/p/8024906.html

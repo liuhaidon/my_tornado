@@ -5,6 +5,7 @@ from db.sqlite import Sqlite
 from dingtalk import SecretClient
 from view.__init__ import *
 
+
 class AdminIndex(BaseHandler):
     def get(self):
         self.render('index.html')
