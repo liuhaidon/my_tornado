@@ -32,8 +32,8 @@ $(document).ready(function () {
         return false;
     });
 
-    // Append config box / Only for demo purpose
-    // $.get("skin-config.html", function (data) {
+    // Append config1 box / Only for demo purpose
+    // $.get("skin-config1.html", function (data) {
     //     $('body').append(data);
     // });
 

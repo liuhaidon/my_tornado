@@ -7,6 +7,7 @@ from passlib.hash import pbkdf2_sha512
 
 from tornado.escape import json_encode,json_decode
 from BaseHandler import BaseHandler
+from AuthHandler import AuthHandler
 from bson import DBRef, ObjectId
 
 if sys.version_info[0] == 3:
@@ -18,6 +19,7 @@ if sys.version_info[0] == 2:
 
 class AdminLoginHandler(BaseHandler):
     """登录"""
+    @AuthHandler.basic_authenticated
     def get(self):
         nexts = self.request.arguments.get("next")
         referer_url = '/admin/home'

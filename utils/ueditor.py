@@ -30,7 +30,7 @@ class RemotePictureHandler(tornado.web.RequestHandler):
         print("_xsrf===>", _xsrf)
 
     def upload(self,*args, **kwargs):
-        """UEditor文件上传接口； config 配置文件； result 返回结果"""
+        """UEditor文件上传接口； config1 配置文件； result 返回结果"""
         # static_path = self.settings['static_path']
         static_path = self.application.settings["static_path"]
         mimetype = 'application/json'
@@ -38,14 +38,14 @@ class RemotePictureHandler(tornado.web.RequestHandler):
         action = self.get_argument('action')
 
         # 解析JSON格式的配置文件
-        with open(os.path.join(static_path, 'ueditor', 'php', 'config.json')) as fp:
+        with open(os.path.join(static_path, 'ueditor', 'php', 'config1.json')) as fp:
             try:
                 # 删除 `/**/` 之间的注释
                 CONFIG = json.loads(re.sub(r'\/\*.*\*\/', '', fp.read()))
             except:
                 CONFIG = {}
 
-        if action == 'config':
+        if action == 'config1':
             # 初始化时，返回配置文件给客户端
             result = CONFIG
 

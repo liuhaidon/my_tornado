@@ -47,14 +47,14 @@ def random_number(length):
     return salt
 
 
-def scheduler_job(app):
-    # 创建后台执行的 schedulers
-    scheduler = BackgroundScheduler()
-    # 添加调度任务,调度方法为 timedTask，触发器选择 interval(间隔性)，间隔时长为 30 秒
+# def scheduler_job(app):
+#     # 创建后台执行的 schedulers
+#     scheduler = BackgroundScheduler()
+#     # 添加调度任务,调度方法为 timedTask，触发器选择 interval(间隔性)，间隔时长为 30 秒
     scheduler.add_job(test_task, "cron", hour="13", minute="03", second="0")
-    scheduler.add_job(test_task, "interval", seconds=30)   # 定期执行任务,每隔30秒执行一次
-    # 启动调度任务
-    scheduler.start()
+#     scheduler.add_job(test_task, "interval", seconds=30)   # 定期执行任务,每隔30秒执行一次
+#     # 启动调度任务
+#     scheduler.start()
 
     # t = threading.Thread(target=task, args=())
     # t.start()
@@ -73,6 +73,7 @@ def load_base_data(app):
         g_robots[openId] = v
     app.robots = g_robots
     print("robots==>", app.robots)
+
 
 def list_to_dict(field, list):
     """列表转成字典："""

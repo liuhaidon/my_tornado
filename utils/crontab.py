@@ -25,4 +25,4 @@ def test_task():
     for i in range(10):
         pass
 
-get_weather()
+# get_weather()

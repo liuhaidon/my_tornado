@@ -38,6 +38,6 @@ class LoginState(object):
 
 def _connect_redis():
     """建立Redis连接"""
-    # config = {"REDIS": True, "REDIS_HOST": "120.25.105.117", "REDIS_PORT": 6379, "REDIS_DB": 1}
+    # config1 = {"REDIS": True, "REDIS_HOST": "120.25.105.117", "REDIS_PORT": 6379, "REDIS_DB": 1}
     config = {"REDIS": True, "REDIS_HOST": "127.0.0.1", "REDIS_PORT": 6379, "REDIS_DB": 1}
     return Redis(host=config.get('REDIS_HOST'), port=config.get('REDIS_PORT'), db=config.get('REDIS_DB'),passwd='redis123')

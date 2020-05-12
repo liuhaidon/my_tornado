@@ -267,7 +267,7 @@ class BaseHandler(tornado.web.RequestHandler):
         return wrapper
 
     @classmethod
-    def wechat_authenticated(self, method):
+    def wechat_authenticated(cls, method):
         @functools.wraps(method)
         def wrapper(self, *args, **kwargs):
             skey = self.request.headers.get('skey', None)

@@ -120,7 +120,7 @@ if __name__ == "__main__":
     app = Application()
     app.listen(options.port)
 
-    scheduler_job(app)      # 执行计划任务，定时推送任务
+    # scheduler_job(app)      # 执行计划任务，定时推送任务
     # load_base_data(app)
 
     print("visit at", "http://127.0.0.1:%s" % options.port)
