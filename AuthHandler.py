@@ -1,5 +1,7 @@
 import functools
 import tornado.web
+import base64
+import json
 from tornado.escape import utf8
 from hashlib import md5
 
@@ -11,6 +13,11 @@ class AuthHandler(tornado.web.RequestHandler):
     def __init__(self, *argc, **argkw):
         super(AuthHandler, self).__init__(*argc, **argkw)
 
+    def get_config_info(self):
+        with open(self.basic_auth_conf, 'r') as fr:
+            content = json.loads(fr.read())
+        return content
+
     @classmethod
     def basic_authenticated(cls, method):
         @functools.wraps(method)
@@ -20,9 +27,9 @@ class AuthHandler(tornado.web.RequestHandler):
             if auth_header is not None:   # Basic YWRtaW46YWRtaW4=
                 auth_mode, auth_base64 = auth_header.split(' ', 1)
                 assert auth_mode == 'Basic'
-                
-                auth_username, auth_password = auth_base64.encode('utf-8').decode('base64').split(':', 1)
-                if auth_username == username or auth_password == password:
+                # auth_username, auth_password = auth_base64.decode('base64').split(':', 1)
+                auth_username, auth_password = str(base64.b64decode(auth_base64), "utf-8").split(':', 1)
+                if auth_username == 'admin' or auth_password == 'admin':
                     self.write('ok')
                 else:
                     self.write('fail')
