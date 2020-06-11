@@ -43,7 +43,49 @@ class AuthHandler(tornado.web.RequestHandler):
             return method(self, *args, **kwargs)
         return wrapper
 
+
+class BasicAuthHandler(tornado.web.RequestHandler):
+    def initialize(self, db):
+        self.db = db
+
+    def create_auth_header(self):
+        self.set_status(401)
+        self.set_header('WWW-Authenticate', 'Basic realm=Restricted')
+        self._transforms = []
+        self.finish()
+
+    def get(self):
+        db = self.db
+        cursor = db.cursor(pymysql.cursors.DictCursor)
+        # Authorization: Basic base64("user:passwd")
+        auth_header = self.request.headers.get('Authorization', None)
+        if auth_header is not None:
+            # Basic Zm9vOmJhcg==
+            auth_mode, auth_base64 = auth_header.split(' ', 1)
+            assert auth_mode == 'Basic'
+            auth_info = base64.b64decode(auth_base64)
+            auth_username, auth_password = auth_info.decode('utf-8').split(":")
+            try:
+                name = auth_username
+                cursor.execute(
+                    "SELECT * FROM blog_bloguser WHERE name='{}'".format(name)
+                )
+                result = cursor.fetchone()
+                if result is not None:
+                    password = result['password']
+                    if auth_password == password:
+                        self.create_auth_header()
+                    else:
+                        self.create_auth_header()
+                else:
+                    self.create_auth_header()
+            except Exception as e:
+                return self.write(e)
+        else:
+            self.create_auth_header()
+
 # https://blog.csdn.net/junfeng666/article/details/79310992
 # http://xiaorui.cc/archives/1904
 # https://blog.csdn.net/yypsober/article/details/50718716
 # https://zhidao.baidu.com/question/1450826798120826540.html
+# https://blog.csdn.net/ssjdoudou/article/details/105909476
