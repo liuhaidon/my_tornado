@@ -19,6 +19,8 @@ from utils.session import *
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
 
+from handlers.api_handler import api_urls
+
 define("domain", default="", help="run on the given domain", type=str)
 define("ip", default="162.247.101.143", help="run on the given port", type=str)
 define("port", default=8066, help="run on the given port", type=int)
@@ -76,7 +78,8 @@ class Application(tornado.web.Application):
             # (r"/aysic", AdminAysic),
             # (r"/result", AdminResult),
         ]
-        self.dbutil = DBUtil()
+        handlers.extend(api_urls)
+        # self.dbutil = DBUtil()
         # self.sessions = MongoSessions("tornado", "sessions", timeout=30)
         # self.frontend_auth = MongoAuthentication("tornado", "tb_store_profile", "phone")
         # self.backend_auth = MongoAuthentication("tornado", "tb_system_user", "userid")
