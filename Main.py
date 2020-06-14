@@ -39,9 +39,6 @@ class Application(tornado.web.Application):
             (r"/admin/logout", AdminLogoutHandler),
             (r"/admin/home", AdminHomeHandler),
 
-            (r"/admin/login/record", AdminLoginRecord),  # 用户登陆记录查询
-            (r"/admin/login/delete", AdminLoginDelete),  # 用户登陆记录删除
-
             # (r"/admin/users", AdminUserList),
             # (r"/admin/user/add", AdminAddUser),
             # (r"/admin/user/delete", AdminDeleteUser),
@@ -78,8 +75,8 @@ class Application(tornado.web.Application):
             # (r"/aysic", AdminAysic),
             # (r"/result", AdminResult),
         ]
-        handlers.extend(api_urls)
-        # self.dbutil = DBUtil()
+        handlers.extend(api_urls)     # api路由
+        self.dbutil = DBUtil()
         # self.sessions = MongoSessions("tornado", "sessions", timeout=30)
         # self.frontend_auth = MongoAuthentication("tornado", "tb_store_profile", "phone")
         # self.backend_auth = MongoAuthentication("tornado", "tb_system_user", "userid")
@@ -128,3 +125,5 @@ if __name__ == "__main__":
 
     print("visit at", "http://127.0.0.1:%s" % options.port)
     tornado.ioloop.IOLoop.instance().start()
+
+# 源码解析：https://www.cnblogs.com/jasonwang-2016/p/5950548.html
