@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
+import os, sys
 import logging
-import sys
+
 
 def logger():
     # 获取logger的实例
@@ -29,15 +30,19 @@ def logger():
     return logger
 
 # 不用的时候，将日志的hanlder移除
-#否则会常驻内存
+# 否则会常驻内存
 # logger.removeHandler(file_handler)
 # logger.removeHandler(console_handler)
 
 
+def my_log():
+    logging.basicConfig(level=logging.WARN,
+                        format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                        datefmt='%a, %d %b %Y %H:%M:%S',
+                        filename=os.path.join(os.path.dirname(__file__), "log") + "web.log",
+                        filemode='w')
+    return logging
 
 
-
-
-
-
+print(os.path.dirname(__file__))
 

@@ -20,6 +20,7 @@ from utils.session import *
 # sys.setdefaultencoding("utf-8")
 
 from handlers.api_handler import api_urls
+from handlers.dingding_handler import ding_ding_urls
 
 define("domain", default="", help="run on the given domain", type=str)
 define("ip", default="162.247.101.143", help="run on the given port", type=str)
@@ -75,7 +76,8 @@ class Application(tornado.web.Application):
             # (r"/aysic", AdminAysic),
             # (r"/result", AdminResult),
         ]
-        handlers.extend(api_urls)     # api路由
+        handlers.extend(api_urls)         # api路由
+        handlers.extend(ding_ding_urls)   # 钉钉路由
         self.dbutil = DBUtil()
         # self.sessions = MongoSessions("tornado", "sessions", timeout=30)
         # self.frontend_auth = MongoAuthentication("tornado", "tb_store_profile", "phone")

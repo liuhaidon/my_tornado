@@ -1,9 +1,22 @@
-# encoding:utf-8
-import requests, json, time, io
+# -*-coding:utf-8-*-
+import json, time, requests
 from BaseHandler import BaseHandler
 from db.sqlite import Sqlite
-from dingtalk import SecretClient
+# from dingtalk import SecretClient
 from view.__init__ import *
+
+
+# 获取token
+class AdminToken(BaseHandler):
+    def get(self):
+        CORP_ID = "dingb67ca81336a651ccf5bf40eda33b7ba0"
+        AppKey = "ding4itesoimljq9ksmz"
+        AppSecret = "BW8XFsbesRJdOjmt_peYOQBTwVWUkQKONxZ2_2_fXhBQjmgq2Q6tRWrq867l84ht"
+        # client = SecretClient(CORP_ID, SECRET)
+        url = "https://oapi.dingtalk.com/gettoken?appkey={0}&appsecret={1}".format(AppKey, AppSecret)
+        resp = requests.get(url)
+        resp = resp.json()
+        return self.write(json.dumps({"status": "success", "access_token": resp["access_token"]}))
 
 
 class AdminIndex(BaseHandler):
@@ -96,6 +109,7 @@ class AdminAddTask(BaseHandler):
 
     def check_xsrf_cookie(self):
         _xsrf = self.get_argument("_xsrf", None)
+
 
 class AdminDeleteTask(BaseHandler):
     def post(self):
@@ -242,6 +256,7 @@ class AdminAllTasks(BaseHandler):
 
 
 class AdminCreateTable(BaseHandler):
+    """创建数据表"""
     def get(self):
         # sql = Sqlite()
         result = self.application.dbutil.create()
@@ -249,3 +264,30 @@ class AdminCreateTable(BaseHandler):
             return self.write(json.dumps({"status": "ok", "msg": "创建表成功"}))
         else:
             return self.write(json.dumps({"status": "error", "msg": "创建表失败"}))
+
+
+ding_ding_urls = [
+    (r"/", AdminIndex),
+    (r"/index", AdminIndex),
+
+    (r"/get/user", AdminUser),  # 获取用户信息
+    (r"/get/users", AdminUsers),  # 获取所有人员
+
+    (r"/tasks", AdminTasks),  # 显示个人所有任务
+    (r"/task/add", AdminAddTask),  # 增加任务
+
+    (r"/task/details", AdminDetails),  # 任务详情
+    (r"/task/delete", AdminDeleteTask),  # 删除任务
+    (r"/task/update", AdminModifyTask),  # 修改任务
+    (r"/task/change", AdminChangeTask),  # 转换任务
+
+    (r"/task/review", AdminBackupTask),  # 任务回顾
+
+    (r"/alltasks", AdminAllTasks),         # 大屏显示所有人的任务
+    (r"/create/table", AdminCreateTable),  # 创建数据表
+]
+
+
+if __name__ == "__main__":
+    pass
+
