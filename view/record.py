@@ -7,6 +7,7 @@ if sys.version_info[0] == 2:
     reload(sys)
     sys.setdefaultencoding("utf-8")
 
+
 class AdminSysUsers1(BaseHandler):
     """系统用户列表"""
     @BaseHandler.admin_authed

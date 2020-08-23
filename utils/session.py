@@ -1,9 +1,9 @@
 # /usr/bin/python
 # coding: utf-8
-import json
-
-import uuid, redis
-import hmac, hashlib
+import uuid
+import hmac
+import redis
+import hashlib
 try:
     import ujson
 except ImportError:

@@ -20,6 +20,7 @@ from utils.session import *
 # sys.setdefaultencoding("utf-8")
 
 from handlers.api_handler import api_urls
+from handlers.alipay_handle import alipay_urls
 from handlers.dingding_handler import ding_ding_urls
 
 define("domain", default="", help="run on the given domain", type=str)
@@ -36,10 +37,10 @@ class Application(tornado.web.Application):
             (r"/login", user_login),
             (r"/logout", user_logout),
 
+            (r"/admin/home", AdminHomeHandler),
             (r"/admin/login", AdminLoginHandler),
             (r"/admin/logout", AdminLogoutHandler),
-            (r"/admin/home", AdminHomeHandler),
-
+            
             # (r"/admin/users", AdminUserList),
             # (r"/admin/user/add", AdminAddUser),
             # (r"/admin/user/delete", AdminDeleteUser),
@@ -70,13 +71,9 @@ class Application(tornado.web.Application):
             # (r"/ajax/upload_image", UploadImageFile),        # 上传图片
             # (r"/ajax/upload_video", UploadVideoFile),        # 上传视频
             # (r"/admin/media/upload", RemotePictureHandler),   # 上传富文本：还要改动html页面与ueditor.py页面
-
-            # (r"/hehe", AdminIndex),
-            # (r"/pay", AdminPay),
-            # (r"/aysic", AdminAysic),
-            # (r"/result", AdminResult),
         ]
         handlers.extend(api_urls)         # api路由
+        handlers.extend(alipay_urls)      # 支付路由
         handlers.extend(ding_ding_urls)   # 钉钉路由
         self.dbutil = DBUtil()
         # self.sessions = MongoSessions("tornado", "sessions", timeout=30)

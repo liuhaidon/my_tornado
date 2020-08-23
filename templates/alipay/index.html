@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="dist/css/bootstrap.css">
 </head>
 <body>
+    <h1>python!!! Welcome back, {{ user }}</h1>
     <form action="/pay" method="POST">
         {% module xsrf_form_html() %}
         <input type="text" name="money">
