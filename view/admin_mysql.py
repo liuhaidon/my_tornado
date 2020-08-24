@@ -18,7 +18,7 @@ if sys.version_info[0] == 2:
 
 
 class AdminLoginHandler(BaseHandler):
-    """登录"""
+    """ 后台用户登录 """
     @AuthHandler.basic_authenticated
     def get(self):
         nexts = self.request.arguments.get("next")

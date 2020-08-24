@@ -19,9 +19,10 @@ from utils.session import *
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
 
-from handlers.api_handler import api_urls
-from handlers.alipay_handle import alipay_urls
-from handlers.dingding_handler import ding_ding_urls
+from routes.api_handler import api_urls
+from routes.record_handler import record_urls
+# from routes.alipay_handler import alipay_urls
+# from routes.dingding_handler import ding_ding_urls
 
 define("domain", default="", help="run on the given domain", type=str)
 define("ip", default="162.247.101.143", help="run on the given port", type=str)
@@ -40,19 +41,19 @@ class Application(tornado.web.Application):
             (r"/admin/home", AdminHomeHandler),
             (r"/admin/login", AdminLoginHandler),
             (r"/admin/logout", AdminLogoutHandler),
-            
+
             # (r"/admin/users", AdminUserList),
             # (r"/admin/user/add", AdminAddUser),
             # (r"/admin/user/delete", AdminDeleteUser),
             # # (r"/admin/user/audit", AdminAuditUser),
             # # (r"/admin/user/([0-9a-z]{24})", AdminModifyUser),
             #
-            # (r"/admin/sysusers", AdminSysUsers),
-            # (r"/admin/sysuser/add", AdminAddSysUser),
-            # (r"/admin/sysuser/delete", AdminDeleteSysUser),
-            # (r"/admin/sysuser/([0-9a-z]{24})", AdminModifySysUser),
-            # (r"/admin/system/repass", AdminRepassSystem),
-            #
+            (r"/admin/sysusers", AdminSysUsers),
+            (r"/admin/sysuser/add", AdminAddSysUser),
+            (r"/admin/sysuser/delete", AdminDeleteSysUser),
+            (r"/admin/sysuser/([0-9a-z]{24})", AdminModifySysUser),
+            (r"/admin/system/repass", AdminRepassSystem),
+
             # (r"/admin/permissions", AdminPermissions),
             # (r"/admin/permission/add", AdminAddPermission),
             # (r"/admin/permission/delete", AdminDeletePermission),
@@ -73,8 +74,9 @@ class Application(tornado.web.Application):
             # (r"/admin/media/upload", RemotePictureHandler),   # 上传富文本：还要改动html页面与ueditor.py页面
         ]
         handlers.extend(api_urls)         # api路由
-        handlers.extend(alipay_urls)      # 支付路由
-        handlers.extend(ding_ding_urls)   # 钉钉路由
+        handlers.extend(record_urls)      # 记录路由（登录记录、操作记录）
+        # handlers.extend(alipay_urls)      # 支付路由
+        # handlers.extend(ding_ding_urls)   # 钉钉路由
         self.dbutil = DBUtil()
         # self.sessions = MongoSessions("tornado", "sessions", timeout=30)
         # self.frontend_auth = MongoAuthentication("tornado", "tb_store_profile", "phone")

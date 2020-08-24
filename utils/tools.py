@@ -15,11 +15,20 @@ def date_diff(beginDate, endDate):
     return count
 
 
-# 判断数据类型
 def data_type(data):
+    """ 判断数据类型 """
     if isinstance(data, str):
-        print("字符串类型！")
+        return {"type": "", "msg": "字符串类型！"}
     if isinstance(data, bytes):
-        print("字节类型！")
+        return {"type": "", "msg": "字节类型！"}
+
+
+def list_to_dict(field, list):
+    """列表转成字典："""
+    data_list = []
+    for u in list:
+        data = dict(zip(field, u))
+        data_list.append(data)
+    return data_list
 # data_type("liu")
 # data_type(b"liu")

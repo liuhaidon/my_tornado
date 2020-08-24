@@ -1,15 +1,17 @@
 import json
+from utils.tools import *
 from BaseHandler import BaseHandler
 
 
 class AdminLoginRecord(BaseHandler):
-    """用户登陆记录查询"""
+    """查询用户登陆记录"""
     @BaseHandler.admin_authed
     def get(self):
-        current_page = int(self.get_argument("page", 1))
+        page = int(self.get_argument("page", 1))             # 当前页数
+        pagesize = int(self.get_argument("pagesize", "10"))  # 每页显示的记录数量
         pagesize = self.application.settings["record_of_one_page"]
 
-        skiprecord = pagesize * (current_page - 1)
+        skiprecord = pagesize * (page - 1)
         sql = "select * from tb_login_record order by logtime desc limit %s, %s" % (skiprecord, pagesize)
         login_list = self.application.dbutil.query(sql)
 
@@ -22,7 +24,7 @@ class AdminLoginRecord(BaseHandler):
         if count % pagesize > 0:
             pages += 1
         self.render("backend/login_record.html", myuser=self.admin, admin_nav=11, login_list=data_list,
-                    page=current_page, pagesize=pagesize, pages=pages, count=count)
+                    page=page, pagesize=pagesize, pages=pages, count=count)
 
 
 class AdminLoginDelete(BaseHandler):
