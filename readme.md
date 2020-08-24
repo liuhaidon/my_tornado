@@ -12,3 +12,7 @@ redis:
 
 模板：
 https://www.cnblogs.com/jingqi/p/8024906.html
+
+RBAC权限控制：
+https://github.com/opendevops-cn/codo-admin
+https://demo.opendevops.cn/login
