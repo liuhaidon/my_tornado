@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
-from pymongo import MongoClient
 import time
+from pymongo import MongoClient
+# from mongoengine import connect
+
 
 class database():
     conn = MongoClient('127.0.0.1')
-    # conn = MongoClient(host='192.168.8.162', port=27017, connect=False, serverSelectionTimeoutMS=3)
+    # time.sleep(2)
+    # conn = MongoClient(host='127.0.0.1', port=27017, connect=False, serverSelectionTimeoutMS=6)
     db = conn['tornado']
 
     @classmethod

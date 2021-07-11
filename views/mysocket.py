@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-
 import logging
 import tornado.escape
 import tornado.ioloop
@@ -11,6 +10,7 @@ import json
 
 from db import database
 from bson import ObjectId
+
 
 class ChatSocketHandler(tornado.websocket.WebSocketHandler):
     waiters = set()

@@ -5,7 +5,7 @@ import os, time, pymongo
 import functools
 # import urlparse
 from tornado.web import HTTPError
-from db import database
+from database import database
 from utils.session import *
 from utils.logger import *
 # from db.database import database as mongodb
@@ -39,9 +39,10 @@ class BaseHandler(tornado.web.RequestHandler):
         self.set_status(204)
         self.finish()
 
-    # def get_current_user(self):
-    #     # return self.session.get("user_name")
-    #     return self.get_secure_cookie("user")
+    def get_current_user(self):
+        """ 在模板里, 直接使用 {{ current_user }} 来获取当前登录用户, 得到的就是BaseHandler里get_current_user的返回值。 """
+        # return self.session.get("user_name")
+        return self.get_secure_cookie("user")
 
     @property
     def get_session(self):

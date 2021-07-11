@@ -1,8 +1,9 @@
 # encoding:utf-8
 import json
-import time,pymongo
+import time
+import pymongo
 from utils.logger import *
-from view.ajax import *
+from views.ajax import *
 from passlib.hash import pbkdf2_sha512
 
 from tornado.escape import json_encode,json_decode

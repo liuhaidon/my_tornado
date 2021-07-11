@@ -2,7 +2,7 @@
 import os, time, json, traceback
 import uuid
 from BaseHandler import BaseHandler
-from view import *
+from views import *
 
 
 class AjaxFindSysUser(BaseHandler):

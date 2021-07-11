@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-import sys
-import tornado.ioloop
 import tornado.web
+import tornado.ioloop
 from tornado.options import define, options
 
-from view.ajax import *
-from view.front import *
-from view.admin_mysql import *
-from view.admin_api import *
-from db.mysql import DBUtil
+# from views.ajax import *
+# from views.front import *
+# from views.admin_api import *
+from views.admin_mysql import *
+from views.views_async import *
+# from db.mysql import DBUtil
 from utils.session import *
 # from utils.ueditor import *
 # from utils.pay import *
@@ -35,8 +35,8 @@ class Application(tornado.web.Application):
         handlers = [
             # (r"/", index),
             # (r"/index", index),
-            (r"/login", user_login),
-            (r"/logout", user_logout),
+            # (r"/login", user_login),
+            # (r"/logout", user_logout),
 
             (r"/admin/home", AdminHomeHandler),
             (r"/admin/login", AdminLoginHandler),
@@ -47,7 +47,7 @@ class Application(tornado.web.Application):
             # (r"/admin/user/delete", AdminDeleteUser),
             # # (r"/admin/user/audit", AdminAuditUser),
             # # (r"/admin/user/([0-9a-z]{24})", AdminModifyUser),
-            #
+
             (r"/admin/sysusers", AdminSysUsers),
             (r"/admin/sysuser/add", AdminAddSysUser),
             (r"/admin/sysuser/delete", AdminDeleteSysUser),
@@ -63,12 +63,12 @@ class Application(tornado.web.Application):
             # (r"/ajax/sysuser/find", AjaxFindSysUser),
             # (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
             # (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
-            #
+
             # (r"/admin/notices", AdminNoticeList),
             # (r"/admin/notice/add", AdminAddNotice),
             # (r"/admin/notice/delete", AdminDeleteNotice),
             # # (r"/admin/notice/([0-9a-z]{24})", AdminModifyNotice),
-            #
+
             # (r"/ajax/upload_image", UploadImageFile),        # 上传图片
             # (r"/ajax/upload_video", UploadVideoFile),        # 上传视频
             # (r"/admin/media/upload", RemotePictureHandler),   # 上传富文本：还要改动html页面与ueditor.py页面
@@ -77,7 +77,7 @@ class Application(tornado.web.Application):
         handlers.extend(record_urls)      # 记录路由（登录记录、操作记录）
         # handlers.extend(alipay_urls)      # 支付路由
         # handlers.extend(ding_ding_urls)   # 钉钉路由
-        self.dbutil = DBUtil()
+        # self.dbutil = DBUtil()
         # self.sessions = MongoSessions("tornado", "sessions", timeout=30)
         # self.frontend_auth = MongoAuthentication("tornado", "tb_store_profile", "phone")
         # self.backend_auth = MongoAuthentication("tornado", "tb_system_user", "userid")
@@ -111,9 +111,18 @@ class Application(tornado.web.Application):
             # }
         )
         self.settings = settings
-        tornado.web.Application.__init__(self, handlers, **settings)
         self.session_manager = SessionManager(settings["session_secret"], settings["store_options"],
                                               settings["session_timeout"])
+        # super(Application, self).__init__(handlers, **settings)
+        tornado.web.Application.__init__(self, handlers, **settings)
+
+
+def main():
+    tornado.options.parse_command_line()
+    http_server = tornado.httpserver.HTTPServer(Application())
+    http_server.listen(options.port)
+    tornado.ioloop.IOLoop.current().start()
+    # tornado.ioloop.IOLoop.current().stop()
 
 
 if __name__ == "__main__":
@@ -125,6 +134,10 @@ if __name__ == "__main__":
     # load_base_data(app)
 
     print("visit at", "http://127.0.0.1:%s" % options.port)
+    # tornado.ioloop.IOLoop.current().start()
     tornado.ioloop.IOLoop.instance().start()
 
+
 # 源码解析：https://www.cnblogs.com/jasonwang-2016/p/5950548.html
+
+# https://www.cnblogs.com/sss4/p/11417005.html  监控平台

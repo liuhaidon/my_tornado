@@ -1,0 +1,13 @@
+.idea/*
+*.pyc
+static/media
+log/warn.log
+zip/*
+d_local.0
+d_local.ns
+*.bat
+bak/*
+attachment/*
+/log
+/.idea
+
