@@ -19,7 +19,7 @@ from utils.session import *
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
 
-from routes.api_handler import api_urls
+
 from routes.record_handler import record_urls
 # from routes.alipay_handler import alipay_urls
 # from routes.dingding_handler import ding_ding_urls
@@ -115,14 +115,6 @@ class Application(tornado.web.Application):
                                               settings["session_timeout"])
         # super(Application, self).__init__(handlers, **settings)
         tornado.web.Application.__init__(self, handlers, **settings)
-
-
-def main():
-    tornado.options.parse_command_line()
-    http_server = tornado.httpserver.HTTPServer(Application())
-    http_server.listen(options.port)
-    tornado.ioloop.IOLoop.current().start()
-    # tornado.ioloop.IOLoop.current().stop()
 
 
 if __name__ == "__main__":
