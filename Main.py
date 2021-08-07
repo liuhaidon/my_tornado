@@ -10,12 +10,9 @@ from tornado.options import define, options
 from views.admin_mysql import *
 from views.views_async import *
 # from db.mysql import DBUtil
-from utils.session import *
 # from utils.ueditor import *
 # from utils.pay import *
 
-# from session.session import MongoSessions
-# from session.auth import MongoAuthentication
 # reload(sys)
 # sys.setdefaultencoding("utf-8")
 
