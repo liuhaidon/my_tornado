@@ -1,10 +1,8 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
 import os
 import tornado.web
 import tornado.ioloop
 from tornado.options import define, options
-from view.admin_test import *
+from views.admin_test import *
 
 define("ip", default="162.247.101.143", help="run on the given port", type=str)
 define("port", default=8066, help="run on the given port", type=int)
@@ -14,13 +12,7 @@ define("develop", default=True, help="develop environment", type=bool)
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = [
-            (r"/admin/test/param", AdminParam),     # 参数测试
-            (r"/admin/test/result", AdminResult),   # 参数测试
 
-            (r"/login_code", LoginCode),            # 验证码测试
-            (r"/image_code", ImageCode),            # 验证码测试
-
-            (r"/(.*)", NotFoundHandler),               # 未定义路由处理
         ]
         settings = dict(
             xsrf_cookies=True,   # https://www.jianshu.com/p/96994db07f03

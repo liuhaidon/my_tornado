@@ -9,40 +9,11 @@ from tornado.escape import json_encode,json_decode
 from BaseHandler import BaseHandler
 from bson import DBRef, ObjectId
 
-if sys.version_info[0] == 3:
-    from importlib import reload
-if sys.version_info[0] == 2:
-    reload(sys)
-    sys.setdefaultencoding("utf-8")
-
 
 class AdminLoginHandler(BaseHandler):
     """登录"""
-    def get(self):
-        nexts = self.request.arguments.get("next")
-        referer_url = '/admin/home'
-        if 'Referer' in self.request.headers:
-            referer_url = '/' + '/'.join(self.request.headers['Referer'].split("/")[3:])
-        error = ""
-        # username = self.get_cookie("username")
-        # if username:
-            # error = "您已登录账号:%s,如继续则退出当前账号" % username
-        if self.admin:
-            if self.admin.get("role", "") in ['admin', "superadmin"]:
-                print(self.admin.get("role", "role is xxx"))
-                self.redirect(referer_url)
-                error = ""
-            else:
-                error = "您已登录账号:%s,如继续则退出当前账号" % self.admin['userid']
-        next = referer_url
-        if nexts:
-            next = nexts[0]
-        else:
-            url = ""
-        self.render("backend/login.html", url=next, error=error)
 
     def post(self, *args, **kwargs):
-        # print self.request.arguments, self.request.headers
         self.logging.info(('LoginHandler argument %s') % (self.request.arguments))
         url, pwd, username = (value[0] for key, value in self.request.arguments.items() if key != '_xsrf'
                           and key != 'checkbox')
@@ -64,26 +35,6 @@ class AdminLoginHandler(BaseHandler):
         else:
             self.redirect(url)
 
-    def check_xsrf_cookie(self):
-        _xsrf = self.get_argument("_xsrf", None)
-
-
-class AdminLogoutHandler(BaseHandler):
-    """注销"""
-    def get(self):
-        self.post()
-
-    def post(self):
-        self.end_backend_session()
-        self.redirect('/admin/login')
-
-
-class AdminHomeHandler(BaseHandler):
-    """后台主页"""
-    @BaseHandler.admin_authed
-    def get(self):
-        # myuser = self.get_cookie("username")
-        self.render("backend/home.html", myuser=self.admin, admin_nav=0)
 
 
 class AdminLoginRecord(BaseHandler):
