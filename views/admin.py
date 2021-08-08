@@ -10,33 +10,6 @@ from BaseHandler import BaseHandler
 from bson import DBRef, ObjectId
 
 
-class AdminLoginHandler(BaseHandler):
-    """登录"""
-
-    def post(self, *args, **kwargs):
-        self.logging.info(('LoginHandler argument %s') % (self.request.arguments))
-        url, pwd, username = (value[0] for key, value in self.request.arguments.items() if key != '_xsrf'
-                          and key != 'checkbox')
-        if not pwd:
-            return self.render("backend/login.html", url=url, error="密码不能为空")
-        self.logging.info(('admin user  %s login in' % (username)))
-
-        res = self.begin_backend_session(username, pwd)
-        if not res:
-            return self.render("backend/login.html", url=url, error="用户名或密码不正确")
-        # sql = "insert into tb_login_record values(null, '%s', '%s', '%s')" % ("登陆用户：" + username, ip_info, atime)
-        # self.application.dbutil.execute(sql)
-
-        # self.set_cookie('username', username, expires=time.time() + 60, httponly=True, max_age=120)  # 设置过期时间为60秒
-        # self.set_cookie('username', username, expires_days=1, path="/")   # 设置过期时间为1天，设置路径,限定哪些内容需要发送cookie,/表示全部
-        # self.set_secure_cookie('username', username)  # 设置一个加密的cookie,但是必须在application里面添加cookie_secret值
-        if url=="/admin/login":
-            self.redirect('/admin/home')
-        else:
-            self.redirect(url)
-
-
-
 class AdminLoginRecord(BaseHandler):
     """用户登陆记录查询"""
     @BaseHandler.admin_authed
