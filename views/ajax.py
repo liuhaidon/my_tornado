@@ -1,6 +1,5 @@
 # encoding:utf-8
-import os, time, json, traceback
-import uuid
+import os, time, json
 from BaseHandler import BaseHandler
 from views import *
 
@@ -69,69 +68,3 @@ class AjaxPermissionBind(BaseHandler):
         return self.write(json.dumps({"status": "success", "error": u'修改权限成功!'}))
 
 
-class UploadImageFile(BaseHandler):
-    def post(self):
-        datas = self.request.arguments
-        path = self.get_argument("path")
-        name = self.get_argument("name", "")
-        upload_path = os.path.join(self.settings['upload_path'], path)
-        print(path, name, upload_path)
-        # 若不存在此目录，则创建之
-        if not os.path.isdir(upload_path):
-            # upload_path = upload_path.replace("/", "\\") #windows platform
-            os.makedirs(upload_path)
-        file_metas = self.request.files.get('file', [])
-        filename = ''
-        try:
-            for meta in file_metas:
-                filename = meta['filename']
-                ext = os.path.splitext(filename)[1]
-                # 生成随机文件名
-                filename = str(uuid.uuid4())
-                filename = '%s%s' % (filename, ext)
-                filepath = os.path.join(upload_path, filename)
-                with open(filepath, 'wb') as up:
-                    up.write(meta['body'])
-        except Exception as e:
-            return self.write(json.dumps({"status": 'error', "msg": u"上传失败，请重新上传"}))
-        else:
-            print(json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename}))
-            return self.write(json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename}))
-
-
-class UploadVideoFile(BaseHandler):
-    def post(self):
-        path = self.get_argument("path")
-        input_name = self.get_argument("iname", "")
-        nums = self.get_argument("chunks", "")
-        num = self.get_argument("chunk", "")
-        # 视频文件名
-        filename = self.get_argument("name", "")
-
-        upload_path = os.path.join(self.settings['upload_path'], path)
-        print(path, nums, num, filename, upload_path)
-
-        # 视频保存路径+视频文件名
-        filepath = os.path.join(upload_path, filename)
-        # 若不存在此目录，则创建之
-        if not os.path.isdir(upload_path):
-            # upload_path = upload_path.replace("/", "\\") #windows platform
-            os.makedirs(upload_path)
-        file_metas = self.request.files.get('file', [])
-        # filename = ''
-        try:
-            for meta in file_metas:
-                # ext = os.path.splitext(filename)[1]
-                # 生成随机文件名
-                # filename = str(uuid.uuid4())
-                # filename = '%s%s' % (filename, ext)
-                # filepath = os.path.join(upload_path, filename)
-                with open(filepath, 'ab') as up:
-                    up.write(meta['body'])
-        except Exception as e:
-            traceback.print_exc()
-            print('视频文件上传失败,失败原因[{0}]'.format(str(e)))
-            return self.write(json.dumps({"status": 'error', "msg": u"视频文件上传失败，请重新上传"}))
-        else:
-            print(json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename}))
-            return self.write(json.dumps({"status": 'ok', "msg": "", "base_url": "", "name": filename}))

@@ -4,13 +4,12 @@ import tornado.web
 import tornado.ioloop
 from tornado.options import define, options
 
-# from views.ajax import *
-# from views.front import *
-# from views.admin_api import *
+from views.ajax import *
+from views.front import *
+from views.admin_api import *
 from views.admin_mysql import *
 from views.views_async import *
 # from db.mysql import DBUtil
-# from utils.ueditor import *
 # from utils.pay import *
 
 # reload(sys)
@@ -35,10 +34,6 @@ class Application(tornado.web.Application):
             # (r"/login", user_login),
             # (r"/logout", user_logout),
 
-            (r"/admin/home", AdminHomeHandler),
-            (r"/admin/login", AdminLoginHandler),
-            (r"/admin/logout", AdminLogoutHandler),
-
             # (r"/admin/users", AdminUserList),
             # (r"/admin/user/add", AdminAddUser),
             # (r"/admin/user/delete", AdminDeleteUser),
@@ -54,9 +49,7 @@ class Application(tornado.web.Application):
             # (r"/admin/permissions", AdminPermissions),
             # (r"/admin/permission/add", AdminAddPermission),
             # (r"/admin/permission/delete", AdminDeletePermission),
-            #
-            # (r"/admin/media/contents", AdminContents),
-            #
+
             # (r"/ajax/sysuser/find", AjaxFindSysUser),
             # (r"/ajax/permission/bind", AjaxBindPermission),  # 点击权限绑定
             # (r"/ajax/bind/permission", AjaxPermissionBind),  # 点击确定
@@ -65,10 +58,6 @@ class Application(tornado.web.Application):
             # (r"/admin/notice/add", AdminAddNotice),
             # (r"/admin/notice/delete", AdminDeleteNotice),
             # # (r"/admin/notice/([0-9a-z]{24})", AdminModifyNotice),
-
-            # (r"/ajax/upload_image", UploadImageFile),        # 上传图片
-            # (r"/ajax/upload_video", UploadVideoFile),        # 上传视频
-            # (r"/admin/media/upload", RemotePictureHandler),   # 上传富文本：还要改动html页面与ueditor.py页面
         ]
         handlers.extend(api_urls)         # api路由
         handlers.extend(record_urls)      # 记录路由（登录记录、操作记录）

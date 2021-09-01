@@ -3,6 +3,7 @@
         <ul class="nav" id="side-menu">
             <li class="nav-header">
                 <div class="dropdown profile-element">
+                    <span class="block m-t-xs"> <strong class="font-bold">广告推送平台</strong></span>
                     <span>
                         <span class="block m-t-xs"> <strong class="font-bold">{{myuser.get("system","")}}</strong></span>
                         <img alt="image" class="img-circle" src="{{ static_url('img/default_avatar.png') }}">
@@ -22,12 +23,11 @@
                         <!--<li><a href="#">个人资料</a></li>-->
                         <!--<li><a href="#">联系我们</a></li>-->
                         <!--<li><a href="#">信箱</a></li>-->
+                        <!-- <li class="divider"></li> -->
                         <li><a href="/admin/logout">安全退出</a></li>
                     </ul>
                 </div>
-                <div class="logo-element">
-                    H+
-                </div>
+                <div class="logo-element">H+</div>
             </li>
 
             <li>
@@ -53,12 +53,7 @@
                 </ul>
             </li>
 
-            <li>
-                <a href="#"><i class="fa fa-film"></i> <span class="nav-label">媒体管理</span> <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" aria-expanded="false" style="height: 0px;">
-                    <li><a href="/admin/media/contents">媒体列表</a></li>
-                </ul>
-            </li>
+
 
             <li>
                 <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">商品管理</span> <span class="fa arrow"></span></a>
@@ -79,123 +74,4 @@
     </div>
 </nav>
 
-<script>
-    $(function () {
-        Load_Options();
-
-        function Load_Options(){
-            var op = $('nav').data("nav");
-            var idx = parseInt(op/10);
-            var idx2 = op%10-1;
-            console.log("idx==",idx,idx2);
-
-            var li = $('#side-menu').children('li').eq(idx);
-            var liul = li.children("ul");
-            liul.addClass("in");
-            var ulli = liul.children("li").eq(idx2);
-
-            ulli.addClass("active");
-            li.addClass("active");
-        }
-    });
-
-    $(function(){
-        // $.ajax({
-        //     url:'/ajax/region/find',
-        //     type:'post',
-        //     data:{'_xsrf':$("input[name='_xsrf']").val()},
-        //     success:function (data) {
-        //         var json = $.parseJSON(data);
-        //         // var val = Object.values(json);
-        //         // console.log(json,typeof json);
-        //         var xhtml = "";
-        //         for (var i = 0; i < json.length; i++){
-        //             var html = "";
-        //             // html += "<li><a href=\"/admin/stores\">"+json[i].region+"</a></li>";
-        //             // console.log("title===>>",i,json.length,json[i].region)
-        //             html += "<li><a class=\"c1\" href=\"#\"><span class=\"nav-label\">"+json[i].region+"</span> <span class=\"fa arrow\"></span></a>";
-        //
-        //             var arr = json[i].store1;
-        //             // console.log("arr==",arr,arr.length);
-        //             if (arr.length!=0){
-        //                 html += "<ul class=\"nav nav-second-level collapse \" aria-expanded=\"true\" style=\"height: 0px;\">";
-        //                 for (var j = 0; j < arr.length; j++) {
-        //                     var strd = "";
-        //                     var strd = arr[j]._id;
-        //                     // console.log("666==>", strd,arr[j].title);
-        //                     // console.log("888==>", strd,arr[j]._id);
-        //                     var url = "";
-        //                     url = url+"/admin/stores/"+arr[j]._id;
-        //                     // console.log(url,typeof url);
-        //                     html += "<li name=\"n2\" style=\"padding-left: 22px;\"><a href='"+url+"'>" + arr[j].title + "</a></li>";
-        //                 }
-        //                 html += "</ul>";
-        //             }
-        //             html += "</li>";
-        //             xhtml = xhtml+html;
-        //             // console.log("xhtml==",xhtml);
-        //         }
-        //         $("#store").html(xhtml);
-        //     },
-        //     error:function (XMLHttpRequest, textStatus, errorThrown) {
-        //         console.log(XMLHttpRequest.status);
-        //         console.log(XMLHttpRequest.readyState);
-        //         console.log(textStatus);
-        //     }
-        // });
-        //
-        // setTimeout(function(){
-        //     $("#store li ul li a").each(function(i,item){
-        //         var title = $("#wrapper").data("dt");
-        //         var a = $(this).html();
-        //         // console.log("a===",a);
-        //         if(a==title){
-        //             $(this).parent().parent().addClass("in");
-        //             $(this).parent().addClass("active");
-        //             var b = $(this).parent().parent().parent().addClass("active");
-        //             // console.log(b)
-        //         }
-        //     });
-        //
-        //     $("#store li .c1").each(function(i,item){
-        //         var title = $("#wrapper").data("dt");
-        //         var a = $(this).children(":first").html();
-        //         // console.log("++++++++",555,a,title);
-        //         if(a==title){
-        //             var liul = $(this).next("ul");
-        //             var result = liul.hasClass("in");
-        //             if (result){
-        //                 liul.removeClass("in");
-        //             }
-        //             else{
-        //                 liul.addClass("in");
-        //             }
-        //         }
-        //     })
-        // },100);
-
-        $("#store").on("click",".c1",function(){
-            // console.log("------");
-            var a = $(this).children(":first").html();
-            // console.log("a===",a);
-            window.location.href="/admin/store?region="+a;
-            var liul = $(this).next("ul");
-            var result = liul.hasClass("in");
-            if (result){
-                liul.removeClass("in");
-            }
-            else{
-                liul.addClass("in");
-            }
-        });
-
-        $("#store").on("click","li[name=n2]",function(){
-            // console.log("==================================");
-            $(this).addClass("active");
-            $(this).parent().parent().addClass("in");
-            $(this).parent().parent().addClass("active");
-        })
-
-    });
-</script>
 

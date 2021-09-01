@@ -312,26 +312,6 @@ class AdminDeletePermission(BaseHandler):
         self.write(json.dumps({"status": 'ok', "msg": u'删除权限失败'}))
 
 
-class AdminContents(BaseHandler):
-    """图片视频富文本列表"""
-    @BaseHandler.admin_authed
-    def get(self):
-        page = int(self.get_argument("page", 1))
-        pagesize = self.application.settings["record_of_one_page"]
-
-        skiprecord = pagesize * (page - 1)
-        contents = self.application.dbutil.getContents(skiprecord, pagesize)
-
-        count = self.application.dbutil.getAllContents()
-        pages = count / pagesize
-        if count % pagesize > 0:
-            pages += 1
-        categories = []
-
-        self.render("backend/study_content_query.html", myuser=self.admin, admin_nav=41, contents=contents, page=page,
-                    pagesize=pagesize, pages=pages, count=count,categories=categories)
-
-
 class AdminNoticeList(BaseHandler):
     """系统公告列表"""
     @BaseHandler.admin_authed

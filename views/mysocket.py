@@ -1,17 +1,9 @@
 
 
-
-
-
-
 class ChatSocketHandler(tornado.websocket.WebSocketHandler):
-
-
-
 
     @classmethod
     def push_playlist(cls, playlist):
-        print "push_playlist===>"
         if not playlist:
             return
         
