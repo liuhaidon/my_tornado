@@ -61,9 +61,6 @@ class AdminLoginHandler(BaseHandler):
         if not res:
             return self.render("backend/login.html", url=url, error="用户名或密码不正确")
 
-        # self.set_cookie('username', username, expires=time.time() + 60, httponly=True, max_age=120)  # 设置过期时间为60秒
-        # self.set_cookie('username', username, expires_days=1, path="/")   # 设置过期时间为1天，设置路径,限定哪些内容需要发送cookie,/表示全部
-        # self.set_secure_cookie('username', username)  # 设置一个加密的cookie,但是必须在application里面添加cookie_secret值
         if url == "/admin/login":
             self.redirect('/admin/home')
         else:
