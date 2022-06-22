@@ -24,7 +24,7 @@ jmespath==0.9.4
 kiwisolver==1.1.0
 matplotlib==2.2.4
 maxminddb==1.4.1
-numpy==1.16.3
+numpy==1.22.0
 passlib==1.7.1
 perf==0.1
 Pillow==6.0.0
